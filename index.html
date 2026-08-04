@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spice Cream — Big Win editor</title>
+  <title>Spice Cream — Big Win screen</title>
   <style>
     :root {
       color-scheme: dark;
@@ -21,8 +21,6 @@
         radial-gradient(circle at 50% -20%, #68224f 0, transparent 42rem),
         linear-gradient(135deg, #17091f, #0a0611 70%);
     }
-
-    button, input { font: inherit; }
 
     .app {
       display: grid;
@@ -87,98 +85,6 @@
       font-variant-numeric: tabular-nums;
       text-align: right;
     }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: #ff4fa3;
-      cursor: pointer;
-    }
-
-    .asset-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .asset-button,
-    .action-button {
-      min-height: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 11px;
-      background: rgba(255, 255, 255, 0.055);
-      color: #fcecf7;
-      cursor: pointer;
-      transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
-    }
-
-    .asset-button:hover,
-    .action-button:hover {
-      border-color: rgba(255, 114, 183, 0.65);
-      background: rgba(255, 79, 163, 0.12);
-    }
-
-    .asset-button:active,
-    .action-button:active { transform: translateY(1px); }
-
-    .asset-button.is-active {
-      border-color: #ff55a8;
-      background: linear-gradient(135deg, rgba(255, 79, 163, 0.28), rgba(147, 59, 255, 0.18));
-      box-shadow: 0 0 0 2px rgba(255, 79, 163, 0.12);
-    }
-
-    .position-card {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.045);
-      color: #cbb8d2;
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .position-card strong {
-      display: block;
-      margin-top: 3px;
-      color: #fff;
-      font-size: 17px;
-    }
-
-    .shortcut {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 7px 10px;
-      align-items: center;
-      color: #bca9c4;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    kbd {
-      display: inline-grid;
-      min-width: 25px;
-      min-height: 24px;
-      place-items: center;
-      padding: 0 6px;
-      border: 1px solid rgba(255, 255, 255, 0.19);
-      border-bottom-width: 2px;
-      border-radius: 6px;
-      background: #2b1834;
-      color: #fff;
-      font: 700 11px/1 ui-monospace, monospace;
-    }
-
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 20px;
-    }
-
-    .action-button { padding: 9px 12px; font-size: 12px; font-weight: 750; }
-    .action-button.primary { border-color: #ff4fa3; background: #ff4fa3; color: #1b0715; }
 
     .stage-area {
       min-width: 0;
@@ -247,26 +153,6 @@
 
     .loading.is-hidden { display: none; }
 
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 20;
-      padding: 11px 15px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      background: rgba(30, 13, 37, 0.94);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-      color: #fff;
-      font-size: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: 160ms ease;
-    }
-
-    .toast.is-visible { opacity: 1; transform: translateY(0); }
-
     @media (max-width: 800px) {
       .app { display: block; }
       .panel { position: relative; height: auto; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
@@ -277,46 +163,21 @@
 <body>
   <main class="app">
     <aside class="panel">
-      <p class="eyebrow">Phaser 3 editor</p>
+      <p class="eyebrow">Phaser 3 scene</p>
       <h1>Big Win<br>screen</h1>
-      <p class="lead">Выберите картинку кнопкой или нажатием на сцене, затем расставляйте элементы стрелками.</p>
-
-      <section class="control-group" aria-labelledby="assets-title">
-        <div class="label-row"><span id="assets-title">Картинки</span><span class="value" id="selected-name">—</span></div>
-        <div class="asset-list" id="asset-list"></div>
-        <div class="position-card" aria-live="polite">
-          <span>X<strong id="position-x">—</strong></span>
-          <span>Y<strong id="position-y">—</strong></span>
-        </div>
-      </section>
+      <p class="lead">Финальная композиция зафиксирована. Все игровые элементы отображаются в постоянных позициях и не редактируются.</p>
 
       <section class="control-group">
-        <div class="label-row"><label for="asset-scale">Размер картинки</label><output class="value" id="asset-scale-value">100%</output></div>
-        <input id="asset-scale" type="range" min="10" max="250" step="1" value="100" disabled>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
+        <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
       </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="page-zoom">Приближение страницы</label><output class="value" id="page-zoom-value">200%</output></div>
-        <input id="page-zoom" type="range" min="50" max="300" step="10" value="200">
-      </section>
-
-      <section class="control-group shortcut" aria-label="Горячие клавиши">
-        <kbd>←↑↓→</kbd><span>двигать по 1 пикселю</span>
-        <kbd>Shift</kbd><span>двигать по 10 пикселей</span>
-        <kbd>Click</kbd><span>выбрать или перетащить</span>
-      </section>
-
-      <div class="actions">
-        <button class="action-button primary" id="copy-button" type="button">Копировать позиции</button>
-        <button class="action-button" id="reset-button" type="button">Сбросить</button>
-      </div>
     </aside>
 
     <section class="stage-area">
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Позиции автоматически сохраняются в этом браузере.</p>
+          <p>Финальная статичная раскладка.</p>
         </div>
         <span class="reference-badge">example.png · opacity 50%</span>
       </div>
@@ -327,152 +188,24 @@
     </section>
   </main>
 
-  <div class="toast" id="toast" role="status"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
   <script>
     (() => {
       const WIDTH = 183;
       const HEIGHT = 396;
-      const STORAGE_KEY = 'spice-cream-big-win-layout-v3';
 
       const ASSETS = [
         { key: 'big_win', label: 'Big Win', file: 'big_win.png', x: 91, y: 59, scale: 1, depth: 7 },
         { key: 'amount_42', label: '42.00', file: '42.00.png', x: 91, y: 98, scale: 1, depth: 8 },
         { key: 'x', label: 'X / множитель', file: 'x.png', x: 90, y: 296, scale: 1, depth: 6 },
         { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
-        { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 227, scale: 1, depth: 3 },
-        { key: 'cream', label: 'Крем', file: 'cream.png', x: 87, y: 220, scale: 1, depth: 100 },
+        { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 226, scale: 1, depth: 3 },
+        { key: 'cream', label: 'Крем', file: 'cream.png', x: 82, y: 221, scale: 1, depth: 100 },
         { key: 'splash', label: 'Брызги', file: 'splash.png', x: 21, y: 105, scale: 0.95, depth: 2 },
-        { key: 'hand', label: 'Рука', file: 'hand.png?v=b2917e95', x: 4, y: 426, scale: 0.41, depth: 1 }
+        { key: 'hand', label: 'Рука', file: 'hand.png?v=b2917e95', x: 5, y: 426, scale: 1.66, depth: 1 }
       ];
 
-      const elements = {
-        list: document.querySelector('#asset-list'),
-        selectedName: document.querySelector('#selected-name'),
-        positionX: document.querySelector('#position-x'),
-        positionY: document.querySelector('#position-y'),
-        assetScale: document.querySelector('#asset-scale'),
-        assetScaleValue: document.querySelector('#asset-scale-value'),
-        pageZoom: document.querySelector('#page-zoom'),
-        pageZoomValue: document.querySelector('#page-zoom-value'),
-        shell: document.querySelector('#stage-shell'),
-        game: document.querySelector('#game-container'),
-        loading: document.querySelector('#loading'),
-        toast: document.querySelector('#toast'),
-        copy: document.querySelector('#copy-button'),
-        reset: document.querySelector('#reset-button')
-      };
-
-      let scene;
-      let selected;
-      let selectionBox;
-      let toastTimer;
-      const sprites = new Map();
-
-      const readLayout = () => {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-        catch { return {}; }
-      };
-
-      const getState = () => Object.fromEntries(
-        ASSETS.map(({ key }) => {
-          const sprite = sprites.get(key);
-          return [key, {
-            x: Math.round(sprite.x * 10) / 10,
-            y: Math.round(sprite.y * 10) / 10,
-            scale: Math.round(sprite.getData('editorScale') * 1000) / 1000
-          }];
-        })
-      );
-
-      const saveLayout = () => {
-        if (sprites.size !== ASSETS.length) return;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
-      };
-
-      const showToast = (message) => {
-        clearTimeout(toastTimer);
-        elements.toast.textContent = message;
-        elements.toast.classList.add('is-visible');
-        toastTimer = setTimeout(() => elements.toast.classList.remove('is-visible'), 1800);
-      };
-
-      const updateReadout = () => {
-        document.querySelectorAll('.asset-button').forEach((button) => {
-          button.classList.toggle('is-active', button.dataset.key === selected?.texture.key);
-        });
-
-        if (!selected) {
-          elements.selectedName.textContent = '—';
-          elements.positionX.textContent = '—';
-          elements.positionY.textContent = '—';
-          elements.assetScale.disabled = true;
-          return;
-        }
-
-        const definition = ASSETS.find(({ key }) => key === selected.texture.key);
-        const scale = selected.getData('editorScale');
-        elements.selectedName.textContent = definition.label;
-        elements.positionX.textContent = Math.round(selected.x);
-        elements.positionY.textContent = Math.round(selected.y);
-        elements.assetScale.disabled = false;
-        elements.assetScale.value = Math.round(scale * 100);
-        elements.assetScaleValue.textContent = `${Math.round(scale * 100)}%`;
-      };
-
-      const selectSprite = (sprite) => {
-        selected = sprite;
-        updateReadout();
-      };
-
-      const setPageZoom = (percent) => {
-        const zoom = percent / 100;
-        elements.game.style.transform = `scale(${zoom})`;
-        elements.shell.style.width = `${WIDTH * zoom}px`;
-        elements.shell.style.height = `${HEIGHT * zoom}px`;
-        elements.pageZoomValue.textContent = `${percent}%`;
-      };
-
-      ASSETS.forEach(({ key, label }) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'asset-button';
-        button.dataset.key = key;
-        button.textContent = label;
-        button.addEventListener('click', () => selectSprite(sprites.get(key)));
-        elements.list.append(button);
-      });
-
-      elements.pageZoom.addEventListener('input', (event) => setPageZoom(Number(event.target.value)));
-      elements.assetScale.addEventListener('input', (event) => {
-        if (!selected) return;
-        const scale = Number(event.target.value) / 100;
-        selected.setData('editorScale', scale).setScale(scale);
-        elements.assetScaleValue.textContent = `${event.target.value}%`;
-        saveLayout();
-      });
-
-      elements.copy.addEventListener('click', async () => {
-        if (!sprites.size) return;
-        const text = JSON.stringify(getState(), null, 2);
-        try {
-          await navigator.clipboard.writeText(text);
-          showToast('Позиции скопированы');
-        } catch {
-          window.prompt('Скопируйте позиции:', text);
-        }
-      });
-
-      elements.reset.addEventListener('click', () => {
-        localStorage.removeItem(STORAGE_KEY);
-        ASSETS.forEach((asset) => {
-          const sprite = sprites.get(asset.key);
-          sprite.setPosition(asset.x, asset.y).setScale(asset.scale).setData('editorScale', asset.scale);
-        });
-        updateReadout();
-        showToast('Расстановка сброшена');
-      });
+      const loading = document.querySelector('#loading');
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -483,65 +216,20 @@
         }
 
         create() {
-          scene = this;
-          const stored = readLayout();
           this.add.image(WIDTH / 2, HEIGHT / 2, 'example').setAlpha(0.5).setDepth(-100);
 
           ASSETS.forEach((asset) => {
-            const state = stored[asset.key] || asset;
-            const sprite = this.add.image(state.x, state.y, asset.key)
-              .setScale(state.scale)
-              .setDepth(asset.depth)
-              .setData('editorScale', state.scale)
-              .setInteractive({ cursor: 'grab', pixelPerfect: true, alphaTolerance: 1 });
-
-            this.input.setDraggable(sprite);
-            sprite.on('pointerdown', () => selectSprite(sprite));
-            sprite.on('dragstart', () => {
-              selectSprite(sprite);
-              sprite.input.cursor = 'grabbing';
-            });
-            sprite.on('drag', (_pointer, dragX, dragY) => {
-              sprite.setPosition(Math.round(dragX), Math.round(dragY));
-              updateReadout();
-            });
-            sprite.on('dragend', () => {
-              sprite.input.cursor = 'grab';
-              saveLayout();
-            });
-            sprites.set(asset.key, sprite);
+            this.add.image(asset.x, asset.y, asset.key)
+              .setScale(asset.scale)
+              .setDepth(asset.depth);
           });
 
-          selectionBox = this.add.graphics().setDepth(1000);
-
-          this.input.keyboard.on('keydown', (event) => {
-            if (!selected || !event.key.startsWith('Arrow')) return;
-            event.preventDefault();
-            const step = event.shiftKey ? 10 : 1;
-            if (event.key === 'ArrowLeft') selected.x -= step;
-            if (event.key === 'ArrowRight') selected.x += step;
-            if (event.key === 'ArrowUp') selected.y -= step;
-            if (event.key === 'ArrowDown') selected.y += step;
-            updateReadout();
-            saveLayout();
-          });
-
-          selectSprite(sprites.get('big_win'));
-          elements.loading.classList.add('is-hidden');
-        }
-
-        update() {
-          if (!selectionBox) return;
-          selectionBox.clear();
-          if (!selected) return;
-          const bounds = selected.getBounds();
-          selectionBox.lineStyle(1, 0xfff19b, 1);
-          selectionBox.strokeRoundedRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4, 2);
+          loading.classList.add('is-hidden');
         }
       }
 
       if (!window.Phaser) {
-        elements.loading.textContent = 'Не удалось загрузить Phaser. Проверьте интернет и обновите страницу.';
+        loading.textContent = 'Не удалось загрузить Phaser. Проверьте интернет и обновите страницу.';
         return;
       }
 
@@ -554,11 +242,8 @@
         pixelArt: true,
         antialias: false,
         scene: BigWinScene,
-        input: { activePointers: 2 },
         render: { pixelArt: true, roundPixels: true }
       });
-
-      setPageZoom(Number(elements.pageZoom.value));
     })();
   </script>
 </body>
