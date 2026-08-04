@@ -177,7 +177,7 @@
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Финальная статичная раскладка.</p>
+          <p>Анимированная финальная композиция.</p>
         </div>
         <span class="reference-badge">example.png · opacity 50%</span>
       </div>
@@ -218,13 +218,87 @@
         create() {
           this.add.image(WIDTH / 2, HEIGHT / 2, 'example').setAlpha(0.5).setDepth(-100);
 
+          this.sprites = new Map();
           ASSETS.forEach((asset) => {
-            this.add.image(asset.x, asset.y, asset.key)
+            const sprite = this.add.image(asset.x, asset.y, asset.key)
               .setScale(asset.scale)
               .setDepth(asset.depth);
+            this.sprites.set(asset.key, sprite);
           });
 
+          this.playIntroAnimation();
           loading.classList.add('is-hidden');
+        }
+
+        playIntroAnimation() {
+          const hand = this.sprites.get('hand');
+          const iceCream = this.sprites.get('ice_cream');
+          const cream = this.sprites.get('cream');
+          const strawberry = this.sprites.get('strawberry');
+          const finalHandY = hand.y;
+
+          hand.y = HEIGHT + hand.displayHeight / 2 + 12;
+          [iceCream, cream, strawberry].forEach((sprite) => {
+            sprite.y += 70;
+            sprite.setAlpha(0);
+          });
+
+          this.tweens.add({
+            targets: hand,
+            y: finalHandY,
+            duration: 1100,
+            ease: 'Cubic.Out',
+            onComplete: () => this.launchToppings(hand, iceCream, cream, strawberry)
+          });
+        }
+
+        launchToppings(hand, iceCream, cream, strawberry) {
+          let iceCreamLanded = false;
+          let strawberryLanded = false;
+
+          const startFloating = () => {
+            if (!iceCreamLanded || !strawberryLanded) return;
+            this.tweens.add({
+              targets: [hand, iceCream, cream, strawberry],
+              y: '-=3',
+              duration: 1300,
+              ease: 'Sine.InOut',
+              yoyo: true,
+              repeat: -1
+            });
+          };
+
+          this.jumpAndLand([iceCream, cream], () => {
+            iceCreamLanded = true;
+            startFloating();
+          });
+
+          this.time.delayedCall(220, () => {
+            this.jumpAndLand([strawberry], () => {
+              strawberryLanded = true;
+              startFloating();
+            });
+          });
+        }
+
+        jumpAndLand(targets, onComplete) {
+          targets.forEach((sprite) => sprite.setAlpha(1));
+
+          this.tweens.add({
+            targets,
+            y: '-=105',
+            duration: 380,
+            ease: 'Cubic.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets,
+                y: '+=35',
+                duration: 320,
+                ease: 'Bounce.Out',
+                onComplete
+              });
+            }
+          });
         }
       }
 
