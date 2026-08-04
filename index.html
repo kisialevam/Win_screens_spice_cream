@@ -220,8 +220,18 @@
       </section>
 
       <section class="control-group">
+        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">160 мс</output></div>
+        <input id="ice-lead" type="range" min="0" max="500" step="10" value="160">
+      </section>
+
+      <section class="control-group">
         <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">28 px</output></div>
         <input id="berry-jump" type="range" min="0" max="80" step="1" value="28">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">180 мс</output></div>
+        <input id="berry-lead" type="range" min="0" max="500" step="10" value="180">
       </section>
 
       <section class="control-group">
@@ -272,8 +282,12 @@
       const handBounceValue = document.querySelector('#hand-bounce-value');
       const iceJump = document.querySelector('#ice-jump');
       const iceJumpValue = document.querySelector('#ice-jump-value');
+      const iceLead = document.querySelector('#ice-lead');
+      const iceLeadValue = document.querySelector('#ice-lead-value');
       const berryJump = document.querySelector('#berry-jump');
       const berryJumpValue = document.querySelector('#berry-jump-value');
+      const berryLead = document.querySelector('#berry-lead');
+      const berryLeadValue = document.querySelector('#berry-lead-value');
       const landingImpact = document.querySelector('#landing-impact');
       const landingImpactValue = document.querySelector('#landing-impact-value');
       const replayButton = document.querySelector('#replay-animation');
@@ -284,11 +298,13 @@
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
         handBounceValue.textContent = `${handBounce.value} px`;
         iceJumpValue.textContent = `${iceJump.value} px`;
+        iceLeadValue.textContent = `${iceLead.value} мс`;
         berryJumpValue.textContent = `${berryJump.value} px`;
+        berryLeadValue.textContent = `${berryLead.value} мс`;
         landingImpactValue.textContent = `${landingImpact.value}%`;
       };
 
-      [entrySpeed, handBounce, iceJump, berryJump, landingImpact].forEach((control) => {
+      [entrySpeed, handBounce, iceJump, iceLead, berryJump, berryLead, landingImpact].forEach((control) => {
         control.addEventListener('input', updateControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
@@ -321,8 +337,8 @@
 
         playIntroAnimation() {
           this.tweens.killAll();
-          this.pendingTimer?.remove(false);
-          this.pendingTimer = null;
+          this.sequenceTimers?.forEach((timer) => timer.remove(false));
+          this.sequenceTimers = [];
 
           ASSETS.forEach((asset) => {
             this.sprites.get(asset.key)
@@ -339,10 +355,21 @@
             rootImpactY: 0,
             iceImpactY: 0
           };
+          this.sequenceState = {
+            rootComplete: false,
+            iceComplete: false,
+            berryComplete: false,
+            floating: false
+          };
           this.syncHierarchy();
 
           const speed = Number(entrySpeed.value);
           const entryDuration = 1000 / speed;
+          const iceStartDelay = Math.max(0, entryDuration - Number(iceLead.value));
+
+          this.sequenceTimers.push(this.time.delayedCall(iceStartDelay, () => {
+            this.launchIceSequence();
+          }));
 
           this.tweens.add({
             targets: this.motion,
@@ -373,7 +400,7 @@
         playHandArrivalBounce() {
           const height = Number(handBounce.value);
           if (height === 0) {
-            this.launchToppings();
+            this.completeSequencePart('rootComplete');
             return;
           }
 
@@ -390,27 +417,48 @@
                 duration: 230,
                 ease: 'Bounce.Out',
                 onUpdate: () => this.syncHierarchy(),
-                onComplete: () => this.launchToppings()
+                onComplete: () => this.completeSequencePart('rootComplete')
               });
             }
           });
         }
 
-        launchToppings() {
+        launchIceSequence() {
           const iceJumpHeight = Number(iceJump.value);
-          const berryJumpHeight = Number(berryJump.value);
+          const iceFlightDuration = 290 + 310;
+          const berryStartDelay = Math.max(0, iceFlightDuration - Number(berryLead.value));
+
+          this.sequenceTimers.push(this.time.delayedCall(berryStartDelay, () => {
+            this.launchBerrySequence();
+          }));
 
           this.jumpNode('iceY', iceJumpHeight, 290, 310, () => {
             this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
-              this.pendingTimer = this.time.delayedCall(90, () => {
-                this.jumpNode('berryY', berryJumpHeight, 250, 280, () => {
-                  this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
-                    this.startFloating();
-                  });
-                });
-              });
+              this.completeSequencePart('iceComplete');
             });
           });
+        }
+
+        launchBerrySequence() {
+          const berryJumpHeight = Number(berryJump.value);
+          this.jumpNode('berryY', berryJumpHeight, 250, 280, () => {
+            this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
+              this.completeSequencePart('berryComplete');
+            });
+          });
+        }
+
+        completeSequencePart(part) {
+          this.sequenceState[part] = true;
+          if (
+            this.sequenceState.rootComplete
+            && this.sequenceState.iceComplete
+            && this.sequenceState.berryComplete
+            && !this.sequenceState.floating
+          ) {
+            this.sequenceState.floating = true;
+            this.startFloating();
+          }
         }
 
         jumpNode(property, height, riseDuration, landDuration, onComplete) {
