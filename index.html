@@ -254,6 +254,11 @@
         <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">290 мс</output></div>
         <input id="berry-lead" type="range" min="-240" max="820" step="10" value="290">
         <p class="control-hint">Отрицательное опережение запускает элемент позже.</p>
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="explode-scale">Масштаб секвенции</label><output class="value" id="explode-scale-value">1.0×</output></div>
+        <input id="explode-scale" type="range" min="0.25" max="1.75" step="0.05" value="1">
         <p class="control-hint">Изменение любого ползунка автоматически перезапускает анимацию.</p>
       </section>
 
@@ -283,7 +288,7 @@
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
-      const EXPLODE = { x: 92, scale: 1, depth: 0, frameRate: 30 };
+      const EXPLODE = { x: 92, depth: 0, frameRate: 30 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -321,6 +326,8 @@
       const berryHoldValue = document.querySelector('#berry-hold-value');
       const berryLead = document.querySelector('#berry-lead');
       const berryLeadValue = document.querySelector('#berry-lead-value');
+      const explodeScale = document.querySelector('#explode-scale');
+      const explodeScaleValue = document.querySelector('#explode-scale-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
@@ -336,12 +343,14 @@
         berryJumpValue.textContent = `${berryJump.value} px`;
         berryHoldValue.textContent = `${berryHold.value} мс`;
         berryLeadValue.textContent = `${berryLead.value} мс`;
+        explodeScaleValue.textContent = `${Number(explodeScale.value).toFixed(2).replace(/0$/, '')}×`;
       };
 
-      [entrySpeed, entryOvershoot, entryBounce, entryBounceAmplitude, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead].forEach((control) => {
+      [entrySpeed, entryOvershoot, entryBounce, entryBounceAmplitude, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead, explodeScale].forEach((control) => {
         control.addEventListener('input', updateControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
+      explodeScale.addEventListener('input', () => activeScene?.setExplodeScale(Number(explodeScale.value)));
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       updateControlValues();
 
@@ -373,7 +382,7 @@
           }
 
           this.explode = this.add.sprite(EXPLODE.x, 0, 'explode', 'frame0000.png')
-            .setScale(EXPLODE.scale)
+            .setScale(Number(explodeScale.value))
             .setDepth(EXPLODE.depth)
             .setVisible(false);
           this.explode.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'explode-burst', () => {
@@ -546,8 +555,13 @@
           const iceCream = this.sprites.get('ice_cream');
           this.explode
             .setPosition(EXPLODE.x, iceCream.y)
+            .setScale(Number(explodeScale.value))
             .setVisible(true)
             .play('explode-burst', true);
+        }
+
+        setExplodeScale(scale) {
+          this.explode?.setScale(scale);
         }
 
         launchBerrySequence() {
