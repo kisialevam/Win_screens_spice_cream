@@ -334,16 +334,17 @@
     (() => {
       const WIDTH = 183;
       const HEIGHT = 396;
-      const STORAGE_KEY = 'spice-cream-big-win-layout-v1';
+      const STORAGE_KEY = 'spice-cream-big-win-layout-v2';
 
       const ASSETS = [
-        { key: 'big_win', label: 'Big Win', file: 'big_win.png', x: 92, y: 58, scale: 1, depth: 7 },
-        { key: 'x', label: 'X / множитель', file: 'x.png', x: 92, y: 94, scale: 1, depth: 6 },
-        { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 94, y: 165, scale: 1, depth: 5 },
-        { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 216, scale: 1, depth: 3 },
-        { key: 'cream', label: 'Крем', file: 'cream.png', x: 105, y: 207, scale: 1, depth: 4 },
-        { key: 'splash', label: 'Брызги', file: 'splash.png', x: 62, y: 182, scale: 2, depth: 2 },
-        { key: 'hand', label: 'Рука', file: 'hand.png', x: 82, y: 310, scale: 0.35, depth: 1 }
+        { key: 'big_win', label: 'Big Win', file: 'big_win.png', x: 91, y: 59, scale: 1, depth: 7 },
+        { key: 'amount_42', label: '42.00', file: '42.00.png', x: 92, y: 108, scale: 1, depth: 8 },
+        { key: 'x', label: 'X / множитель', file: 'x.png', x: 90, y: 296, scale: 1, depth: 6 },
+        { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
+        { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 227, scale: 1, depth: 3 },
+        { key: 'cream', label: 'Крем', file: 'cream.png', x: 87, y: 220, scale: 1, depth: 100 },
+        { key: 'splash', label: 'Брызги', file: 'splash.png', x: 21, y: 105, scale: 0.95, depth: 2 },
+        { key: 'hand', label: 'Рука', file: 'hand.png', x: 4, y: 426, scale: 0.41, depth: 1 }
       ];
 
       const elements = {
@@ -513,27 +514,6 @@
 
           selectionBox = this.add.graphics().setDepth(1000);
 
-          const bigWin = sprites.get('big_win');
-          const finalScale = bigWin.getData('editorScale');
-          bigWin.setScale(finalScale * 0.15).setAlpha(0);
-          this.tweens.add({
-            targets: bigWin,
-            scaleX: finalScale,
-            scaleY: finalScale,
-            alpha: 1,
-            duration: 650,
-            ease: 'Back.Out',
-            onComplete: () => this.tweens.add({
-              targets: bigWin,
-              angle: { from: -1.25, to: 1.25 },
-              alpha: { from: 0.9, to: 1 },
-              duration: 700,
-              ease: 'Sine.InOut',
-              yoyo: true,
-              repeat: -1
-            })
-          });
-
           this.input.keyboard.on('keydown', (event) => {
             if (!selected || !event.key.startsWith('Arrow')) return;
             event.preventDefault();
@@ -546,7 +526,7 @@
             saveLayout();
           });
 
-          selectSprite(bigWin);
+          selectSprite(sprites.get('big_win'));
           elements.loading.classList.add('is-hidden');
         }
 
