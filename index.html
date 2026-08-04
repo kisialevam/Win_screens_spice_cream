@@ -210,6 +210,16 @@
       </section>
 
       <section class="control-group">
+        <div class="label-row"><label for="entry-overshoot">Заскок выше точки</label><output class="value" id="entry-overshoot-value">12 px</output></div>
+        <input id="entry-overshoot" type="range" min="0" max="24" step="1" value="12">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="entry-bounce">Баунс руки</label><output class="value" id="entry-bounce-value">4 px</output></div>
+        <input id="entry-bounce" type="range" min="0" max="8" step="0.5" value="4">
+      </section>
+
+      <section class="control-group">
         <div class="label-row"><label for="ice-jump">Прыжок мороженого</label><output class="value" id="ice-jump-value">28 px</output></div>
         <input id="ice-jump" type="range" min="0" max="56" step="1" value="28">
       </section>
@@ -283,6 +293,10 @@
       const loading = document.querySelector('#loading');
       const entrySpeed = document.querySelector('#entry-speed');
       const entrySpeedValue = document.querySelector('#entry-speed-value');
+      const entryOvershoot = document.querySelector('#entry-overshoot');
+      const entryOvershootValue = document.querySelector('#entry-overshoot-value');
+      const entryBounce = document.querySelector('#entry-bounce');
+      const entryBounceValue = document.querySelector('#entry-bounce-value');
       const iceJump = document.querySelector('#ice-jump');
       const iceJumpValue = document.querySelector('#ice-jump-value');
       const iceHold = document.querySelector('#ice-hold');
@@ -301,6 +315,8 @@
 
       const updateControlValues = () => {
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
+        entryOvershootValue.textContent = `${entryOvershoot.value} px`;
+        entryBounceValue.textContent = `${Number(entryBounce.value).toFixed(1).replace(/\.0$/, '')} px`;
         iceJumpValue.textContent = `${iceJump.value} px`;
         iceHoldValue.textContent = `${iceHold.value} мс`;
         iceLeadValue.textContent = `${iceLead.value} мс`;
@@ -309,7 +325,7 @@
         berryLeadValue.textContent = `${berryLead.value} мс`;
       };
 
-      [entrySpeed, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead].forEach((control) => {
+      [entrySpeed, entryOvershoot, entryBounce, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead].forEach((control) => {
         control.addEventListener('input', updateControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
@@ -370,6 +386,7 @@
 
           const speed = Number(entrySpeed.value);
           const entryDuration = 1000 / speed;
+          const overshootHeight = Number(entryOvershoot.value);
           const iceStartDelay = Math.max(0, entryDuration - Number(iceLead.value));
 
           this.sequenceTimers.push(this.time.delayedCall(iceStartDelay, () => {
@@ -378,11 +395,51 @@
 
           this.tweens.add({
             targets: this.motion,
-            rootY: 0,
+            rootY: -overshootHeight,
             duration: entryDuration,
             ease: 'Expo.Out',
             onUpdate: () => this.syncHierarchy(),
-            onComplete: () => this.completeSequencePart('rootComplete')
+            onComplete: () => this.settleHandEntry()
+          });
+        }
+
+        settleHandEntry() {
+          const bounceHeight = Number(entryBounce.value);
+          const finishArrival = () => this.completeSequencePart('rootComplete');
+
+          if (bounceHeight === 0 && Number(entryOvershoot.value) === 0) {
+            finishArrival();
+            return;
+          }
+
+          if (bounceHeight === 0) {
+            this.tweens.add({
+              targets: this.motion,
+              rootY: 0,
+              duration: 220,
+              ease: 'Expo.Out',
+              onUpdate: () => this.syncHierarchy(),
+              onComplete: finishArrival
+            });
+            return;
+          }
+
+          this.tweens.add({
+            targets: this.motion,
+            rootY: bounceHeight,
+            duration: 180,
+            ease: 'Cubic.InOut',
+            onUpdate: () => this.syncHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.motion,
+                rootY: 0,
+                duration: 200,
+                ease: 'Back.Out',
+                onUpdate: () => this.syncHierarchy(),
+                onComplete: finishArrival
+              });
+            }
           });
         }
 
