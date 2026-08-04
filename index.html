@@ -215,6 +215,11 @@
       </section>
 
       <section class="control-group">
+        <div class="label-row"><label for="ice-hold">Зависание мороженого</label><output class="value" id="ice-hold-value">80 мс</output></div>
+        <input id="ice-hold" type="range" min="0" max="160" step="10" value="80">
+      </section>
+
+      <section class="control-group">
         <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">290 мс</output></div>
         <input id="ice-lead" type="range" min="-140" max="720" step="10" value="290">
       </section>
@@ -222,6 +227,11 @@
       <section class="control-group">
         <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">26 px</output></div>
         <input id="berry-jump" type="range" min="0" max="52" step="1" value="26">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="berry-hold">Зависание клубнички</label><output class="value" id="berry-hold-value">80 мс</output></div>
+        <input id="berry-hold" type="range" min="0" max="160" step="10" value="80">
       </section>
 
       <section class="control-group">
@@ -286,10 +296,14 @@
       const entrySpeedValue = document.querySelector('#entry-speed-value');
       const iceJump = document.querySelector('#ice-jump');
       const iceJumpValue = document.querySelector('#ice-jump-value');
+      const iceHold = document.querySelector('#ice-hold');
+      const iceHoldValue = document.querySelector('#ice-hold-value');
       const iceLead = document.querySelector('#ice-lead');
       const iceLeadValue = document.querySelector('#ice-lead-value');
       const berryJump = document.querySelector('#berry-jump');
       const berryJumpValue = document.querySelector('#berry-jump-value');
+      const berryHold = document.querySelector('#berry-hold');
+      const berryHoldValue = document.querySelector('#berry-hold-value');
       const berryLead = document.querySelector('#berry-lead');
       const berryLeadValue = document.querySelector('#berry-lead-value');
       const floatSpeed = document.querySelector('#float-speed');
@@ -305,15 +319,17 @@
       const updateControlValues = () => {
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
         iceJumpValue.textContent = `${iceJump.value} px`;
+        iceHoldValue.textContent = `${iceHold.value} мс`;
         iceLeadValue.textContent = `${iceLead.value} мс`;
         berryJumpValue.textContent = `${berryJump.value} px`;
+        berryHoldValue.textContent = `${berryHold.value} мс`;
         berryLeadValue.textContent = `${berryLead.value} мс`;
         floatSpeedValue.textContent = `${Number(floatSpeed.value).toFixed(1)}×`;
         floatHeightValue.textContent = `${Number(floatHeight.value).toFixed(2).replace(/\.?0+$/, '')} px`;
         landingImpactValue.textContent = `${landingImpact.value}%`;
       };
 
-      [entrySpeed, iceJump, iceLead, berryJump, berryLead, floatSpeed, floatHeight, landingImpact].forEach((control) => {
+      [entrySpeed, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead, floatSpeed, floatHeight, landingImpact].forEach((control) => {
         control.addEventListener('input', updateControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
@@ -408,14 +424,15 @@
 
         launchIceSequence() {
           const iceJumpHeight = Number(iceJump.value);
-          const iceFlightDuration = 290 + 310;
+          const iceHoldDuration = Number(iceHold.value);
+          const iceFlightDuration = 290 + iceHoldDuration + 310;
           const berryStartDelay = Math.max(0, iceFlightDuration - Number(berryLead.value));
 
           this.sequenceTimers.push(this.time.delayedCall(berryStartDelay, () => {
             this.launchBerrySequence();
           }));
 
-          this.jumpNode('iceY', iceJumpHeight, 290, 310, () => {
+          this.jumpNode('iceY', iceJumpHeight, 290, iceHoldDuration, 310, () => {
             this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
               this.completeSequencePart('iceComplete');
             });
@@ -424,7 +441,8 @@
 
         launchBerrySequence() {
           const berryJumpHeight = Number(berryJump.value);
-          this.jumpNode('berryY', berryJumpHeight, 250, 280, () => {
+          const berryHoldDuration = Number(berryHold.value);
+          this.jumpNode('berryY', berryJumpHeight, 250, berryHoldDuration, 280, () => {
             this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
               this.completeSequencePart('berryComplete');
             });
@@ -444,7 +462,7 @@
           }
         }
 
-        jumpNode(property, height, riseDuration, landDuration, onComplete) {
+        jumpNode(property, height, riseDuration, holdDuration, landDuration, onComplete) {
           this.tweens.add({
             targets: this.motion,
             [property]: -height,
@@ -452,14 +470,22 @@
             ease: 'Quart.Out',
             onUpdate: () => this.syncHierarchy(),
             onComplete: () => {
-              this.tweens.add({
-                targets: this.motion,
-                [property]: 0,
-                duration: landDuration,
-                ease: 'Quart.In',
-                onUpdate: () => this.syncHierarchy(),
-                onComplete
-              });
+              const startLanding = () => {
+                this.tweens.add({
+                  targets: this.motion,
+                  [property]: 0,
+                  duration: landDuration,
+                  ease: 'Quart.In',
+                  onUpdate: () => this.syncHierarchy(),
+                  onComplete
+                });
+              };
+
+              if (holdDuration === 0) {
+                startLanding();
+              } else {
+                this.sequenceTimers.push(this.time.delayedCall(holdDuration, startLanding));
+              }
             }
           });
         }
