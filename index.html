@@ -205,8 +205,8 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">3.4×</output></div>
-        <input id="entry-speed" type="range" min="0.1" max="6.7" step="0.1" value="3.4">
+        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">2.3×</output></div>
+        <input id="entry-speed" type="range" min="0.1" max="4.5" step="0.1" value="2.3">
       </section>
 
       <section class="control-group">
@@ -215,8 +215,8 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">180 мс</output></div>
-        <input id="ice-lead" type="range" min="-360" max="720" step="10" value="180">
+        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">290 мс</output></div>
+        <input id="ice-lead" type="range" min="-140" max="720" step="10" value="290">
       </section>
 
       <section class="control-group">
@@ -225,8 +225,8 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">480 мс</output></div>
-        <input id="berry-lead" type="range" min="-20" max="980" step="10" value="480">
+        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">510 мс</output></div>
+        <input id="berry-lead" type="range" min="-20" max="1040" step="10" value="510">
         <p class="control-hint">Отрицательное опережение запускает элемент позже.</p>
       </section>
 
@@ -384,7 +384,7 @@
             targets: this.motion,
             rootY: 0,
             duration: entryDuration,
-            ease: 'Quint.Out',
+            ease: 'Expo.Out',
             onUpdate: () => this.syncHierarchy(),
             onComplete: () => this.completeSequencePart('rootComplete')
           });
