@@ -262,6 +262,11 @@
         <p class="control-hint">Изменение любого ползунка автоматически перезапускает анимацию.</p>
       </section>
 
+      <section class="control-group">
+        <div class="label-row"><span>Позиция секвенции</span><output class="value" id="explode-position-value">X 0 · Y 0</output></div>
+        <p class="control-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px.</p>
+      </section>
+
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
     </aside>
 
@@ -328,9 +333,14 @@
       const berryLeadValue = document.querySelector('#berry-lead-value');
       const explodeScale = document.querySelector('#explode-scale');
       const explodeScaleValue = document.querySelector('#explode-scale-value');
+      const explodePositionValue = document.querySelector('#explode-position-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
+
+      const updateExplodePositionValue = () => {
+        explodePositionValue.textContent = `X ${EXPLODE.offsetX} · Y ${EXPLODE.offsetY}`;
+      };
 
       const updateControlValues = () => {
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
@@ -351,8 +361,27 @@
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
       explodeScale.addEventListener('input', () => activeScene?.setExplodeScale(Number(explodeScale.value)));
+      window.addEventListener('keydown', (event) => {
+        const direction = {
+          ArrowLeft: [-1, 0],
+          ArrowRight: [1, 0],
+          ArrowUp: [0, -1],
+          ArrowDown: [0, 1]
+        }[event.key];
+
+        if (!direction) return;
+
+        event.preventDefault();
+        const step = event.shiftKey ? 5 : 1;
+        EXPLODE.offsetX += direction[0] * step;
+        EXPLODE.offsetY += direction[1] * step;
+        updateExplodePositionValue();
+        activeScene?.syncHierarchy();
+        activeScene?.previewExplodePosition();
+      });
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       updateControlValues();
+      updateExplodePositionValue();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -406,6 +435,8 @@
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
+          this.explodePreviewTimer?.remove(false);
+          this.explodePreviewTimer = null;
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
 
           ASSETS.forEach((asset) => {
@@ -556,6 +587,8 @@
         }
 
         playExplodeSequence() {
+          this.explodePreviewTimer?.remove(false);
+          this.explodePreviewTimer = null;
           this.explode
             .setScale(Number(explodeScale.value))
             .setVisible(true)
@@ -564,6 +597,17 @@
 
         setExplodeScale(scale) {
           this.explode?.setScale(scale);
+        }
+
+        previewExplodePosition() {
+          if (this.explode.anims.isPlaying) return;
+
+          this.explodePreviewTimer?.remove(false);
+          this.explode.stop().setFrame('frame0016.png').setVisible(true);
+          this.explodePreviewTimer = this.time.delayedCall(900, () => {
+            if (!this.explode.anims.isPlaying) this.explode.setVisible(false);
+            this.explodePreviewTimer = null;
+          });
         }
 
         launchBerrySequence() {
