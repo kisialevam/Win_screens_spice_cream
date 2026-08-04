@@ -205,38 +205,43 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">1.6×</output></div>
-        <input id="entry-speed" type="range" min="0.5" max="3" step="0.1" value="1.6">
+        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">2.1×</output></div>
+        <input id="entry-speed" type="range" min="0.1" max="4.1" step="0.1" value="2.1">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="hand-bounce">Баунс руки</label><output class="value" id="hand-bounce-value">10 px</output></div>
-        <input id="hand-bounce" type="range" min="0" max="30" step="1" value="10">
+        <div class="label-row"><label for="ice-jump">Прыжок мороженого</label><output class="value" id="ice-jump-value">27 px</output></div>
+        <input id="ice-jump" type="range" min="0" max="54" step="1" value="27">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="ice-jump">Прыжок мороженого</label><output class="value" id="ice-jump-value">34 px</output></div>
-        <input id="ice-jump" type="range" min="0" max="80" step="1" value="34">
+        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">420 мс</output></div>
+        <input id="ice-lead" type="range" min="360" max="480" step="10" value="420">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">160 мс</output></div>
-        <input id="ice-lead" type="range" min="0" max="500" step="10" value="160">
+        <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">25 px</output></div>
+        <input id="berry-jump" type="range" min="0" max="50" step="1" value="25">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">28 px</output></div>
-        <input id="berry-jump" type="range" min="0" max="80" step="1" value="28">
+        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">430 мс</output></div>
+        <input id="berry-lead" type="range" min="260" max="600" step="10" value="430">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">180 мс</output></div>
-        <input id="berry-lead" type="range" min="0" max="500" step="10" value="180">
+        <div class="label-row"><label for="float-speed">Скорость движения вверх-вниз</label><output class="value" id="float-speed-value">1.0×</output></div>
+        <input id="float-speed" type="range" min="0.2" max="1.8" step="0.1" value="1">
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="landing-impact">Сила импакта</label><output class="value" id="landing-impact-value">85%</output></div>
-        <input id="landing-impact" type="range" min="0" max="200" step="5" value="85">
+        <div class="label-row"><label for="float-height">Высота движения руки</label><output class="value" id="float-height-value">3 px</output></div>
+        <input id="float-height" type="range" min="0" max="6" step="0.25" value="3">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="landing-impact">Сила импакта</label><output class="value" id="landing-impact-value">200%</output></div>
+        <input id="landing-impact" type="range" min="0" max="400" step="5" value="200">
         <p class="control-hint">Изменение ползунка автоматически перезапускает анимацию.</p>
       </section>
 
@@ -278,8 +283,6 @@
       const loading = document.querySelector('#loading');
       const entrySpeed = document.querySelector('#entry-speed');
       const entrySpeedValue = document.querySelector('#entry-speed-value');
-      const handBounce = document.querySelector('#hand-bounce');
-      const handBounceValue = document.querySelector('#hand-bounce-value');
       const iceJump = document.querySelector('#ice-jump');
       const iceJumpValue = document.querySelector('#ice-jump-value');
       const iceLead = document.querySelector('#ice-lead');
@@ -288,6 +291,10 @@
       const berryJumpValue = document.querySelector('#berry-jump-value');
       const berryLead = document.querySelector('#berry-lead');
       const berryLeadValue = document.querySelector('#berry-lead-value');
+      const floatSpeed = document.querySelector('#float-speed');
+      const floatSpeedValue = document.querySelector('#float-speed-value');
+      const floatHeight = document.querySelector('#float-height');
+      const floatHeightValue = document.querySelector('#float-height-value');
       const landingImpact = document.querySelector('#landing-impact');
       const landingImpactValue = document.querySelector('#landing-impact-value');
       const replayButton = document.querySelector('#replay-animation');
@@ -296,15 +303,16 @@
 
       const updateControlValues = () => {
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
-        handBounceValue.textContent = `${handBounce.value} px`;
         iceJumpValue.textContent = `${iceJump.value} px`;
         iceLeadValue.textContent = `${iceLead.value} мс`;
         berryJumpValue.textContent = `${berryJump.value} px`;
         berryLeadValue.textContent = `${berryLead.value} мс`;
+        floatSpeedValue.textContent = `${Number(floatSpeed.value).toFixed(1)}×`;
+        floatHeightValue.textContent = `${Number(floatHeight.value).toFixed(2).replace(/\.?0+$/, '')} px`;
         landingImpactValue.textContent = `${landingImpact.value}%`;
       };
 
-      [entrySpeed, handBounce, iceJump, iceLead, berryJump, berryLead, landingImpact].forEach((control) => {
+      [entrySpeed, iceJump, iceLead, berryJump, berryLead, floatSpeed, floatHeight, landingImpact].forEach((control) => {
         control.addEventListener('input', updateControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
@@ -377,7 +385,7 @@
             duration: entryDuration,
             ease: 'Cubic.Out',
             onUpdate: () => this.syncHierarchy(),
-            onComplete: () => this.playHandArrivalBounce()
+            onComplete: () => this.completeSequencePart('rootComplete')
           });
         }
 
@@ -395,32 +403,6 @@
           iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
           strawberry.y = assetByKey.get('strawberry').y + berryOffset;
           cream.y = assetByKey.get('cream').y + berryOffset;
-        }
-
-        playHandArrivalBounce() {
-          const height = Number(handBounce.value);
-          if (height === 0) {
-            this.completeSequencePart('rootComplete');
-            return;
-          }
-
-          this.tweens.add({
-            targets: this.motion,
-            rootY: -height,
-            duration: 130,
-            ease: 'Quad.Out',
-            onUpdate: () => this.syncHierarchy(),
-            onComplete: () => {
-              this.tweens.add({
-                targets: this.motion,
-                rootY: 0,
-                duration: 230,
-                ease: 'Bounce.Out',
-                onUpdate: () => this.syncHierarchy(),
-                onComplete: () => this.completeSequencePart('rootComplete')
-              });
-            }
-          });
         }
 
         launchIceSequence() {
@@ -490,7 +472,6 @@
 
           const squashTarget = this.sprites.get(squashKey);
           const baseScale = assetByKey.get(squashKey).scale;
-          this.cameras.main.shake(110, 0.0015 * strength);
 
           this.tweens.add({
             targets: squashTarget,
@@ -524,14 +505,21 @@
         }
 
         startFloating() {
+          const amplitude = Number(floatHeight.value);
+          const speed = Number(floatSpeed.value);
+          if (amplitude === 0) return;
+
+          this.floatMotion = { phase: 0 };
           this.tweens.add({
-            targets: this.motion,
-            floatY: -3,
-            duration: 1300,
-            ease: 'Sine.InOut',
-            yoyo: true,
+            targets: this.floatMotion,
+            phase: Math.PI * 2,
+            duration: 2600 / speed,
+            ease: 'Linear',
             repeat: -1,
-            onUpdate: () => this.syncHierarchy()
+            onUpdate: () => {
+              this.motion.floatY = Math.sin(this.floatMotion.phase) * amplitude;
+              this.syncHierarchy();
+            }
           });
         }
       }
