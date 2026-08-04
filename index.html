@@ -283,6 +283,7 @@
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
+      const EXPLODE = { x: 92, scale: 1, depth: 0, frameRate: 30 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -349,11 +350,35 @@
 
         preload() {
           this.load.image('example', 'example.png');
+          this.load.atlas('explode', 'explode.png', 'explode.json');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
           this.add.image(WIDTH / 2, HEIGHT / 2, 'example').setAlpha(0.5).setDepth(-100);
+
+          if (!this.anims.exists('explode-burst')) {
+            this.anims.create({
+              key: 'explode-burst',
+              frames: this.anims.generateFrameNames('explode', {
+                prefix: 'frame',
+                start: 0,
+                end: 22,
+                zeroPad: 4,
+                suffix: '.png'
+              }),
+              frameRate: EXPLODE.frameRate,
+              repeat: 0
+            });
+          }
+
+          this.explode = this.add.sprite(EXPLODE.x, 0, 'explode', 'frame0000.png')
+            .setScale(EXPLODE.scale)
+            .setDepth(EXPLODE.depth)
+            .setVisible(false);
+          this.explode.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'explode-burst', () => {
+            this.explode.setVisible(false);
+          });
 
           this.sprites = new Map();
           ASSETS.forEach((asset) => {
@@ -372,6 +397,7 @@
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
+          this.explode.stop().setFrame('frame0000.png').setVisible(false);
 
           ASSETS.forEach((asset) => {
             this.sprites.get(asset.key)
@@ -501,11 +527,27 @@
             this.launchBerrySequence();
           }));
 
-          this.jumpNode('iceY', iceJumpHeight, iceTiming.riseDuration, iceTiming.holdDuration, iceTiming.landDuration, () => {
-            this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
-              this.completeSequencePart('iceComplete');
-            });
-          });
+          this.jumpNode(
+            'iceY',
+            iceJumpHeight,
+            iceTiming.riseDuration,
+            iceTiming.holdDuration,
+            iceTiming.landDuration,
+            () => {
+              this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
+                this.completeSequencePart('iceComplete');
+              });
+            },
+            () => this.playExplodeSequence()
+          );
+        }
+
+        playExplodeSequence() {
+          const iceCream = this.sprites.get('ice_cream');
+          this.explode
+            .setPosition(EXPLODE.x, iceCream.y)
+            .setVisible(true)
+            .play('explode-burst', true);
         }
 
         launchBerrySequence() {
@@ -540,7 +582,7 @@
           }
         }
 
-        jumpNode(property, height, riseDuration, holdDuration, landDuration, onComplete) {
+        jumpNode(property, height, riseDuration, holdDuration, landDuration, onComplete, onApex = null) {
           this.tweens.add({
             targets: this.motion,
             [property]: -height,
@@ -548,6 +590,7 @@
             ease: 'Quart.Out',
             onUpdate: () => this.syncHierarchy(),
             onComplete: () => {
+              onApex?.();
               const startLanding = () => {
                 this.tweens.add({
                   targets: this.motion,
