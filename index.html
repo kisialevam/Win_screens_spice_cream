@@ -288,7 +288,7 @@
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
-      const EXPLODE = { x: 92, depth: 0, frameRate: 30 };
+      const EXPLODE = { offsetX: 0, offsetY: 0, depth: 0, frameRate: 30 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -381,7 +381,7 @@
             });
           }
 
-          this.explode = this.add.sprite(EXPLODE.x, 0, 'explode', 'frame0000.png')
+          this.explode = this.add.sprite(0, 0, 'explode', 'frame0000.png')
             .setScale(Number(explodeScale.value))
             .setDepth(EXPLODE.depth)
             .setVisible(false);
@@ -524,6 +524,10 @@
           iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
           strawberry.y = assetByKey.get('strawberry').y + berryOffset;
           cream.y = assetByKey.get('cream').y + berryOffset;
+          this.explode.setPosition(
+            iceCream.x + EXPLODE.offsetX,
+            iceCream.y + EXPLODE.offsetY
+          );
         }
 
         launchIceSequence() {
@@ -552,9 +556,7 @@
         }
 
         playExplodeSequence() {
-          const iceCream = this.sprites.get('ice_cream');
           this.explode
-            .setPosition(EXPLODE.x, iceCream.y)
             .setScale(Number(explodeScale.value))
             .setVisible(true)
             .play('explode-burst', true);
