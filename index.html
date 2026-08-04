@@ -257,13 +257,13 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="explode-scale">Масштаб секвенции</label><output class="value" id="explode-scale-value">1.0×</output></div>
-        <input id="explode-scale" type="range" min="0.25" max="1.75" step="0.05" value="1">
+        <div class="label-row"><label for="explode-scale">Масштаб секвенции</label><output class="value" id="explode-scale-value">1.45×</output></div>
+        <input id="explode-scale" type="range" min="0.25" max="1.75" step="0.05" value="1.45">
         <p class="control-hint">Изменение любого ползунка автоматически перезапускает анимацию.</p>
       </section>
 
       <section class="control-group">
-        <div class="label-row"><span>Позиция секвенции</span><output class="value" id="explode-position-value">X 0 · Y 0</output></div>
+        <div class="label-row"><span>Позиция секвенции</span><output class="value" id="explode-position-value">X -3 · Y -14</output></div>
         <p class="control-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px.</p>
       </section>
 
@@ -293,7 +293,7 @@
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
-      const EXPLODE = { offsetX: 0, offsetY: 0, depth: 0, frameRate: 30 };
+      const EXPLODE = { offsetX: -3, offsetY: -14, depth: 0, frameRate: 30 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
