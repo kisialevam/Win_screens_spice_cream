@@ -210,8 +210,23 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="landing-impact">Сила импакта</label><output class="value" id="landing-impact-value">100%</output></div>
-        <input id="landing-impact" type="range" min="0" max="200" step="5" value="100">
+        <div class="label-row"><label for="hand-bounce">Баунс руки</label><output class="value" id="hand-bounce-value">10 px</output></div>
+        <input id="hand-bounce" type="range" min="0" max="30" step="1" value="10">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="ice-jump">Прыжок мороженого</label><output class="value" id="ice-jump-value">34 px</output></div>
+        <input id="ice-jump" type="range" min="0" max="80" step="1" value="34">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">28 px</output></div>
+        <input id="berry-jump" type="range" min="0" max="80" step="1" value="28">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="landing-impact">Сила импакта</label><output class="value" id="landing-impact-value">85%</output></div>
+        <input id="landing-impact" type="range" min="0" max="200" step="5" value="85">
         <p class="control-hint">Изменение ползунка автоматически перезапускает анимацию.</p>
       </section>
 
@@ -253,6 +268,12 @@
       const loading = document.querySelector('#loading');
       const entrySpeed = document.querySelector('#entry-speed');
       const entrySpeedValue = document.querySelector('#entry-speed-value');
+      const handBounce = document.querySelector('#hand-bounce');
+      const handBounceValue = document.querySelector('#hand-bounce-value');
+      const iceJump = document.querySelector('#ice-jump');
+      const iceJumpValue = document.querySelector('#ice-jump-value');
+      const berryJump = document.querySelector('#berry-jump');
+      const berryJumpValue = document.querySelector('#berry-jump-value');
       const landingImpact = document.querySelector('#landing-impact');
       const landingImpactValue = document.querySelector('#landing-impact-value');
       const replayButton = document.querySelector('#replay-animation');
@@ -261,13 +282,16 @@
 
       const updateControlValues = () => {
         entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
+        handBounceValue.textContent = `${handBounce.value} px`;
+        iceJumpValue.textContent = `${iceJump.value} px`;
+        berryJumpValue.textContent = `${berryJump.value} px`;
         landingImpactValue.textContent = `${landingImpact.value}%`;
       };
 
-      entrySpeed.addEventListener('input', updateControlValues);
-      landingImpact.addEventListener('input', updateControlValues);
-      entrySpeed.addEventListener('change', () => activeScene?.playIntroAnimation());
-      landingImpact.addEventListener('change', () => activeScene?.playIntroAnimation());
+      [entrySpeed, handBounce, iceJump, berryJump, landingImpact].forEach((control) => {
+        control.addEventListener('input', updateControlValues);
+        control.addEventListener('change', () => activeScene?.playIntroAnimation());
+      });
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       updateControlValues();
 
@@ -326,7 +350,7 @@
             duration: entryDuration,
             ease: 'Cubic.Out',
             onUpdate: () => this.syncHierarchy(),
-            onComplete: () => this.launchToppings()
+            onComplete: () => this.playHandArrivalBounce()
           });
         }
 
@@ -346,11 +370,40 @@
           cream.y = assetByKey.get('cream').y + berryOffset;
         }
 
+        playHandArrivalBounce() {
+          const height = Number(handBounce.value);
+          if (height === 0) {
+            this.launchToppings();
+            return;
+          }
+
+          this.tweens.add({
+            targets: this.motion,
+            rootY: -height,
+            duration: 130,
+            ease: 'Quad.Out',
+            onUpdate: () => this.syncHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.motion,
+                rootY: 0,
+                duration: 230,
+                ease: 'Bounce.Out',
+                onUpdate: () => this.syncHierarchy(),
+                onComplete: () => this.launchToppings()
+              });
+            }
+          });
+        }
+
         launchToppings() {
-          this.jumpNode('iceY', 34, 290, 310, () => {
+          const iceJumpHeight = Number(iceJump.value);
+          const berryJumpHeight = Number(berryJump.value);
+
+          this.jumpNode('iceY', iceJumpHeight, 290, 310, () => {
             this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
               this.pendingTimer = this.time.delayedCall(90, () => {
-                this.jumpNode('berryY', 28, 250, 280, () => {
+                this.jumpNode('berryY', berryJumpHeight, 250, 280, () => {
                   this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
                     this.startFloating();
                   });
