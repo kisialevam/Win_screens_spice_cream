@@ -86,6 +86,38 @@
       text-align: right;
     }
 
+    input[type="range"] {
+      width: 100%;
+      margin: 2px 0 0;
+      accent-color: #ff4fa3;
+      cursor: pointer;
+    }
+
+    .control-hint {
+      margin: 14px 0 0;
+      color: #a995b1;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .replay-button {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 22px;
+      border: 1px solid #ff5cad;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #ff4fa3, #ff86c0);
+      color: #210a1b;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      transition: filter 140ms ease, transform 140ms ease;
+    }
+
+    .replay-button:hover { filter: brightness(1.08); }
+    .replay-button:active { transform: translateY(1px); }
+
     .stage-area {
       min-width: 0;
       overflow: auto;
@@ -171,6 +203,19 @@
         <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
       </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">1.6×</output></div>
+        <input id="entry-speed" type="range" min="0.5" max="3" step="0.1" value="1.6">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="landing-impact">Сила импакта</label><output class="value" id="landing-impact-value">100%</output></div>
+        <input id="landing-impact" type="range" min="0" max="200" step="5" value="100">
+        <p class="control-hint">Изменение ползунка автоматически перезапускает анимацию.</p>
+      </section>
+
+      <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
     </aside>
 
     <section class="stage-area">
@@ -206,6 +251,25 @@
       ];
 
       const loading = document.querySelector('#loading');
+      const entrySpeed = document.querySelector('#entry-speed');
+      const entrySpeedValue = document.querySelector('#entry-speed-value');
+      const landingImpact = document.querySelector('#landing-impact');
+      const landingImpactValue = document.querySelector('#landing-impact-value');
+      const replayButton = document.querySelector('#replay-animation');
+      const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
+      let activeScene;
+
+      const updateControlValues = () => {
+        entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
+        landingImpactValue.textContent = `${landingImpact.value}%`;
+      };
+
+      entrySpeed.addEventListener('input', updateControlValues);
+      landingImpact.addEventListener('input', updateControlValues);
+      entrySpeed.addEventListener('change', () => activeScene?.playIntroAnimation());
+      landingImpact.addEventListener('change', () => activeScene?.playIntroAnimation());
+      replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
+      updateControlValues();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -226,78 +290,147 @@
             this.sprites.set(asset.key, sprite);
           });
 
+          activeScene = this;
           this.playIntroAnimation();
           loading.classList.add('is-hidden');
         }
 
         playIntroAnimation() {
+          this.tweens.killAll();
+          this.pendingTimer?.remove(false);
+          this.pendingTimer = null;
+
+          ASSETS.forEach((asset) => {
+            this.sprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(1);
+          });
+
+          this.motion = {
+            rootY: 260,
+            floatY: 0,
+            iceY: 0,
+            berryY: 0,
+            rootImpactY: 0,
+            iceImpactY: 0
+          };
+          this.syncHierarchy();
+
+          const speed = Number(entrySpeed.value);
+          const entryDuration = 1000 / speed;
+
+          this.tweens.add({
+            targets: this.motion,
+            rootY: 0,
+            duration: entryDuration,
+            ease: 'Cubic.Out',
+            onUpdate: () => this.syncHierarchy(),
+            onComplete: () => this.launchToppings()
+          });
+        }
+
+        syncHierarchy() {
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
-          const cream = this.sprites.get('cream');
           const strawberry = this.sprites.get('strawberry');
-          const finalHandY = hand.y;
+          const cream = this.sprites.get('cream');
+          const motion = this.motion;
+          const rootOffset = motion.rootY + motion.floatY + motion.rootImpactY;
+          const iceOffset = rootOffset + motion.iceY + motion.iceImpactY;
+          const berryOffset = iceOffset + motion.berryY;
 
-          hand.y = HEIGHT + hand.displayHeight / 2 + 12;
-          [iceCream, cream, strawberry].forEach((sprite) => {
-            sprite.y += 70;
-            sprite.setAlpha(0);
-          });
-
-          this.tweens.add({
-            targets: hand,
-            y: finalHandY,
-            duration: 1100,
-            ease: 'Cubic.Out',
-            onComplete: () => this.launchToppings(hand, iceCream, cream, strawberry)
-          });
+          hand.y = assetByKey.get('hand').y + rootOffset;
+          iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
+          strawberry.y = assetByKey.get('strawberry').y + berryOffset;
+          cream.y = assetByKey.get('cream').y + berryOffset;
         }
 
-        launchToppings(hand, iceCream, cream, strawberry) {
-          let iceCreamLanded = false;
-          let strawberryLanded = false;
-
-          const startFloating = () => {
-            if (!iceCreamLanded || !strawberryLanded) return;
-            this.tweens.add({
-              targets: [hand, iceCream, cream, strawberry],
-              y: '-=3',
-              duration: 1300,
-              ease: 'Sine.InOut',
-              yoyo: true,
-              repeat: -1
-            });
-          };
-
-          this.jumpAndLand([iceCream, cream], () => {
-            iceCreamLanded = true;
-            startFloating();
-          });
-
-          this.time.delayedCall(220, () => {
-            this.jumpAndLand([strawberry], () => {
-              strawberryLanded = true;
-              startFloating();
+        launchToppings() {
+          this.jumpNode('iceY', 34, 290, 310, () => {
+            this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
+              this.pendingTimer = this.time.delayedCall(90, () => {
+                this.jumpNode('berryY', 28, 250, 280, () => {
+                  this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
+                    this.startFloating();
+                  });
+                });
+              });
             });
           });
         }
 
-        jumpAndLand(targets, onComplete) {
-          targets.forEach((sprite) => sprite.setAlpha(1));
-
+        jumpNode(property, height, riseDuration, landDuration, onComplete) {
           this.tweens.add({
-            targets,
-            y: '-=105',
-            duration: 380,
+            targets: this.motion,
+            [property]: -height,
+            duration: riseDuration,
             ease: 'Cubic.Out',
+            onUpdate: () => this.syncHierarchy(),
             onComplete: () => {
               this.tweens.add({
-                targets,
-                y: '+=35',
-                duration: 320,
-                ease: 'Bounce.Out',
+                targets: this.motion,
+                [property]: 0,
+                duration: landDuration,
+                ease: 'Cubic.In',
+                onUpdate: () => this.syncHierarchy(),
                 onComplete
               });
             }
+          });
+        }
+
+        playLandingImpact(property, squashKey, amplitude, onComplete) {
+          const strength = Number(landingImpact.value) / 100;
+          if (strength === 0) {
+            onComplete();
+            return;
+          }
+
+          const squashTarget = this.sprites.get(squashKey);
+          const baseScale = assetByKey.get(squashKey).scale;
+          this.cameras.main.shake(110, 0.0015 * strength);
+
+          this.tweens.add({
+            targets: squashTarget,
+            scaleX: baseScale * (1 + 0.08 * strength),
+            scaleY: baseScale * (1 - 0.1 * strength),
+            duration: 70,
+            ease: 'Quad.Out',
+            yoyo: true
+          });
+
+          this.tweens.add({
+            targets: this.motion,
+            [property]: amplitude * strength,
+            duration: 70,
+            ease: 'Quad.In',
+            onUpdate: () => this.syncHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.motion,
+                [property]: 0,
+                duration: 190,
+                ease: 'Back.Out',
+                onUpdate: () => this.syncHierarchy(),
+                onComplete: () => {
+                  squashTarget.setScale(baseScale);
+                  onComplete();
+                }
+              });
+            }
+          });
+        }
+
+        startFloating() {
+          this.tweens.add({
+            targets: this.motion,
+            floatY: -3,
+            duration: 1300,
+            ease: 'Sine.InOut',
+            yoyo: true,
+            repeat: -1,
+            onUpdate: () => this.syncHierarchy()
           });
         }
       }
