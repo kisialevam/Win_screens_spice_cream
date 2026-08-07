@@ -135,15 +135,6 @@
     .stage-toolbar h2 { margin: 0; font-size: 16px; }
     .stage-toolbar p { margin: 5px 0 0; color: #a995b1; font-size: 12px; }
 
-    .reference-badge {
-      flex: 0 0 auto;
-      padding: 7px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
-      color: #cdbbd4;
-      font-size: 11px;
-    }
-
     #stage-shell {
       position: relative;
       width: 366px;
@@ -197,11 +188,22 @@
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
       <h1>Big Win<br>screen</h1>
-      <p class="lead">Финальная композиция зафиксирована. Все игровые элементы отображаются в постоянных позициях и не редактируются.</p>
+      <p class="lead">Основная композиция зафиксирована. Настраиваются только параметры капли.</p>
 
       <section class="control-group">
         <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="splash-rotation">Поворот капли</label><output class="value" id="splash-rotation-value">0°</output></div>
+        <input id="splash-rotation" type="range" min="-180" max="180" step="5" value="0">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="splash-disappear">Момент исчезновения капли</label><output class="value" id="splash-disappear-value">0 мс</output></div>
+        <input id="splash-disappear" type="range" min="-300" max="300" step="10" value="0">
+        <p class="control-hint">Отрицательное значение скрывает каплю раньше касания, положительное — позже.</p>
       </section>
 
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
@@ -213,7 +215,6 @@
           <h2>Экран игры · 183 × 396</h2>
           <p>Анимированная финальная композиция.</p>
         </div>
-        <span class="reference-badge">example.png · opacity 50%</span>
       </div>
       <div id="stage-shell">
         <div class="loading" id="loading">Загружаю Phaser…</div>
@@ -241,7 +242,7 @@
       const BERRY_HOLD = -160;
       const BERRY_LEAD = 290;
       const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30 };
-      const SPLASH = { hangY: 4, emergeDuration: 420, hangDuration: 2000, fallDuration: 380 };
+      const SPLASH = { hangY: 4, emergeDuration: 420, hangDuration: 800, fallDuration: 380 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -254,28 +255,41 @@
         { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
         { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 226, scale: 1, depth: 3 },
         { key: 'cream', label: 'Крем', file: 'cream.png', x: 82, y: 221, scale: 1, depth: 100 },
-        { key: 'splash', label: 'Капля', file: 'splash.png', x: 99, y: -8, scale: 0.95, depth: 9 },
+        { key: 'splash', label: 'Капля', file: 'splash.png', x: 99, y: -8, scale: 0.95, depth: 110 },
         { key: 'hand', label: 'Рука', file: 'hand.png?v=b2917e95', x: 5, y: 426, scale: 1.66, depth: 1 }
       ];
 
       const loading = document.querySelector('#loading');
+      const splashRotation = document.querySelector('#splash-rotation');
+      const splashRotationValue = document.querySelector('#splash-rotation-value');
+      const splashDisappear = document.querySelector('#splash-disappear');
+      const splashDisappearValue = document.querySelector('#splash-disappear-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
+
+      const updateSplashControlValues = () => {
+        splashRotationValue.textContent = `${splashRotation.value}°`;
+        splashDisappearValue.textContent = `${splashDisappear.value} мс`;
+      };
+
+      [splashRotation, splashDisappear].forEach((control) => {
+        control.addEventListener('input', updateSplashControlValues);
+        control.addEventListener('change', () => activeScene?.playIntroAnimation());
+      });
+      splashRotation.addEventListener('input', () => activeScene?.setSplashRotation(Number(splashRotation.value)));
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
+      updateSplashControlValues();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
 
         preload() {
-          this.load.image('example', 'example.png');
           this.load.atlas('explode', 'explode.png', 'explode.json');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
-          this.add.image(WIDTH / 2, HEIGHT / 2, 'example').setAlpha(0.5).setDepth(-100);
-
           if (!this.anims.exists('explode-burst')) {
             this.anims.create({
               key: 'explode-burst',
@@ -307,6 +321,19 @@
             this.sprites.set(asset.key, sprite);
           });
 
+          const strawberryAsset = assetByKey.get('strawberry');
+          const creamAsset = assetByKey.get('cream');
+          const strawberry = this.sprites.get('strawberry');
+          const cream = this.sprites.get('cream');
+          this.berryContainer = this.add.container(strawberryAsset.x, strawberryAsset.y)
+            .setDepth(strawberryAsset.depth);
+          strawberry.setPosition(0, 0).setDepth(0);
+          cream.setPosition(
+            creamAsset.x - strawberryAsset.x,
+            creamAsset.y - strawberryAsset.y
+          ).setDepth(1);
+          this.berryContainer.add([strawberry, cream]);
+
           activeScene = this;
           this.playIntroAnimation();
           loading.classList.add('is-hidden');
@@ -318,12 +345,31 @@
           this.sequenceTimers = [];
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
 
-          ASSETS.forEach((asset) => {
+          ASSETS.filter(({ key }) => key !== 'strawberry' && key !== 'cream').forEach((asset) => {
             this.sprites.get(asset.key)
               .setPosition(asset.x, asset.y)
               .setScale(asset.scale)
-              .setAlpha(1);
+              .setAlpha(1)
+              .setVisible(true);
           });
+
+          const strawberryAsset = assetByKey.get('strawberry');
+          const creamAsset = assetByKey.get('cream');
+          this.berryContainer
+            .setPosition(strawberryAsset.x, strawberryAsset.y)
+            .setScale(1)
+            .setAlpha(1)
+            .setVisible(true);
+          this.sprites.get('strawberry').setPosition(0, 0).setScale(strawberryAsset.scale).setAlpha(1).setVisible(true);
+          this.sprites.get('cream')
+            .setPosition(creamAsset.x - strawberryAsset.x, creamAsset.y - strawberryAsset.y)
+            .setScale(creamAsset.scale)
+            .setAlpha(1)
+            .setVisible(true);
+          this.sprites.get('splash')
+            .setAngle(Number(splashRotation.value))
+            .setAlpha(0)
+            .setVisible(false);
 
           this.motion = {
             rootY: 260,
@@ -337,10 +383,10 @@
             rootComplete: false,
             iceComplete: false,
             berryComplete: false,
+            splashStarted: false,
             floating: false
           };
           this.syncHierarchy();
-          this.launchSplashSequence();
 
           const speed = ENTRY_SPEED;
           const entryDuration = 1000 / speed;
@@ -424,8 +470,6 @@
         syncHierarchy() {
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
-          const strawberry = this.sprites.get('strawberry');
-          const cream = this.sprites.get('cream');
           const motion = this.motion;
           const rootOffset = motion.rootY + motion.floatY + motion.rootImpactY;
           const iceOffset = rootOffset + motion.iceY + motion.iceImpactY;
@@ -433,8 +477,10 @@
 
           hand.y = assetByKey.get('hand').y + rootOffset;
           iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
-          strawberry.y = assetByKey.get('strawberry').y + berryOffset;
-          cream.y = assetByKey.get('cream').y + berryOffset;
+          this.berryContainer.setPosition(
+            assetByKey.get('strawberry').x,
+            assetByKey.get('strawberry').y + berryOffset
+          );
           this.explode.setPosition(
             iceCream.x + EXPLODE.offsetX,
             iceCream.y + EXPLODE.offsetY
@@ -447,8 +493,9 @@
           const baseScale = assetByKey.get('splash').scale;
 
           splash
-            .setPosition(strawberry.x, assetByKey.get('splash').y)
+            .setPosition(this.berryContainer.x, assetByKey.get('splash').y)
             .setScale(baseScale * 0.72, baseScale * 0.35)
+            .setAngle(Number(splashRotation.value))
             .setAlpha(0)
             .setVisible(true);
 
@@ -476,19 +523,26 @@
                 this.tweens.killTweensOf(splash);
                 splash.setScale(baseScale).setAlpha(1);
 
-                const contactY = strawberry.y
+                const contactY = this.berryContainer.y
                   - strawberry.displayHeight / 2
                   - splash.displayHeight / 2
                   + 4;
+                const disappearDelay = Math.max(
+                  0,
+                  SPLASH.fallDuration + Number(splashDisappear.value)
+                );
+
+                this.sequenceTimers.push(this.time.delayedCall(disappearDelay, () => {
+                  splash.setAlpha(0).setVisible(false);
+                }));
 
                 this.tweens.add({
                   targets: splash,
-                  x: strawberry.x,
+                  x: this.berryContainer.x,
                   y: contactY,
                   duration: SPLASH.fallDuration,
                   ease: 'Cubic.In',
                   onComplete: () => {
-                    splash.setAlpha(0).setVisible(false);
                     this.playSplashImpact();
                   }
                 });
@@ -498,26 +552,22 @@
         }
 
         playSplashImpact() {
-          const strawberry = this.sprites.get('strawberry');
-          const cream = this.sprites.get('cream');
-          const targets = [strawberry, cream];
-
           this.tweens.add({
-            targets,
+            targets: this.berryContainer,
             scaleX: 1.12,
             scaleY: 0.82,
             duration: 85,
             ease: 'Quad.Out',
             onComplete: () => {
               this.tweens.add({
-                targets,
+                targets: this.berryContainer,
                 scaleX: 0.96,
                 scaleY: 1.08,
                 duration: 130,
                 ease: 'Back.Out',
                 onComplete: () => {
                   this.tweens.add({
-                    targets,
+                    targets: this.berryContainer,
                     scaleX: 1,
                     scaleY: 1,
                     duration: 150,
@@ -527,6 +577,10 @@
               });
             }
           });
+        }
+
+        setSplashRotation(angle) {
+          this.sprites.get('splash')?.setAngle(angle);
         }
 
         launchIceSequence() {
@@ -582,14 +636,22 @@
 
         completeSequencePart(part) {
           this.sequenceState[part] = true;
-          if (
+          const mainSequenceComplete = (
             this.sequenceState.rootComplete
             && this.sequenceState.iceComplete
             && this.sequenceState.berryComplete
-            && !this.sequenceState.floating
-          ) {
-            this.sequenceState.floating = true;
-            this.startFloating();
+          );
+
+          if (mainSequenceComplete) {
+            if (!this.sequenceState.floating) {
+              this.sequenceState.floating = true;
+              this.startFloating();
+            }
+
+            if (!this.sequenceState.splashStarted) {
+              this.sequenceState.splashStarted = true;
+              this.launchSplashSequence();
+            }
           }
         }
 
@@ -629,8 +691,12 @@
             return;
           }
 
-          const squashTarget = this.sprites.get(squashKey);
-          const baseScale = assetByKey.get(squashKey).scale;
+          const squashTarget = squashKey === 'strawberry'
+            ? this.berryContainer
+            : this.sprites.get(squashKey);
+          const baseScale = squashKey === 'strawberry'
+            ? 1
+            : assetByKey.get(squashKey).scale;
 
           this.tweens.add({
             targets: squashTarget,
