@@ -292,24 +292,13 @@
             this.sprites.set(asset.key, sprite);
           });
 
-          const strawberryAsset = assetByKey.get('strawberry');
-          const creamAsset = assetByKey.get('cream');
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
-          this.berryContainer = this.add.container(strawberryAsset.x, strawberryAsset.y)
-            .setDepth(strawberryAsset.depth);
-          strawberry.setPosition(0, 0).setDepth(0);
-          cream.setPosition(
-            creamAsset.x - strawberryAsset.x,
-            creamAsset.y - strawberryAsset.y
-          ).setDepth(1);
-          this.berryContainer.add([strawberry, cream]);
-
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
-          const multiplier = this.sprites.get('x');
           this.compositionContainer = this.add.container(0, 0).setDepth(1);
-          this.compositionContainer.add([hand, iceCream, multiplier, this.berryContainer]);
+          this.compositionContainer.add([hand, iceCream, strawberry, cream]);
+          this.berryTransform = { scaleX: 1, scaleY: 1 };
 
           activeScene = this;
           this.playIntroAnimation();
@@ -335,14 +324,15 @@
           const strawberryAsset = assetByKey.get('strawberry');
           const creamAsset = assetByKey.get('cream');
           this.compositionContainer.setPosition(0, 0);
-          this.berryContainer
+          this.berryTransform.scaleX = 1;
+          this.berryTransform.scaleY = 1;
+          this.sprites.get('strawberry')
             .setPosition(strawberryAsset.x, strawberryAsset.y)
-            .setScale(1)
+            .setScale(strawberryAsset.scale)
             .setAlpha(1)
             .setVisible(true);
-          this.sprites.get('strawberry').setPosition(0, 0).setScale(strawberryAsset.scale).setAlpha(1).setVisible(true);
           this.sprites.get('cream')
-            .setPosition(creamAsset.x - strawberryAsset.x, creamAsset.y - strawberryAsset.y)
+            .setPosition(creamAsset.x, creamAsset.y)
             .setScale(creamAsset.scale)
             .setAlpha(1)
             .setVisible(true);
@@ -449,7 +439,6 @@
         syncHierarchy() {
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
-          const multiplier = this.sprites.get('x');
           const motion = this.motion;
           const rootOffset = motion.rootY + motion.rootImpactY;
           const iceOffset = rootOffset + motion.iceY + motion.iceImpactY;
@@ -457,8 +446,7 @@
 
           hand.y = assetByKey.get('hand').y + rootOffset;
           iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
-          multiplier.y = assetByKey.get('x').y + rootOffset;
-          this.berryContainer.setPosition(
+          this.applyBerryTransform(
             assetByKey.get('strawberry').x,
             assetByKey.get('strawberry').y + berryOffset
           );
@@ -468,25 +456,36 @@
           );
         }
 
-        lockCompositionPose() {
+        applyBerryTransform(anchorX, anchorY) {
           const strawberryAsset = assetByKey.get('strawberry');
           const creamAsset = assetByKey.get('cream');
+          const scaleX = this.berryTransform.scaleX;
+          const scaleY = this.berryTransform.scaleY;
+
+          this.sprites.get('strawberry')
+            .setPosition(anchorX, anchorY)
+            .setScale(strawberryAsset.scale * scaleX, strawberryAsset.scale * scaleY);
+          this.sprites.get('cream')
+            .setPosition(
+              anchorX + (creamAsset.x - strawberryAsset.x) * scaleX,
+              anchorY + (creamAsset.y - strawberryAsset.y) * scaleY
+            )
+            .setScale(creamAsset.scale * scaleX, creamAsset.scale * scaleY);
+        }
+
+        lockCompositionPose() {
+          const strawberryAsset = assetByKey.get('strawberry');
 
           this.sprites.get('hand').setPosition(assetByKey.get('hand').x, assetByKey.get('hand').y);
           this.sprites.get('ice_cream').setPosition(assetByKey.get('ice_cream').x, assetByKey.get('ice_cream').y);
-          this.sprites.get('x').setPosition(assetByKey.get('x').x, assetByKey.get('x').y);
-          this.berryContainer.setPosition(strawberryAsset.x, strawberryAsset.y);
-          this.sprites.get('strawberry').setPosition(0, 0);
-          this.sprites.get('cream').setPosition(
-            creamAsset.x - strawberryAsset.x,
-            creamAsset.y - strawberryAsset.y
-          );
+          this.applyBerryTransform(strawberryAsset.x, strawberryAsset.y);
         }
 
         getBerryWorldPosition() {
+          const strawberry = this.sprites.get('strawberry');
           return {
-            x: this.compositionContainer.x + this.berryContainer.x,
-            y: this.compositionContainer.y + this.berryContainer.y
+            x: this.compositionContainer.x + strawberry.x,
+            y: this.compositionContainer.y + strawberry.y
           };
         }
 
@@ -570,31 +569,36 @@
 
         playSplashImpact() {
           const strength = SPLASH.reactionStrength;
-          this.tweens.killTweensOf(this.berryContainer);
-          this.berryContainer.setScale(1);
+          this.tweens.killTweensOf(this.berryTransform);
+          this.berryTransform.scaleX = 1;
+          this.berryTransform.scaleY = 1;
+          this.lockCompositionPose();
 
           if (strength === 0) return;
 
           this.tweens.add({
-            targets: this.berryContainer,
+            targets: this.berryTransform,
             scaleX: 1 + 0.12 * strength,
             scaleY: 1 - 0.18 * strength,
             duration: 85,
             ease: 'Quad.Out',
+            onUpdate: () => this.lockCompositionPose(),
             onComplete: () => {
               this.tweens.add({
-                targets: this.berryContainer,
+                targets: this.berryTransform,
                 scaleX: 1 - 0.04 * strength,
                 scaleY: 1 + 0.08 * strength,
                 duration: 130,
                 ease: 'Back.Out',
+                onUpdate: () => this.lockCompositionPose(),
                 onComplete: () => {
                   this.tweens.add({
-                    targets: this.berryContainer,
+                    targets: this.berryTransform,
                     scaleX: 1,
                     scaleY: 1,
                     duration: 150,
-                    ease: 'Sine.Out'
+                    ease: 'Sine.Out',
+                    onUpdate: () => this.lockCompositionPose()
                   });
                 }
               });
@@ -711,7 +715,7 @@
           }
 
           const squashTarget = squashKey === 'strawberry'
-            ? this.berryContainer
+            ? this.berryTransform
             : this.sprites.get(squashKey);
           const baseScale = squashKey === 'strawberry'
             ? 1
@@ -723,7 +727,8 @@
             scaleY: baseScale * (1 - 0.1 * strength),
             duration: 70,
             ease: 'Sine.InOut',
-            yoyo: true
+            yoyo: true,
+            onUpdate: squashKey === 'strawberry' ? () => this.syncHierarchy() : undefined
           });
 
           this.tweens.add({
@@ -740,7 +745,13 @@
                 ease: 'Back.Out',
                 onUpdate: () => this.syncHierarchy(),
                 onComplete: () => {
-                  squashTarget.setScale(baseScale);
+                  if (squashKey === 'strawberry') {
+                    this.berryTransform.scaleX = 1;
+                    this.berryTransform.scaleY = 1;
+                    this.syncHierarchy();
+                  } else {
+                    squashTarget.setScale(baseScale);
+                  }
                   onComplete();
                 }
               });
