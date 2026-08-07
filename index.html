@@ -284,68 +284,16 @@
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
       <h1>Big Win<br>screen</h1>
-      <p class="lead">Основная анимация зафиксирована. Буквы BIG WIN можно расставить поверх готовой надписи.</p>
+      <p class="lead">Позиции и размеры всех слоёв зафиксированы. Настраиваются только параметры анимации.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Буквы</span></div>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
       </section>
 
-      <section class="control-group" id="letter-editor">
-        <div class="label-row"><span>Активный слой</span><span class="value" id="active-letter-name">B</span></div>
-        <div class="letter-picker" role="group" aria-label="Выбор буквы">
-          <button class="letter-button is-active" type="button" data-letter-key="letter_b" aria-pressed="true">B</button>
-          <button class="letter-button" type="button" data-letter-key="letter_i_big" aria-pressed="false">I₁</button>
-          <button class="letter-button" type="button" data-letter-key="letter_g" aria-pressed="false">G</button>
-          <button class="letter-button" type="button" data-letter-key="letter_w" aria-pressed="false">W</button>
-          <button class="letter-button" type="button" data-letter-key="letter_i_win" aria-pressed="false">I₂</button>
-          <button class="letter-button" type="button" data-letter-key="letter_n" aria-pressed="false">N</button>
-        </div>
-        <p class="letter-position" id="letter-position">X 55 · Y 64</p>
-        <div class="letter-scale-list" aria-label="Масштаб букв">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб B</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_b">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб I₁</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_i_big">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб G</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_g">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб W</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_w">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб I₂</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_i_win">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб N</span><span class="letter-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.08" max="0.30" step="0.01" value="0.17" data-letter-scale="letter_n">
-          </label>
-        </div>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Букву также можно выбрать кликом прямо в сцене.</p>
-        <div class="editor-actions">
-          <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
-          <button class="secondary-button" id="select-amount" type="button" aria-pressed="false">Выбрать 42.00</button>
-          <button class="secondary-button" id="select-multiplier" type="button" aria-pressed="false">Выбрать 24x</button>
-        </div>
-      </section>
-
-      <section class="control-group" id="amount-editor">
-        <div class="label-row"><span>Масштаб 42.00</span><span class="value" id="amount-scale-value">0.17×</span></div>
-        <input class="letter-scale-slider" id="amount-scale" type="range" min="0.05" max="0.35" step="0.01" value="0.17" aria-label="Масштаб 42.00">
-        <p class="letter-hint">Нажмите «Выбрать 42.00», затем двигайте слой стрелками.</p>
-      </section>
-
-      <section class="control-group" id="multiplier-editor">
-        <div class="label-row"><span>Масштаб 24x</span><span class="value" id="multiplier-scale-value">0.17×</span></div>
-        <input class="letter-scale-slider" id="multiplier-scale" type="range" min="0.05" max="0.35" step="0.01" value="0.17" aria-label="Масштаб 24x">
-        <p class="letter-hint">Нажмите «Выбрать 24x», затем двигайте слой стрелками.</p>
+      <section class="control-group" id="underlay-editor">
+        <div class="label-row"><span>Подложка example</span><span class="value">50%</span></div>
+        <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
       </section>
 
       <section class="control-group" id="wave-editor">
@@ -399,16 +347,16 @@
           <div class="settings-block">
             <p class="settings-title">Появление 24x</p>
             <label class="letter-scale-control">
-              <span class="label-row"><span>Скорость появления</span><span class="value" id="multiplier-reveal-speed-value">1.00×</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.00" aria-label="Скорость появления 24x">
+              <span class="label-row"><span>Скорость появления</span><span class="value" id="multiplier-reveal-speed-value">1.80×</span></span>
+              <input class="letter-scale-slider" id="multiplier-reveal-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.80" aria-label="Скорость появления 24x">
             </label>
             <label class="letter-scale-control">
-              <span class="label-row"><span>Момент появления</span><span class="value" id="multiplier-reveal-delay-value">0 мс</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-delay" type="range" min="0" max="1000" step="20" value="0" aria-label="Момент появления 24x">
+              <span class="label-row"><span>Момент появления</span><span class="value" id="multiplier-reveal-delay-value">780 мс</span></span>
+              <input class="letter-scale-slider" id="multiplier-reveal-delay" type="range" min="0" max="1000" step="20" value="780" aria-label="Момент появления 24x">
             </label>
             <label class="letter-scale-control">
-              <span class="label-row"><span>Баунс по скейлу</span><span class="value" id="multiplier-reveal-bounce-value">18%</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-bounce" type="range" min="0" max="50" step="1" value="18" aria-label="Баунс 24x">
+              <span class="label-row"><span>Баунс по скейлу</span><span class="value" id="multiplier-reveal-bounce-value">50%</span></span>
+              <input class="letter-scale-slider" id="multiplier-reveal-bounce" type="range" min="0" max="50" step="1" value="50" aria-label="Баунс 24x">
             </label>
           </div>
         </div>
@@ -461,7 +409,7 @@
       };
       const AMOUNT_DROP = { speed: 1, delay: 0, bounce: 21 };
       const TITLE_DROP = { speed: 1, delay: 220, bounce: 14 };
-      const MULTIPLIER_REVEAL = { speed: 1, delay: 0, bounce: 18 };
+      const MULTIPLIER_REVEAL = { speed: 1.8, delay: 780, bounce: 50 };
       const SPLASH = {
         rotation: -90,
         targetOffset: 31,
@@ -481,8 +429,8 @@
 
       const ASSETS = [
         { key: 'big_win', label: 'Big Win', file: 'big_win.png', x: 91, y: 59, scale: 1, depth: 7 },
-        { key: 'amount_42', label: '42.00', file: '42.00.png?v=309dd0c5', x: 91, y: 98, scale: 0.17, depth: 8 },
-        { key: 'x', label: '24x', file: 'x.png?v=64824a35', x: 90, y: 296, scale: 0.17, depth: 6 },
+        { key: 'amount_42', label: '42.00', file: '42.00.png?v=309dd0c5', x: 91, y: 95, scale: 0.18, depth: 8 },
+        { key: 'x', label: '24x', file: 'x.png?v=64824a35', x: 90, y: 302, scale: 0.17, depth: 6 },
         { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
         { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 226, scale: 1, depth: 3 },
         { key: 'cream', label: 'Крем', file: 'cream.png', x: 82, y: 221, scale: 1, depth: 100 },
@@ -491,26 +439,16 @@
       ];
 
       const LETTER_ASSETS = [
-        { key: 'letter_b', label: 'B', file: 'b.png?v=cb18a8f0', x: 55, y: 64, scale: 0.17 },
-        { key: 'letter_i_big', label: 'I₁', file: 'i.png?v=681f6b2c', x: 67, y: 63, scale: 0.17 },
-        { key: 'letter_g', label: 'G', file: 'g.png?v=71c0d5c1', x: 79, y: 62, scale: 0.17 },
-        { key: 'letter_w', label: 'W', file: 'w.png?v=9ff1a864', x: 102, y: 61, scale: 0.17 },
-        { key: 'letter_i_win', label: 'I₂', file: 'i.png?v=681f6b2c', x: 115, y: 60, scale: 0.17 },
-        { key: 'letter_n', label: 'N', file: 'n.png?v=bbd7a700', x: 127, y: 59, scale: 0.17 }
+        { key: 'letter_b', label: 'B', file: 'b.png?v=cb18a8f0', x: 55, y: 61, scale: 0.17 },
+        { key: 'letter_i_big', label: 'I₁', file: 'i.png?v=681f6b2c', x: 67, y: 60, scale: 0.17 },
+        { key: 'letter_g', label: 'G', file: 'g.png?v=71c0d5c1', x: 79, y: 59, scale: 0.17 },
+        { key: 'letter_w', label: 'W', file: 'w.png?v=9ff1a864', x: 102, y: 58, scale: 0.17 },
+        { key: 'letter_i_win', label: 'I₂', file: 'i.png?v=681f6b2c', x: 115, y: 57, scale: 0.17 },
+        { key: 'letter_n', label: 'N', file: 'n.png?v=bbd7a700', x: 127, y: 56, scale: 0.17 }
       ];
 
       const loading = document.querySelector('#loading');
       const replayButton = document.querySelector('#replay-animation');
-      const activeLetterName = document.querySelector('#active-letter-name');
-      const letterPosition = document.querySelector('#letter-position');
-      const letterButtons = [...document.querySelectorAll('[data-letter-key]')];
-      const letterScaleSliders = [...document.querySelectorAll('[data-letter-scale]')];
-      const amountSelectButton = document.querySelector('#select-amount');
-      const amountScaleSlider = document.querySelector('#amount-scale');
-      const amountScaleValue = document.querySelector('#amount-scale-value');
-      const multiplierSelectButton = document.querySelector('#select-multiplier');
-      const multiplierScaleSlider = document.querySelector('#multiplier-scale');
-      const multiplierScaleValue = document.querySelector('#multiplier-scale-value');
       const underlayButton = document.querySelector('#toggle-underlay');
       const waveSpeedSlider = document.querySelector('#wave-speed');
       const waveSpeedValue = document.querySelector('#wave-speed-value');
@@ -519,68 +457,7 @@
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
-      let activeEditableKey = 'letter_b';
       let underlayVisible = false;
-
-      const updateLetterEditor = () => {
-        const isAmount = activeEditableKey === 'amount_42';
-        const isMultiplier = activeEditableKey === 'x';
-        const asset = (isAmount || isMultiplier)
-          ? assetByKey.get(activeEditableKey)
-          : letterAssetByKey.get(activeEditableKey);
-        const position = activeScene?.getEditablePosition(activeEditableKey) ?? asset;
-        activeLetterName.textContent = asset.label;
-        letterPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
-        letterButtons.forEach((button) => {
-          const isActive = button.dataset.letterKey === activeEditableKey;
-          button.classList.toggle('is-active', isActive);
-          button.setAttribute('aria-pressed', String(isActive));
-        });
-        amountSelectButton.classList.toggle('is-active', isAmount);
-        amountSelectButton.setAttribute('aria-pressed', String(isAmount));
-        multiplierSelectButton.classList.toggle('is-active', isMultiplier);
-        multiplierSelectButton.setAttribute('aria-pressed', String(isMultiplier));
-      };
-
-      const selectEditableLayer = (key) => {
-        if (!['amount_42', 'x'].includes(key) && !letterAssetByKey.has(key)) return;
-        activeEditableKey = key;
-        updateLetterEditor();
-      };
-
-      letterButtons.forEach((button) => {
-        button.addEventListener('click', () => selectEditableLayer(button.dataset.letterKey));
-      });
-      amountSelectButton.addEventListener('click', () => selectEditableLayer('amount_42'));
-      multiplierSelectButton.addEventListener('click', () => selectEditableLayer('x'));
-
-      letterScaleSliders.forEach((slider) => {
-        const valueLabel = slider.closest('.letter-scale-control').querySelector('.letter-scale-value');
-        slider.addEventListener('input', () => {
-          const key = slider.dataset.letterScale;
-          const scale = Number(slider.value);
-          letterAssetByKey.get(key).scale = scale;
-          activeScene?.setEditableLetterScale(key, scale);
-          valueLabel.textContent = `${scale.toFixed(2)}×`;
-          selectEditableLayer(key);
-        });
-      });
-
-      amountScaleSlider.addEventListener('input', () => {
-        const scale = Number(amountScaleSlider.value);
-        assetByKey.get('amount_42').scale = scale;
-        activeScene?.setAmountScale(scale);
-        amountScaleValue.textContent = `${scale.toFixed(2)}×`;
-        selectEditableLayer('amount_42');
-      });
-
-      multiplierScaleSlider.addEventListener('input', () => {
-        const scale = Number(multiplierScaleSlider.value);
-        assetByKey.get('x').scale = scale;
-        activeScene?.setMultiplierScale(scale);
-        multiplierScaleValue.textContent = `${scale.toFixed(2)}×`;
-        selectEditableLayer('x');
-      });
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -620,26 +497,7 @@
       bindDropControl('multiplier-reveal-delay', 'multiplier-reveal-delay-value', MULTIPLIER_REVEAL, 'delay', (value) => `${value} мс`);
       bindDropControl('multiplier-reveal-bounce', 'multiplier-reveal-bounce-value', MULTIPLIER_REVEAL, 'bounce', (value) => `${value}%`);
 
-      document.addEventListener('keydown', (event) => {
-        if (event.target instanceof HTMLInputElement) return;
-
-        const directions = {
-          ArrowLeft: [-1, 0],
-          ArrowRight: [1, 0],
-          ArrowUp: [0, -1],
-          ArrowDown: [0, 1]
-        };
-        const direction = directions[event.key];
-        if (!direction || !activeScene) return;
-
-        event.preventDefault();
-        const step = event.shiftKey ? 5 : 1;
-        activeScene.moveEditable(activeEditableKey, direction[0] * step, direction[1] * step);
-        updateLetterEditor();
-      });
-
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
-      updateLetterEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -693,10 +551,7 @@
           this.letterNodes = new Map();
           this.letterSprites = new Map();
           LETTER_ASSETS.forEach((asset) => {
-            const sprite = this.add.image(0, 0, asset.key)
-              .setScale(asset.scale)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectEditableLayer(asset.key));
+            const sprite = this.add.image(0, 0, asset.key).setScale(asset.scale);
             const node = this.add.container(asset.x, asset.y, [sprite]).setDepth(1);
             this.letterNodes.set(asset.key, node);
             this.letterSprites.set(asset.key, sprite);
@@ -708,13 +563,6 @@
           LETTER_ASSETS.forEach(({ key }) => this.titleContainer.add(this.letterNodes.get(key)));
           bigWinUnderlay.setVisible(false);
 
-          this.sprites.get('amount_42')
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => selectEditableLayer('amount_42'));
-          this.sprites.get('x')
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => selectEditableLayer('x'));
-
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
           const hand = this.sprites.get('hand');
@@ -724,51 +572,8 @@
           this.berryTransform = { scaleX: 1, scaleY: 1 };
 
           activeScene = this;
-          updateLetterEditor();
           this.playIntroAnimation();
           loading.classList.add('is-hidden');
-        }
-
-        getEditablePosition(key) {
-          if (['amount_42', 'x'].includes(key)) {
-            const asset = assetByKey.get(key);
-            return { x: asset.x, y: asset.y };
-          }
-
-          const node = this.letterNodes?.get(key);
-          return node ? { x: node.x, y: node.y } : letterAssetByKey.get(key);
-        }
-
-        moveEditable(key, deltaX, deltaY) {
-          if (['amount_42', 'x'].includes(key)) {
-            const asset = assetByKey.get(key);
-            asset.x = Math.round(asset.x + deltaX);
-            asset.y = Math.round(asset.y + deltaY);
-            const sprite = this.sprites.get(key);
-            this.tweens.killTweensOf(sprite);
-            sprite.setPosition(asset.x, asset.y).setScale(asset.scale).setAlpha(1).setVisible(true);
-            return;
-          }
-
-          const node = this.letterNodes?.get(key);
-          if (!node) return;
-
-          node.setPosition(
-            Math.round(node.x + deltaX),
-            Math.round(node.y + deltaY)
-          );
-        }
-
-        setEditableLetterScale(key, scale) {
-          this.letterSprites?.get(key)?.setScale(scale);
-        }
-
-        setAmountScale(scale) {
-          this.sprites.get('amount_42')?.setScale(scale);
-        }
-
-        setMultiplierScale(scale) {
-          this.sprites.get('x')?.setScale(scale);
         }
 
         setUnderlayVisible(visible) {
