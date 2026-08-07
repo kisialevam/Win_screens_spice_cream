@@ -86,20 +86,6 @@
       text-align: right;
     }
 
-    input[type="range"] {
-      width: 100%;
-      margin: 2px 0 0;
-      accent-color: #ff4fa3;
-      cursor: pointer;
-    }
-
-    .control-hint {
-      margin: 14px 0 0;
-      color: #a995b1;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
     .replay-button {
       width: 100%;
       min-height: 42px;
@@ -188,33 +174,11 @@
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
       <h1>Big Win<br>screen</h1>
-      <p class="lead">Основная композиция зафиксирована. Настраиваются только параметры капли.</p>
+      <p class="lead">Финальная композиция и параметры анимации зафиксированы.</p>
 
       <section class="control-group">
         <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="splash-target-offset">Точка приземления капли</label><output class="value" id="splash-target-offset-value">31 px</output></div>
-        <input id="splash-target-offset" type="range" min="-60" max="60" step="1" value="31">
-        <p class="control-hint">Влево — капля останавливается выше, вправо — ниже.</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="splash-horizontal-offset">Положение капли левее-правее</label><output class="value" id="splash-horizontal-offset-value">0 px</output></div>
-        <input id="splash-horizontal-offset" type="range" min="-60" max="60" step="1" value="0">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="splash-disappear">Момент исчезновения капли</label><output class="value" id="splash-disappear-value">50 мс</output></div>
-        <input id="splash-disappear" type="range" min="-300" max="300" step="10" value="50">
-        <p class="control-hint">Отрицательное значение скрывает каплю раньше касания, положительное — позже.</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="splash-reaction">Сила реакции клубнички</label><output class="value" id="splash-reaction-value">100%</output></div>
-        <input id="splash-reaction" type="range" min="0" max="200" step="5" value="100">
       </section>
 
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
@@ -255,6 +219,10 @@
       const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30 };
       const SPLASH = {
         rotation: -90,
+        targetOffset: 31,
+        horizontalOffset: -8,
+        disappearOffset: 40,
+        reactionStrength: 1.8,
         hangY: 4,
         emergeDuration: 420,
         hangDuration: 800,
@@ -278,31 +246,11 @@
       ];
 
       const loading = document.querySelector('#loading');
-      const splashTargetOffset = document.querySelector('#splash-target-offset');
-      const splashTargetOffsetValue = document.querySelector('#splash-target-offset-value');
-      const splashHorizontalOffset = document.querySelector('#splash-horizontal-offset');
-      const splashHorizontalOffsetValue = document.querySelector('#splash-horizontal-offset-value');
-      const splashDisappear = document.querySelector('#splash-disappear');
-      const splashDisappearValue = document.querySelector('#splash-disappear-value');
-      const splashReaction = document.querySelector('#splash-reaction');
-      const splashReactionValue = document.querySelector('#splash-reaction-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
 
-      const updateSplashControlValues = () => {
-        splashTargetOffsetValue.textContent = `${splashTargetOffset.value} px`;
-        splashHorizontalOffsetValue.textContent = `${splashHorizontalOffset.value} px`;
-        splashDisappearValue.textContent = `${splashDisappear.value} мс`;
-        splashReactionValue.textContent = `${splashReaction.value}%`;
-      };
-
-      [splashTargetOffset, splashHorizontalOffset, splashDisappear, splashReaction].forEach((control) => {
-        control.addEventListener('input', updateSplashControlValues);
-        control.addEventListener('change', () => activeScene?.playIntroAnimation());
-      });
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
-      updateSplashControlValues();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -359,8 +307,9 @@
 
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
+          const multiplier = this.sprites.get('x');
           this.compositionContainer = this.add.container(0, 0).setDepth(1);
-          this.compositionContainer.add([hand, iceCream, this.berryContainer]);
+          this.compositionContainer.add([hand, iceCream, multiplier, this.berryContainer]);
 
           activeScene = this;
           this.playIntroAnimation();
@@ -500,6 +449,7 @@
         syncHierarchy() {
           const hand = this.sprites.get('hand');
           const iceCream = this.sprites.get('ice_cream');
+          const multiplier = this.sprites.get('x');
           const motion = this.motion;
           const rootOffset = motion.rootY + motion.rootImpactY;
           const iceOffset = rootOffset + motion.iceY + motion.iceImpactY;
@@ -507,6 +457,7 @@
 
           hand.y = assetByKey.get('hand').y + rootOffset;
           iceCream.y = assetByKey.get('ice_cream').y + iceOffset;
+          multiplier.y = assetByKey.get('x').y + rootOffset;
           this.berryContainer.setPosition(
             assetByKey.get('strawberry').x,
             assetByKey.get('strawberry').y + berryOffset
@@ -514,6 +465,21 @@
           this.explode.setPosition(
             iceCream.x + EXPLODE.offsetX,
             this.compositionContainer.y + iceCream.y + EXPLODE.offsetY
+          );
+        }
+
+        lockCompositionPose() {
+          const strawberryAsset = assetByKey.get('strawberry');
+          const creamAsset = assetByKey.get('cream');
+
+          this.sprites.get('hand').setPosition(assetByKey.get('hand').x, assetByKey.get('hand').y);
+          this.sprites.get('ice_cream').setPosition(assetByKey.get('ice_cream').x, assetByKey.get('ice_cream').y);
+          this.sprites.get('x').setPosition(assetByKey.get('x').x, assetByKey.get('x').y);
+          this.berryContainer.setPosition(strawberryAsset.x, strawberryAsset.y);
+          this.sprites.get('strawberry').setPosition(0, 0);
+          this.sprites.get('cream').setPosition(
+            creamAsset.x - strawberryAsset.x,
+            creamAsset.y - strawberryAsset.y
           );
         }
 
@@ -529,7 +495,7 @@
           const strawberry = this.sprites.get('strawberry');
           const baseScale = assetByKey.get('splash').scale;
           const berryPosition = this.getBerryWorldPosition();
-          const horizontalOffset = Number(splashHorizontalOffset.value);
+          const horizontalOffset = SPLASH.horizontalOffset;
 
           splash
             .setPosition(berryPosition.x + horizontalOffset, assetByKey.get('splash').y)
@@ -567,10 +533,10 @@
                   - strawberry.displayHeight / 2
                   - splash.displayHeight / 2
                   + 4
-                  + Number(splashTargetOffset.value);
+                  + SPLASH.targetOffset;
                 const disappearDelay = Math.max(
                   0,
-                  SPLASH.fallDuration + Number(splashDisappear.value)
+                  SPLASH.fallDuration + SPLASH.disappearOffset
                 );
 
                 this.sequenceTimers.push(this.time.delayedCall(disappearDelay, () => {
@@ -603,7 +569,7 @@
         }
 
         playSplashImpact() {
-          const strength = Number(splashReaction.value) / 100;
+          const strength = SPLASH.reactionStrength;
           this.tweens.killTweensOf(this.berryContainer);
           this.berryContainer.setScale(1);
 
@@ -787,6 +753,7 @@
 
           const period = 2600 / FLOAT_SPEED;
           const phase = ((time - this.floatingStartedAt) % period) / period * Math.PI * 2;
+          this.lockCompositionPose();
           this.compositionContainer.y = -Math.sin(phase) * FLOAT_HEIGHT;
         }
 
@@ -794,6 +761,7 @@
           if (FLOAT_HEIGHT === 0) return;
 
           this.compositionContainer.y = 0;
+          this.lockCompositionPose();
           this.floatingStartedAt = this.time.now;
           this.floatingActive = true;
         }
