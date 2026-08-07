@@ -143,8 +143,7 @@
 
     #game-container canvas {
       display: block;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
+      image-rendering: auto;
       outline: none;
     }
 
@@ -789,10 +788,10 @@
         width: WIDTH,
         height: HEIGHT,
         transparent: true,
-        pixelArt: true,
-        antialias: false,
+        pixelArt: false,
+        antialias: true,
         scene: BigWinScene,
-        render: { pixelArt: true, roundPixels: true }
+        render: { pixelArt: false, roundPixels: false }
       });
     })();
   </script>
