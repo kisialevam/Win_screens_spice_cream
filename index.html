@@ -196,15 +196,25 @@
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="splash-target-offset">Точка приземления капли</label><output class="value" id="splash-target-offset-value">0 px</output></div>
-        <input id="splash-target-offset" type="range" min="-60" max="60" step="1" value="0">
+        <div class="label-row"><label for="splash-target-offset">Точка приземления капли</label><output class="value" id="splash-target-offset-value">31 px</output></div>
+        <input id="splash-target-offset" type="range" min="-60" max="60" step="1" value="31">
         <p class="control-hint">Влево — капля останавливается выше, вправо — ниже.</p>
       </section>
 
       <section class="control-group">
-        <div class="label-row"><label for="splash-disappear">Момент исчезновения капли</label><output class="value" id="splash-disappear-value">0 мс</output></div>
-        <input id="splash-disappear" type="range" min="-300" max="300" step="10" value="0">
+        <div class="label-row"><label for="splash-horizontal-offset">Положение капли левее-правее</label><output class="value" id="splash-horizontal-offset-value">0 px</output></div>
+        <input id="splash-horizontal-offset" type="range" min="-60" max="60" step="1" value="0">
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="splash-disappear">Момент исчезновения капли</label><output class="value" id="splash-disappear-value">50 мс</output></div>
+        <input id="splash-disappear" type="range" min="-300" max="300" step="10" value="50">
         <p class="control-hint">Отрицательное значение скрывает каплю раньше касания, положительное — позже.</p>
+      </section>
+
+      <section class="control-group">
+        <div class="label-row"><label for="splash-reaction">Сила реакции клубнички</label><output class="value" id="splash-reaction-value">100%</output></div>
+        <input id="splash-reaction" type="range" min="0" max="200" step="5" value="100">
       </section>
 
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
@@ -270,18 +280,24 @@
       const loading = document.querySelector('#loading');
       const splashTargetOffset = document.querySelector('#splash-target-offset');
       const splashTargetOffsetValue = document.querySelector('#splash-target-offset-value');
+      const splashHorizontalOffset = document.querySelector('#splash-horizontal-offset');
+      const splashHorizontalOffsetValue = document.querySelector('#splash-horizontal-offset-value');
       const splashDisappear = document.querySelector('#splash-disappear');
       const splashDisappearValue = document.querySelector('#splash-disappear-value');
+      const splashReaction = document.querySelector('#splash-reaction');
+      const splashReactionValue = document.querySelector('#splash-reaction-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
 
       const updateSplashControlValues = () => {
         splashTargetOffsetValue.textContent = `${splashTargetOffset.value} px`;
+        splashHorizontalOffsetValue.textContent = `${splashHorizontalOffset.value} px`;
         splashDisappearValue.textContent = `${splashDisappear.value} мс`;
+        splashReactionValue.textContent = `${splashReaction.value}%`;
       };
 
-      [splashTargetOffset, splashDisappear].forEach((control) => {
+      [splashTargetOffset, splashHorizontalOffset, splashDisappear, splashReaction].forEach((control) => {
         control.addEventListener('input', updateSplashControlValues);
         control.addEventListener('change', () => activeScene?.playIntroAnimation());
       });
@@ -355,6 +371,8 @@
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
+          this.floatingActive = false;
+          this.floatingStartedAt = 0;
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
 
           ASSETS.filter(({ key }) => key !== 'strawberry' && key !== 'cream').forEach((asset) => {
@@ -386,7 +404,6 @@
 
           this.motion = {
             rootY: 260,
-            floatY: 0,
             iceY: 0,
             berryY: 0,
             rootImpactY: 0,
@@ -512,9 +529,10 @@
           const strawberry = this.sprites.get('strawberry');
           const baseScale = assetByKey.get('splash').scale;
           const berryPosition = this.getBerryWorldPosition();
+          const horizontalOffset = Number(splashHorizontalOffset.value);
 
           splash
-            .setPosition(berryPosition.x, assetByKey.get('splash').y)
+            .setPosition(berryPosition.x + horizontalOffset, assetByKey.get('splash').y)
             .setScale(baseScale * 0.72, baseScale * 0.35)
             .setAngle(SPLASH.rotation)
             .setAlpha(0)
@@ -561,7 +579,7 @@
 
                 this.tweens.add({
                   targets: splash,
-                  x: currentBerryPosition.x,
+                  x: currentBerryPosition.x + horizontalOffset,
                   y: contactY,
                   duration: SPLASH.fallDuration,
                   ease: 'Cubic.In',
@@ -585,17 +603,23 @@
         }
 
         playSplashImpact() {
+          const strength = Number(splashReaction.value) / 100;
+          this.tweens.killTweensOf(this.berryContainer);
+          this.berryContainer.setScale(1);
+
+          if (strength === 0) return;
+
           this.tweens.add({
             targets: this.berryContainer,
-            scaleX: 1.12,
-            scaleY: 0.82,
+            scaleX: 1 + 0.12 * strength,
+            scaleY: 1 - 0.18 * strength,
             duration: 85,
             ease: 'Quad.Out',
             onComplete: () => {
               this.tweens.add({
                 targets: this.berryContainer,
-                scaleX: 0.96,
-                scaleY: 1.08,
+                scaleX: 1 - 0.04 * strength,
+                scaleY: 1 + 0.08 * strength,
                 duration: 130,
                 ease: 'Back.Out',
                 onComplete: () => {
@@ -758,27 +782,20 @@
           });
         }
 
-        startFloating() {
-          const amplitude = FLOAT_HEIGHT;
-          const speed = FLOAT_SPEED;
-          if (amplitude === 0) return;
+        update(time) {
+          if (!this.floatingActive) return;
 
-          this.tweens.add({
-            targets: this.compositionContainer,
-            y: -amplitude,
-            duration: 650 / speed,
-            ease: 'Sine.Out',
-            onComplete: () => {
-              this.tweens.add({
-                targets: this.compositionContainer,
-                y: amplitude,
-                duration: 1300 / speed,
-                ease: 'Sine.InOut',
-                yoyo: true,
-                repeat: -1
-              });
-            }
-          });
+          const period = 2600 / FLOAT_SPEED;
+          const phase = ((time - this.floatingStartedAt) % period) / period * Math.PI * 2;
+          this.compositionContainer.y = -Math.sin(phase) * FLOAT_HEIGHT;
+        }
+
+        startFloating() {
+          if (FLOAT_HEIGHT === 0) return;
+
+          this.compositionContainer.y = 0;
+          this.floatingStartedAt = this.time.now;
+          this.floatingActive = true;
         }
       }
 
