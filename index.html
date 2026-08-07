@@ -122,6 +122,33 @@
 
     .letter-position { color: #ff9acb; font-variant-numeric: tabular-nums; }
 
+    .letter-scale-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 18px;
+    }
+
+    .letter-scale-control {
+      display: block;
+    }
+
+    .letter-scale-control .label-row {
+      margin-bottom: 7px;
+      font-size: 12px;
+    }
+
+    .letter-scale-value {
+      color: #ff9acb;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .letter-scale-slider {
+      width: 100%;
+      margin: 0;
+      accent-color: #ff4fa3;
+      cursor: pointer;
+    }
+
     .replay-button {
       width: 100%;
       min-height: 42px;
@@ -225,6 +252,32 @@
           <button class="letter-button" type="button" data-letter-key="letter_n" aria-pressed="false">N</button>
         </div>
         <p class="letter-position" id="letter-position">X 49 · Y 59</p>
+        <div class="letter-scale-list" aria-label="Масштаб букв">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб B</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_b">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб I₁</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_i_big">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб G</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_g">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб W</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_w">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб I₂</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_i_win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб N</span><span class="letter-scale-value">0.15×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_n">
+          </label>
+        </div>
         <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Букву также можно выбрать кликом прямо в сцене.</p>
       </section>
 
@@ -294,12 +347,12 @@
       ];
 
       const LETTER_ASSETS = [
-        { key: 'letter_b', label: 'B', file: 'b.png', x: 49, y: 59, scale: 0.75 },
-        { key: 'letter_i_big', label: 'I₁', file: 'i.png', x: 65, y: 59, scale: 0.75 },
-        { key: 'letter_g', label: 'G', file: 'g.png', x: 81, y: 59, scale: 0.75 },
-        { key: 'letter_w', label: 'W', file: 'w.png', x: 105, y: 59, scale: 0.75 },
-        { key: 'letter_i_win', label: 'I₂', file: 'i.png', x: 121, y: 59, scale: 0.75 },
-        { key: 'letter_n', label: 'N', file: 'n.png', x: 137, y: 59, scale: 0.75 }
+        { key: 'letter_b', label: 'B', file: 'b.png?v=5caf62ba', x: 49, y: 59, scale: 0.15 },
+        { key: 'letter_i_big', label: 'I₁', file: 'i.png?v=194387f1', x: 65, y: 59, scale: 0.15 },
+        { key: 'letter_g', label: 'G', file: 'g.png?v=bebf1e7e', x: 81, y: 59, scale: 0.15 },
+        { key: 'letter_w', label: 'W', file: 'w.png?v=0a08f21f', x: 105, y: 59, scale: 0.15 },
+        { key: 'letter_i_win', label: 'I₂', file: 'i.png?v=194387f1', x: 121, y: 59, scale: 0.15 },
+        { key: 'letter_n', label: 'N', file: 'n.png?v=ce4618d7', x: 137, y: 59, scale: 0.15 }
       ];
 
       const loading = document.querySelector('#loading');
@@ -307,6 +360,7 @@
       const activeLetterName = document.querySelector('#active-letter-name');
       const letterPosition = document.querySelector('#letter-position');
       const letterButtons = [...document.querySelectorAll('[data-letter-key]')];
+      const letterScaleSliders = [...document.querySelectorAll('[data-letter-scale]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
@@ -334,7 +388,21 @@
         button.addEventListener('click', () => selectEditableLetter(button.dataset.letterKey));
       });
 
+      letterScaleSliders.forEach((slider) => {
+        const valueLabel = slider.closest('.letter-scale-control').querySelector('.letter-scale-value');
+        slider.addEventListener('input', () => {
+          const key = slider.dataset.letterScale;
+          const scale = Number(slider.value);
+          letterAssetByKey.get(key).scale = scale;
+          activeScene?.setEditableLetterScale(key, scale);
+          valueLabel.textContent = `${scale.toFixed(2)}×`;
+          selectEditableLetter(key);
+        });
+      });
+
       document.addEventListener('keydown', (event) => {
+        if (event.target instanceof HTMLInputElement) return;
+
         const directions = {
           ArrowLeft: [-1, 0],
           ArrowRight: [1, 0],
@@ -433,6 +501,10 @@
             Math.round(sprite.x + deltaX),
             Math.round(sprite.y + deltaY)
           );
+        }
+
+        setEditableLetterScale(key, scale) {
+          this.letterSprites?.get(key)?.setScale(scale);
         }
 
         playIntroAnimation() {
