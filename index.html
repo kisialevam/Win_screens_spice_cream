@@ -134,16 +134,14 @@
     }
 
     #game-container {
-      width: 183px;
-      height: 396px;
-      transform: scale(2);
-      transform-origin: top left;
-      transition: transform 120ms ease;
+      width: 366px;
+      height: 792px;
     }
 
     #game-container canvas {
       display: block;
-      image-rendering: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
       outline: none;
     }
 
@@ -202,6 +200,7 @@
     (() => {
       const WIDTH = 183;
       const HEIGHT = 396;
+      const RENDER_SCALE = 2;
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
@@ -260,6 +259,8 @@
         }
 
         create() {
+          this.cameras.main.setOrigin(0, 0).setZoom(RENDER_SCALE);
+
           if (!this.anims.exists('explode-burst')) {
             this.anims.create({
               key: 'explode-burst',
@@ -785,13 +786,13 @@
       new Phaser.Game({
         type: Phaser.AUTO,
         parent: 'game-container',
-        width: WIDTH,
-        height: HEIGHT,
+        width: WIDTH * RENDER_SCALE,
+        height: HEIGHT * RENDER_SCALE,
         transparent: true,
-        pixelArt: false,
-        antialias: true,
+        pixelArt: true,
+        antialias: false,
         scene: BigWinScene,
-        render: { pixelArt: false, roundPixels: false }
+        render: { pixelArt: true, roundPixels: false }
       });
     })();
   </script>
