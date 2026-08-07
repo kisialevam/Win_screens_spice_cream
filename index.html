@@ -86,6 +86,42 @@
       text-align: right;
     }
 
+    .letter-picker {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .letter-button {
+      min-width: 0;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.055);
+      color: #fceaf3;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .letter-button.is-active {
+      border-color: #ff5cad;
+      background: rgba(255, 79, 163, 0.2);
+      color: #ff9acb;
+      box-shadow: 0 0 0 2px rgba(255, 79, 163, 0.13);
+    }
+
+    .letter-position,
+    .letter-hint {
+      margin: 13px 0 0;
+      color: #a995b1;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .letter-position { color: #ff9acb; font-variant-numeric: tabular-nums; }
+
     .replay-button {
       width: 100%;
       min-height: 42px;
@@ -171,11 +207,25 @@
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
       <h1>Big Win<br>screen</h1>
-      <p class="lead">Финальная композиция и параметры анимации зафиксированы.</p>
+      <p class="lead">Основная анимация зафиксирована. Буквы BIG WIN можно расставить поверх готовой надписи.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Буквы</span></div>
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
+      </section>
+
+      <section class="control-group" id="letter-editor">
+        <div class="label-row"><span>Активная буква</span><span class="value" id="active-letter-name">B</span></div>
+        <div class="letter-picker" role="group" aria-label="Выбор буквы">
+          <button class="letter-button is-active" type="button" data-letter-key="letter_b" aria-pressed="true">B</button>
+          <button class="letter-button" type="button" data-letter-key="letter_i_big" aria-pressed="false">I₁</button>
+          <button class="letter-button" type="button" data-letter-key="letter_g" aria-pressed="false">G</button>
+          <button class="letter-button" type="button" data-letter-key="letter_w" aria-pressed="false">W</button>
+          <button class="letter-button" type="button" data-letter-key="letter_i_win" aria-pressed="false">I₂</button>
+          <button class="letter-button" type="button" data-letter-key="letter_n" aria-pressed="false">N</button>
+        </div>
+        <p class="letter-position" id="letter-position">X 49 · Y 59</p>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Букву также можно выбрать кликом прямо в сцене.</p>
       </section>
 
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
@@ -243,12 +293,65 @@
         { key: 'hand', label: 'Рука', file: 'hand.png?v=b2917e95', x: 5, y: 426, scale: 1.66, depth: 1 }
       ];
 
+      const LETTER_ASSETS = [
+        { key: 'letter_b', label: 'B', file: 'b.png', x: 49, y: 59, scale: 0.75 },
+        { key: 'letter_i_big', label: 'I₁', file: 'i.png', x: 65, y: 59, scale: 0.75 },
+        { key: 'letter_g', label: 'G', file: 'g.png', x: 81, y: 59, scale: 0.75 },
+        { key: 'letter_w', label: 'W', file: 'w.png', x: 105, y: 59, scale: 0.75 },
+        { key: 'letter_i_win', label: 'I₂', file: 'i.png', x: 121, y: 59, scale: 0.75 },
+        { key: 'letter_n', label: 'N', file: 'n.png', x: 137, y: 59, scale: 0.75 }
+      ];
+
       const loading = document.querySelector('#loading');
       const replayButton = document.querySelector('#replay-animation');
+      const activeLetterName = document.querySelector('#active-letter-name');
+      const letterPosition = document.querySelector('#letter-position');
+      const letterButtons = [...document.querySelectorAll('[data-letter-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
+      const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
+      let activeLetterKey = 'letter_b';
+
+      const updateLetterEditor = () => {
+        const asset = letterAssetByKey.get(activeLetterKey);
+        const position = activeScene?.getEditableLetterPosition(activeLetterKey) ?? asset;
+        activeLetterName.textContent = asset.label;
+        letterPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
+        letterButtons.forEach((button) => {
+          const isActive = button.dataset.letterKey === activeLetterKey;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-pressed', String(isActive));
+        });
+      };
+
+      const selectEditableLetter = (key) => {
+        if (!letterAssetByKey.has(key)) return;
+        activeLetterKey = key;
+        updateLetterEditor();
+      };
+
+      letterButtons.forEach((button) => {
+        button.addEventListener('click', () => selectEditableLetter(button.dataset.letterKey));
+      });
+
+      document.addEventListener('keydown', (event) => {
+        const directions = {
+          ArrowLeft: [-1, 0],
+          ArrowRight: [1, 0],
+          ArrowUp: [0, -1],
+          ArrowDown: [0, 1]
+        };
+        const direction = directions[event.key];
+        if (!direction || !activeScene) return;
+
+        event.preventDefault();
+        const step = event.shiftKey ? 5 : 1;
+        activeScene.moveEditableLetter(activeLetterKey, direction[0] * step, direction[1] * step);
+        updateLetterEditor();
+      });
 
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
+      updateLetterEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -256,6 +359,7 @@
         preload() {
           this.load.atlas('explode', 'explode.png', 'explode.json');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
+          LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
@@ -292,6 +396,16 @@
             this.sprites.set(asset.key, sprite);
           });
 
+          this.letterSprites = new Map();
+          LETTER_ASSETS.forEach((asset) => {
+            const sprite = this.add.image(asset.x, asset.y, asset.key)
+              .setScale(asset.scale)
+              .setDepth(120)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerdown', () => selectEditableLetter(asset.key));
+            this.letterSprites.set(asset.key, sprite);
+          });
+
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
           const hand = this.sprites.get('hand');
@@ -301,8 +415,24 @@
           this.berryTransform = { scaleX: 1, scaleY: 1 };
 
           activeScene = this;
+          updateLetterEditor();
           this.playIntroAnimation();
           loading.classList.add('is-hidden');
+        }
+
+        getEditableLetterPosition(key) {
+          const sprite = this.letterSprites?.get(key);
+          return sprite ? { x: sprite.x, y: sprite.y } : letterAssetByKey.get(key);
+        }
+
+        moveEditableLetter(key, deltaX, deltaY) {
+          const sprite = this.letterSprites?.get(key);
+          if (!sprite) return;
+
+          sprite.setPosition(
+            Math.round(sprite.x + deltaX),
+            Math.round(sprite.y + deltaY)
+          );
         }
 
         playIntroAnimation() {
