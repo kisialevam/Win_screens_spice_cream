@@ -204,69 +204,6 @@
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
       </section>
 
-      <section class="control-group">
-        <div class="label-row"><label for="entry-speed">Скорость выезда</label><output class="value" id="entry-speed-value">2.4×</output></div>
-        <input id="entry-speed" type="range" min="0.1" max="4.7" step="0.1" value="2.4">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="entry-overshoot">Заскок выше точки</label><output class="value" id="entry-overshoot-value">24 px</output></div>
-        <input id="entry-overshoot" type="range" min="0" max="48" step="1" value="24">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="entry-bounce">Количество баунсов</label><output class="value" id="entry-bounce-value">2</output></div>
-        <input id="entry-bounce" type="range" min="0" max="4" step="1" value="2">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="entry-bounce-amplitude">Амплитуда баунса</label><output class="value" id="entry-bounce-amplitude-value">8 px</output></div>
-        <input id="entry-bounce-amplitude" type="range" min="0" max="16" step="0.5" value="8">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="ice-jump">Прыжок мороженого</label><output class="value" id="ice-jump-value">46 px</output></div>
-        <input id="ice-jump" type="range" min="0" max="92" step="1" value="46">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="ice-hold">Зависание мороженого</label><output class="value" id="ice-hold-value">-160 мс</output></div>
-        <input id="ice-hold" type="range" min="-480" max="160" step="10" value="-160">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="ice-lead">Опережение мороженого</label><output class="value" id="ice-lead-value">720 мс</output></div>
-        <input id="ice-lead" type="range" min="0" max="1440" step="10" value="720">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="berry-jump">Прыжок клубнички</label><output class="value" id="berry-jump-value">23 px</output></div>
-        <input id="berry-jump" type="range" min="0" max="46" step="1" value="23">
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="berry-hold">Зависание клубнички</label><output class="value" id="berry-hold-value">-160 мс</output></div>
-        <input id="berry-hold" type="range" min="-480" max="160" step="10" value="-160">
-        <p class="control-hint">Отрицательное значение ускоряет прохождение верхней точки.</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="berry-lead">Опережение клубнички</label><output class="value" id="berry-lead-value">290 мс</output></div>
-        <input id="berry-lead" type="range" min="-240" max="820" step="10" value="290">
-        <p class="control-hint">Отрицательное опережение запускает элемент позже.</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><label for="explode-scale">Масштаб секвенции</label><output class="value" id="explode-scale-value">1.45×</output></div>
-        <input id="explode-scale" type="range" min="0.25" max="1.75" step="0.05" value="1.45">
-        <p class="control-hint">Изменение любого ползунка автоматически перезапускает анимацию.</p>
-      </section>
-
-      <section class="control-group">
-        <div class="label-row"><span>Позиция секвенции</span><output class="value" id="explode-position-value">X -3 · Y -14</output></div>
-        <p class="control-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px.</p>
-      </section>
-
       <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
     </aside>
 
@@ -293,7 +230,18 @@
       const FLOAT_SPEED = 1;
       const FLOAT_HEIGHT = 1.5;
       const IMPACT_STRENGTH = 1.25;
-      const EXPLODE = { offsetX: -3, offsetY: -14, depth: 0, frameRate: 30 };
+      const ENTRY_SPEED = 2.4;
+      const ENTRY_OVERSHOOT = 24;
+      const ENTRY_BOUNCE_COUNT = 2;
+      const ENTRY_BOUNCE_AMPLITUDE = 8;
+      const ICE_JUMP_HEIGHT = 46;
+      const ICE_HOLD = -160;
+      const ICE_LEAD = 720;
+      const BERRY_JUMP_HEIGHT = 23;
+      const BERRY_HOLD = -160;
+      const BERRY_LEAD = 290;
+      const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30 };
+      const SPLASH = { hangY: 4, emergeDuration: 420, hangDuration: 2000, fallDuration: 380 };
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -306,82 +254,15 @@
         { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
         { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 226, scale: 1, depth: 3 },
         { key: 'cream', label: 'Крем', file: 'cream.png', x: 82, y: 221, scale: 1, depth: 100 },
-        { key: 'splash', label: 'Брызги', file: 'splash.png', x: 21, y: 105, scale: 0.95, depth: 2 },
+        { key: 'splash', label: 'Капля', file: 'splash.png', x: 99, y: -8, scale: 0.95, depth: 9 },
         { key: 'hand', label: 'Рука', file: 'hand.png?v=b2917e95', x: 5, y: 426, scale: 1.66, depth: 1 }
       ];
 
       const loading = document.querySelector('#loading');
-      const entrySpeed = document.querySelector('#entry-speed');
-      const entrySpeedValue = document.querySelector('#entry-speed-value');
-      const entryOvershoot = document.querySelector('#entry-overshoot');
-      const entryOvershootValue = document.querySelector('#entry-overshoot-value');
-      const entryBounce = document.querySelector('#entry-bounce');
-      const entryBounceValue = document.querySelector('#entry-bounce-value');
-      const entryBounceAmplitude = document.querySelector('#entry-bounce-amplitude');
-      const entryBounceAmplitudeValue = document.querySelector('#entry-bounce-amplitude-value');
-      const iceJump = document.querySelector('#ice-jump');
-      const iceJumpValue = document.querySelector('#ice-jump-value');
-      const iceHold = document.querySelector('#ice-hold');
-      const iceHoldValue = document.querySelector('#ice-hold-value');
-      const iceLead = document.querySelector('#ice-lead');
-      const iceLeadValue = document.querySelector('#ice-lead-value');
-      const berryJump = document.querySelector('#berry-jump');
-      const berryJumpValue = document.querySelector('#berry-jump-value');
-      const berryHold = document.querySelector('#berry-hold');
-      const berryHoldValue = document.querySelector('#berry-hold-value');
-      const berryLead = document.querySelector('#berry-lead');
-      const berryLeadValue = document.querySelector('#berry-lead-value');
-      const explodeScale = document.querySelector('#explode-scale');
-      const explodeScaleValue = document.querySelector('#explode-scale-value');
-      const explodePositionValue = document.querySelector('#explode-position-value');
       const replayButton = document.querySelector('#replay-animation');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
-
-      const updateExplodePositionValue = () => {
-        explodePositionValue.textContent = `X ${EXPLODE.offsetX} · Y ${EXPLODE.offsetY}`;
-      };
-
-      const updateControlValues = () => {
-        entrySpeedValue.textContent = `${Number(entrySpeed.value).toFixed(1)}×`;
-        entryOvershootValue.textContent = `${entryOvershoot.value} px`;
-        entryBounceValue.textContent = entryBounce.value;
-        entryBounceAmplitudeValue.textContent = `${Number(entryBounceAmplitude.value).toFixed(1).replace(/\.0$/, '')} px`;
-        iceJumpValue.textContent = `${iceJump.value} px`;
-        iceHoldValue.textContent = `${iceHold.value} мс`;
-        iceLeadValue.textContent = `${iceLead.value} мс`;
-        berryJumpValue.textContent = `${berryJump.value} px`;
-        berryHoldValue.textContent = `${berryHold.value} мс`;
-        berryLeadValue.textContent = `${berryLead.value} мс`;
-        explodeScaleValue.textContent = `${Number(explodeScale.value).toFixed(2).replace(/0$/, '')}×`;
-      };
-
-      [entrySpeed, entryOvershoot, entryBounce, entryBounceAmplitude, iceJump, iceHold, iceLead, berryJump, berryHold, berryLead, explodeScale].forEach((control) => {
-        control.addEventListener('input', updateControlValues);
-        control.addEventListener('change', () => activeScene?.playIntroAnimation());
-      });
-      explodeScale.addEventListener('input', () => activeScene?.setExplodeScale(Number(explodeScale.value)));
-      window.addEventListener('keydown', (event) => {
-        const direction = {
-          ArrowLeft: [-1, 0],
-          ArrowRight: [1, 0],
-          ArrowUp: [0, -1],
-          ArrowDown: [0, 1]
-        }[event.key];
-
-        if (!direction) return;
-
-        event.preventDefault();
-        const step = event.shiftKey ? 5 : 1;
-        EXPLODE.offsetX += direction[0] * step;
-        EXPLODE.offsetY += direction[1] * step;
-        updateExplodePositionValue();
-        activeScene?.syncHierarchy();
-        activeScene?.previewExplodePosition();
-      });
       replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
-      updateControlValues();
-      updateExplodePositionValue();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -411,7 +292,7 @@
           }
 
           this.explode = this.add.sprite(0, 0, 'explode', 'frame0000.png')
-            .setScale(Number(explodeScale.value))
+            .setScale(EXPLODE.scale)
             .setDepth(EXPLODE.depth)
             .setVisible(false);
           this.explode.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'explode-burst', () => {
@@ -435,8 +316,6 @@
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
-          this.explodePreviewTimer?.remove(false);
-          this.explodePreviewTimer = null;
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
 
           ASSETS.forEach((asset) => {
@@ -461,11 +340,12 @@
             floating: false
           };
           this.syncHierarchy();
+          this.launchSplashSequence();
 
-          const speed = Number(entrySpeed.value);
+          const speed = ENTRY_SPEED;
           const entryDuration = 1000 / speed;
-          const overshootHeight = Number(entryOvershoot.value);
-          const iceStartDelay = Math.max(0, entryDuration - Number(iceLead.value));
+          const overshootHeight = ENTRY_OVERSHOOT;
+          const iceStartDelay = Math.max(0, entryDuration - ICE_LEAD);
 
           this.sequenceTimers.push(this.time.delayedCall(iceStartDelay, () => {
             this.launchIceSequence();
@@ -482,11 +362,11 @@
         }
 
         settleHandEntry() {
-          const bounceCount = Number(entryBounce.value);
-          const bounceAmplitude = Number(entryBounceAmplitude.value);
+          const bounceCount = ENTRY_BOUNCE_COUNT;
+          const bounceAmplitude = ENTRY_BOUNCE_AMPLITUDE;
           const finishArrival = () => this.completeSequencePart('rootComplete');
 
-          if (bounceCount === 0 && Number(entryOvershoot.value) === 0) {
+          if (bounceCount === 0 && ENTRY_OVERSHOOT === 0) {
             finishArrival();
             return;
           }
@@ -561,11 +441,99 @@
           );
         }
 
+        launchSplashSequence() {
+          const splash = this.sprites.get('splash');
+          const strawberry = this.sprites.get('strawberry');
+          const baseScale = assetByKey.get('splash').scale;
+
+          splash
+            .setPosition(strawberry.x, assetByKey.get('splash').y)
+            .setScale(baseScale * 0.72, baseScale * 0.35)
+            .setAlpha(0)
+            .setVisible(true);
+
+          this.tweens.add({
+            targets: splash,
+            y: SPLASH.hangY,
+            alpha: 1,
+            scaleX: baseScale * 0.92,
+            scaleY: baseScale * 1.15,
+            duration: SPLASH.emergeDuration,
+            ease: 'Back.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets: splash,
+                y: SPLASH.hangY + 1.5,
+                scaleX: baseScale * 0.88,
+                scaleY: baseScale * 1.25,
+                duration: 700,
+                ease: 'Sine.InOut',
+                yoyo: true,
+                repeat: -1
+              });
+
+              this.sequenceTimers.push(this.time.delayedCall(SPLASH.hangDuration, () => {
+                this.tweens.killTweensOf(splash);
+                splash.setScale(baseScale).setAlpha(1);
+
+                const contactY = strawberry.y
+                  - strawberry.displayHeight / 2
+                  - splash.displayHeight / 2
+                  + 4;
+
+                this.tweens.add({
+                  targets: splash,
+                  x: strawberry.x,
+                  y: contactY,
+                  duration: SPLASH.fallDuration,
+                  ease: 'Cubic.In',
+                  onComplete: () => {
+                    splash.setAlpha(0).setVisible(false);
+                    this.playSplashImpact();
+                  }
+                });
+              }));
+            }
+          });
+        }
+
+        playSplashImpact() {
+          const strawberry = this.sprites.get('strawberry');
+          const cream = this.sprites.get('cream');
+          const targets = [strawberry, cream];
+
+          this.tweens.add({
+            targets,
+            scaleX: 1.12,
+            scaleY: 0.82,
+            duration: 85,
+            ease: 'Quad.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets,
+                scaleX: 0.96,
+                scaleY: 1.08,
+                duration: 130,
+                ease: 'Back.Out',
+                onComplete: () => {
+                  this.tweens.add({
+                    targets,
+                    scaleX: 1,
+                    scaleY: 1,
+                    duration: 150,
+                    ease: 'Sine.Out'
+                  });
+                }
+              });
+            }
+          });
+        }
+
         launchIceSequence() {
-          const iceJumpHeight = Number(iceJump.value);
-          const iceTiming = this.getJumpTiming(Number(iceHold.value), 290, 310);
+          const iceJumpHeight = ICE_JUMP_HEIGHT;
+          const iceTiming = this.getJumpTiming(ICE_HOLD, 290, 310);
           const iceFlightDuration = iceTiming.riseDuration + iceTiming.holdDuration + iceTiming.landDuration;
-          const berryStartDelay = Math.max(0, iceFlightDuration - Number(berryLead.value));
+          const berryStartDelay = Math.max(0, iceFlightDuration - BERRY_LEAD);
 
           this.sequenceTimers.push(this.time.delayedCall(berryStartDelay, () => {
             this.launchBerrySequence();
@@ -587,32 +555,15 @@
         }
 
         playExplodeSequence() {
-          this.explodePreviewTimer?.remove(false);
-          this.explodePreviewTimer = null;
           this.explode
-            .setScale(Number(explodeScale.value))
+            .setScale(EXPLODE.scale)
             .setVisible(true)
             .play('explode-burst', true);
         }
 
-        setExplodeScale(scale) {
-          this.explode?.setScale(scale);
-        }
-
-        previewExplodePosition() {
-          if (this.explode.anims.isPlaying) return;
-
-          this.explodePreviewTimer?.remove(false);
-          this.explode.stop().setFrame('frame0016.png').setVisible(true);
-          this.explodePreviewTimer = this.time.delayedCall(900, () => {
-            if (!this.explode.anims.isPlaying) this.explode.setVisible(false);
-            this.explodePreviewTimer = null;
-          });
-        }
-
         launchBerrySequence() {
-          const berryJumpHeight = Number(berryJump.value);
-          const berryTiming = this.getJumpTiming(Number(berryHold.value), 250, 280);
+          const berryJumpHeight = BERRY_JUMP_HEIGHT;
+          const berryTiming = this.getJumpTiming(BERRY_HOLD, 250, 280);
           this.jumpNode('berryY', berryJumpHeight, berryTiming.riseDuration, berryTiming.holdDuration, berryTiming.landDuration, () => {
             this.playLandingImpact('iceImpactY', 'strawberry', 4, () => {
               this.completeSequencePart('berryComplete');
