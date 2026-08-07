@@ -149,6 +149,13 @@
       cursor: pointer;
     }
 
+    .scene-zoom-slider {
+      width: 100%;
+      margin: 0;
+      accent-color: #ff4fa3;
+      cursor: pointer;
+    }
+
     .replay-button {
       width: 100%;
       min-height: 42px;
@@ -199,6 +206,7 @@
     #game-container {
       width: 366px;
       height: 792px;
+      transition: transform 120ms ease;
     }
 
     #game-container canvas {
@@ -241,6 +249,12 @@
         <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
       </section>
 
+      <section class="control-group" id="scene-zoom-editor">
+        <div class="label-row"><span>Приближение экрана</span><span class="value" id="scene-zoom-value">1.00×</span></div>
+        <input class="scene-zoom-slider" id="scene-zoom" type="range" min="1" max="3" step="0.25" value="1" aria-label="Приближение экрана">
+        <p class="letter-hint">Увеличивает только игровую сцену. Панель управления остаётся на месте.</p>
+      </section>
+
       <section class="control-group" id="letter-editor">
         <div class="label-row"><span>Активная буква</span><span class="value" id="active-letter-name">B</span></div>
         <div class="letter-picker" role="group" aria-label="Выбор буквы">
@@ -254,28 +268,28 @@
         <p class="letter-position" id="letter-position">X 49 · Y 59</p>
         <div class="letter-scale-list" aria-label="Масштаб букв">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб B</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_b">
+            <span class="label-row"><span>Масштаб B</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_b">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб I₁</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_i_big">
+            <span class="label-row"><span>Масштаб I₁</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_i_big">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб G</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_g">
+            <span class="label-row"><span>Масштаб G</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_g">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб W</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_w">
+            <span class="label-row"><span>Масштаб W</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_w">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб I₂</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_i_win">
+            <span class="label-row"><span>Масштаб I₂</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_i_win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб N</span><span class="letter-scale-value">0.15×</span></span>
-            <input class="letter-scale-slider" type="range" min="0.05" max="0.25" step="0.01" value="0.15" data-letter-scale="letter_n">
+            <span class="label-row"><span>Масштаб N</span><span class="letter-scale-value">0.30×</span></span>
+            <input class="letter-scale-slider" type="range" min="0.10" max="0.50" step="0.01" value="0.30" data-letter-scale="letter_n">
           </label>
         </div>
         <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Букву также можно выбрать кликом прямо в сцене.</p>
@@ -318,6 +332,15 @@
       const BERRY_HOLD = -160;
       const BERRY_LEAD = 290;
       const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30 };
+      const LETTER_WAVE = {
+        height: 8,
+        speed: 1,
+        stagger: 85,
+        secondPassOffset: 420,
+        riseDuration: 150,
+        holdDuration: 35,
+        pauseDuration: 1500
+      };
       const SPLASH = {
         rotation: -90,
         targetOffset: 31,
@@ -347,16 +370,20 @@
       ];
 
       const LETTER_ASSETS = [
-        { key: 'letter_b', label: 'B', file: 'b.png?v=5caf62ba', x: 49, y: 59, scale: 0.15 },
-        { key: 'letter_i_big', label: 'I₁', file: 'i.png?v=194387f1', x: 65, y: 59, scale: 0.15 },
-        { key: 'letter_g', label: 'G', file: 'g.png?v=bebf1e7e', x: 81, y: 59, scale: 0.15 },
-        { key: 'letter_w', label: 'W', file: 'w.png?v=0a08f21f', x: 105, y: 59, scale: 0.15 },
-        { key: 'letter_i_win', label: 'I₂', file: 'i.png?v=194387f1', x: 121, y: 59, scale: 0.15 },
-        { key: 'letter_n', label: 'N', file: 'n.png?v=ce4618d7', x: 137, y: 59, scale: 0.15 }
+        { key: 'letter_b', label: 'B', file: 'b.png?v=cb18a8f0', x: 49, y: 59, scale: 0.30 },
+        { key: 'letter_i_big', label: 'I₁', file: 'i.png?v=681f6b2c', x: 65, y: 59, scale: 0.30 },
+        { key: 'letter_g', label: 'G', file: 'g.png?v=71c0d5c1', x: 81, y: 59, scale: 0.30 },
+        { key: 'letter_w', label: 'W', file: 'w.png?v=9ff1a864', x: 105, y: 59, scale: 0.30 },
+        { key: 'letter_i_win', label: 'I₂', file: 'i.png?v=681f6b2c', x: 121, y: 59, scale: 0.30 },
+        { key: 'letter_n', label: 'N', file: 'n.png?v=bbd7a700', x: 137, y: 59, scale: 0.30 }
       ];
 
       const loading = document.querySelector('#loading');
       const replayButton = document.querySelector('#replay-animation');
+      const stageShell = document.querySelector('#stage-shell');
+      const gameContainer = document.querySelector('#game-container');
+      const sceneZoomSlider = document.querySelector('#scene-zoom');
+      const sceneZoomValue = document.querySelector('#scene-zoom-value');
       const activeLetterName = document.querySelector('#active-letter-name');
       const letterPosition = document.querySelector('#letter-position');
       const letterButtons = [...document.querySelectorAll('[data-letter-key]')];
@@ -365,6 +392,15 @@
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
       let activeLetterKey = 'letter_b';
+
+      const updateSceneZoom = () => {
+        const zoom = Number(sceneZoomSlider.value);
+        stageShell.style.width = `${WIDTH * RENDER_SCALE * zoom}px`;
+        stageShell.style.height = `${HEIGHT * RENDER_SCALE * zoom}px`;
+        gameContainer.style.transform = `scale(${zoom})`;
+        gameContainer.style.transformOrigin = 'top left';
+        sceneZoomValue.textContent = `${zoom.toFixed(2)}×`;
+      };
 
       const updateLetterEditor = () => {
         const asset = letterAssetByKey.get(activeLetterKey);
@@ -399,6 +435,9 @@
           selectEditableLetter(key);
         });
       });
+
+      sceneZoomSlider.addEventListener('input', updateSceneZoom);
+      updateSceneZoom();
 
       document.addEventListener('keydown', (event) => {
         if (event.target instanceof HTMLInputElement) return;
@@ -464,13 +503,15 @@
             this.sprites.set(asset.key, sprite);
           });
 
+          this.letterNodes = new Map();
           this.letterSprites = new Map();
           LETTER_ASSETS.forEach((asset) => {
-            const sprite = this.add.image(asset.x, asset.y, asset.key)
+            const sprite = this.add.image(0, 0, asset.key)
               .setScale(asset.scale)
-              .setDepth(120)
               .setInteractive({ useHandCursor: true })
               .on('pointerdown', () => selectEditableLetter(asset.key));
+            const node = this.add.container(asset.x, asset.y, [sprite]).setDepth(120);
+            this.letterNodes.set(asset.key, node);
             this.letterSprites.set(asset.key, sprite);
           });
 
@@ -489,17 +530,17 @@
         }
 
         getEditableLetterPosition(key) {
-          const sprite = this.letterSprites?.get(key);
-          return sprite ? { x: sprite.x, y: sprite.y } : letterAssetByKey.get(key);
+          const node = this.letterNodes?.get(key);
+          return node ? { x: node.x, y: node.y } : letterAssetByKey.get(key);
         }
 
         moveEditableLetter(key, deltaX, deltaY) {
-          const sprite = this.letterSprites?.get(key);
-          if (!sprite) return;
+          const node = this.letterNodes?.get(key);
+          if (!node) return;
 
-          sprite.setPosition(
-            Math.round(sprite.x + deltaX),
-            Math.round(sprite.y + deltaY)
+          node.setPosition(
+            Math.round(node.x + deltaX),
+            Math.round(node.y + deltaY)
           );
         }
 
@@ -511,6 +552,9 @@
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
+          this.letterSprites?.forEach((sprite, key) => {
+            sprite.setPosition(0, 0).setScale(letterAssetByKey.get(key).scale);
+          });
           this.floatingActive = false;
           this.floatingStartedAt = 0;
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
@@ -522,6 +566,7 @@
               .setAlpha(1)
               .setVisible(true);
           });
+          this.sprites.get('big_win').setVisible(false);
 
           const strawberryAsset = assetByKey.get('strawberry');
           const creamAsset = assetByKey.get('cream');
@@ -555,6 +600,7 @@
             iceComplete: false,
             berryComplete: false,
             splashStarted: false,
+            letterWaveStarted: false,
             floating: false
           };
           this.syncHierarchy();
@@ -877,7 +923,56 @@
               this.sequenceState.splashStarted = true;
               this.startSplashLoop();
             }
+
+            if (!this.sequenceState.letterWaveStarted) {
+              this.sequenceState.letterWaveStarted = true;
+              this.startLetterWaveLoop();
+            }
           }
+        }
+
+        startLetterWaveLoop() {
+          const speed = Math.max(0.1, LETTER_WAVE.speed);
+          const riseDuration = LETTER_WAVE.riseDuration / speed;
+          const holdDuration = LETTER_WAVE.holdDuration / speed;
+          const stagger = LETTER_WAVE.stagger / speed;
+          const secondPassOffset = LETTER_WAVE.secondPassOffset / speed;
+          const singlePassDuration = (
+            (LETTER_ASSETS.length - 1) * stagger
+            + riseDuration * 2
+            + holdDuration
+          );
+          const cycleDuration = (
+            secondPassOffset
+            + singlePassDuration
+            + LETTER_WAVE.pauseDuration / speed
+          );
+
+          const playWave = () => {
+            [0, secondPassOffset].forEach((passOffset) => {
+              LETTER_ASSETS.forEach((asset, index) => {
+                const sprite = this.letterSprites.get(asset.key);
+                this.tweens.add({
+                  targets: sprite,
+                  y: -LETTER_WAVE.height,
+                  duration: riseDuration,
+                  delay: passOffset + index * stagger,
+                  hold: holdDuration,
+                  ease: 'Sine.Out',
+                  yoyo: true,
+                  onComplete: () => sprite.setY(0)
+                });
+              });
+            });
+          };
+
+          playWave();
+          const letterWaveLoop = this.time.addEvent({
+            delay: cycleDuration,
+            loop: true,
+            callback: playWave
+          });
+          this.sequenceTimers.push(letterWaveLoop);
         }
 
         jumpNode(property, height, riseDuration, holdDuration, landDuration, onComplete, onApex = null) {
