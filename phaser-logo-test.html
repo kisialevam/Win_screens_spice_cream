@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+  <title>Spice Cream — тест экрана перехода</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #09070d;
+    }
+
+    #game {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #game canvas {
+      display: block;
+      margin: auto;
+    }
+
+    #message {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 32px;
+      color: #fff;
+      font: 20px/1.5 Arial, sans-serif;
+      text-align: center;
+      background: #09070d;
+    }
+
+    #editor-controls {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(12px, env(safe-area-inset-right));
+      z-index: 10;
+      display: flex;
+      width: min(360px, calc(100vw - 24px));
+      max-height: calc(100vh - 24px);
+      flex-direction: column;
+      align-items: stretch;
+      overflow-y: auto;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      background: rgba(9, 7, 13, 0.78);
+      backdrop-filter: blur(8px);
+    }
+
+    .editor-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #editor-controls button {
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 8px;
+      color: #ffffff;
+      font: 600 13px/1 Arial, sans-serif;
+      cursor: pointer;
+      background: #d83d88;
+    }
+
+    #editor-controls button:hover {
+      background: #ed4e9b;
+    }
+
+    #editor-controls button:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    #editor-controls button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    #editor-status {
+      min-width: 74px;
+      color: rgba(255, 255, 255, 0.75);
+      font: 12px/1 Arial, sans-serif;
+      text-align: center;
+    }
+
+    #wave-settings,
+    #sparkle-settings {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 10px 12px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9px;
+    }
+
+    #wave-settings legend,
+    #sparkle-settings legend {
+      padding: 0 6px;
+      color: rgba(255, 255, 255, 0.85);
+      font: 700 12px/1 Arial, sans-serif;
+    }
+
+    .wave-control {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 5px 10px;
+      color: rgba(255, 255, 255, 0.82);
+      font: 12px/1 Arial, sans-serif;
+    }
+
+    .wave-control output {
+      min-width: 58px;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .wave-control input[type="range"] {
+      grid-column: 1 / -1;
+      width: 100%;
+      margin: 0;
+      accent-color: #ed4e9b;
+      cursor: pointer;
+    }
+
+    .wave-loop-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font: 600 12px/1.2 Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .wave-loop-control input {
+      width: 17px;
+      height: 17px;
+      margin: 0;
+      accent-color: #ed4e9b;
+    }
+
+    @media (max-width: 700px) {
+      #editor-controls {
+        top: auto;
+        right: 8px;
+        bottom: max(8px, env(safe-area-inset-bottom));
+        left: 8px;
+        width: auto;
+        max-height: calc(100vh - 16px);
+      }
+
+      #editor-status {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="message" role="alert"></div>
+  <div id="editor-controls" aria-label="Управление словами">
+    <div class="editor-actions">
+      <button id="copy-positions" type="button">Скопировать позиции</button>
+      <button id="reset-positions" type="button">Сбросить</button>
+      <span id="editor-status" aria-live="polite">Клик → слово</span>
+    </div>
+    <fieldset id="wave-settings">
+      <legend>Настройка волны</legend>
+      <label class="wave-control" for="wave-speed">
+        <span>Скорость волны</span>
+        <output id="wave-speed-value" for="wave-speed">1.00×</output>
+        <input id="wave-speed" type="range" min="0.5" max="2" step="0.05" value="1">
+      </label>
+      <label class="wave-control" for="wave-offset">
+        <span>Офсет двух волн</span>
+        <output id="wave-offset-value" for="wave-offset">420 мс</output>
+        <input id="wave-offset" type="range" min="0" max="1400" step="20" value="420">
+      </label>
+      <label class="wave-control" for="wave-height">
+        <span>Высота волны</span>
+        <output id="wave-height-value" for="wave-height">34 px</output>
+        <input id="wave-height" type="range" min="0" max="120" step="2" value="34">
+      </label>
+      <label class="wave-loop-control" for="wave-loop">
+        <input id="wave-loop" type="checkbox">
+        <span>Воспроизводить постоянно</span>
+      </label>
+    </fieldset>
+    <fieldset id="sparkle-settings">
+      <legend>Настройка звёздочек</legend>
+      <label class="wave-control" for="sparkle-count">
+        <span>Количество на экране</span>
+        <output id="sparkle-count-value" for="sparkle-count">2</output>
+        <input id="sparkle-count" type="range" min="0" max="6" step="1" value="2">
+      </label>
+      <label class="wave-control" for="sparkle-scale">
+        <span>Общий скейл</span>
+        <output id="sparkle-scale-value" for="sparkle-scale">0.75×</output>
+        <input id="sparkle-scale" type="range" min="0.5" max="2" step="0.05" value="0.75">
+      </label>
+      <label class="wave-control" for="sparkle-rotation-speed">
+        <span>Скорость вращения</span>
+        <output id="sparkle-rotation-speed-value" for="sparkle-rotation-speed">15°/с</output>
+        <input id="sparkle-rotation-speed" type="range" min="0" max="90" step="5" value="15">
+      </label>
+      <label class="wave-control" for="sparkle-pause">
+        <span>Пауза</span>
+        <output id="sparkle-pause-value" for="sparkle-pause">0 мс</output>
+        <input id="sparkle-pause" type="range" min="0" max="1500" step="50" value="0">
+      </label>
+    </fieldset>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+  <script src="logo-builder.js?v=12"></script>
+</body>
+</html>
