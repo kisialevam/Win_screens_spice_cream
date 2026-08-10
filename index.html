@@ -358,6 +358,61 @@
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
       </section>
 
+      <section class="control-group" id="big-win-exit-editor">
+        <p class="settings-title">Падение BIG WIN</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Поворот надписи</span><span class="value" id="big-exit-rotation-value">13°</span></span>
+            <input class="letter-scale-slider" id="big-exit-rotation" type="range" min="-45" max="45" step="1" value="13" aria-label="Поворот падающей надписи BIG WIN">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость падения</span><span class="value" id="big-exit-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-exit-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость падения BIG WIN">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Заскок перед падением</span><span class="value" id="big-exit-overshoot-value">18 px</span></span>
+            <input class="letter-scale-slider" id="big-exit-overshoot" type="range" min="0" max="50" step="1" value="18" aria-label="Заскок BIG WIN перед падением">
+          </label>
+        </div>
+      </section>
+
+      <section class="control-group" id="mega-timing-editor">
+        <p class="settings-title">Прыжки десертов</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Опережение мороженок</span><span class="value" id="mega-ice-lead-value">720 мс</span></span>
+            <input class="letter-scale-slider" id="mega-ice-lead" type="range" min="-300" max="1200" step="10" value="720" aria-label="Офсет прыжка мороженок относительно рук">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Опережение крема и вишен</span><span class="value" id="mega-topping-lead-value">570 мс</span></span>
+            <input class="letter-scale-slider" id="mega-topping-lead" type="range" min="-300" max="1200" step="10" value="570" aria-label="Офсет прыжка крема и вишен относительно рук">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Сила баунса при посадке</span><span class="value" id="mega-impact-value">125%</span></span>
+            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="2" step="0.05" value="1.25" aria-label="Сила баунса десертов при посадке">
+          </label>
+        </div>
+        <p class="letter-hint">Положительное опережение запускает прыжок раньше завершения выезда руки.</p>
+      </section>
+
+      <section class="control-group" id="cream-long-animation-editor">
+        <p class="settings-title">Крем со стрелочкой</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость появления</span><span class="value" id="cream-appear-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="cream-appear-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.00" aria-label="Скорость появления длинного крема">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость качания</span><span class="value" id="cream-swing-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="cream-swing-speed" type="range" min="0.30" max="2.00" step="0.05" value="1.00" aria-label="Скорость качания длинного крема">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Амплитуда качания</span><span class="value" id="cream-swing-angle-value">3°</span></span>
+            <input class="letter-scale-slider" id="cream-swing-angle" type="range" min="0" max="12" step="0.5" value="3" aria-label="Амплитуда качания длинного крема">
+          </label>
+        </div>
+      </section>
+
       <button class="replay-button" id="next-screen" type="button">Следующий</button>
       <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
     </aside>
@@ -418,6 +473,10 @@
         fallDuration: 380,
         repeatDelay: 4000
       };
+      const BIG_WIN_EXIT = { rotation: 13, speed: 1, overshoot: 18 };
+      const MEGA_JUMPS = { iceLead: 720, toppingLead: 570, impact: 1.25 };
+      const CREAM_LONG_ANIMATION = { appearSpeed: 1, swingSpeed: 1, swingAngle: 3 };
+      const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
         return 1 - 0.85 * remaining ** 3 - 0.15 * remaining;
@@ -536,6 +595,26 @@
         megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
         activeScene?.setMegaRotation(activeMegaKey, asset.rotation);
       });
+
+      const bindTransitionControl = (inputId, outputId, settings, property, format) => {
+        const input = document.querySelector(`#${inputId}`);
+        const output = document.querySelector(`#${outputId}`);
+        input.addEventListener('input', () => {
+          settings[property] = Number(input.value);
+          output.textContent = format(settings[property]);
+          activeScene?.playNextTransition(true);
+        });
+      };
+
+      bindTransitionControl('big-exit-rotation', 'big-exit-rotation-value', BIG_WIN_EXIT, 'rotation', (value) => `${Math.round(value)}°`);
+      bindTransitionControl('big-exit-speed', 'big-exit-speed-value', BIG_WIN_EXIT, 'speed', (value) => `${value.toFixed(2)}×`);
+      bindTransitionControl('big-exit-overshoot', 'big-exit-overshoot-value', BIG_WIN_EXIT, 'overshoot', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('mega-ice-lead', 'mega-ice-lead-value', MEGA_JUMPS, 'iceLead', (value) => `${Math.round(value)} мс`);
+      bindTransitionControl('mega-topping-lead', 'mega-topping-lead-value', MEGA_JUMPS, 'toppingLead', (value) => `${Math.round(value)} мс`);
+      bindTransitionControl('mega-impact', 'mega-impact-value', MEGA_JUMPS, 'impact', (value) => `${Math.round(value * 100)}%`);
+      bindTransitionControl('cream-appear-speed', 'cream-appear-speed-value', CREAM_LONG_ANIMATION, 'appearSpeed', (value) => `${value.toFixed(2)}×`);
+      bindTransitionControl('cream-swing-speed', 'cream-swing-speed-value', CREAM_LONG_ANIMATION, 'swingSpeed', (value) => `${value.toFixed(2)}×`);
+      bindTransitionControl('cream-swing-angle', 'cream-swing-angle-value', CREAM_LONG_ANIMATION, 'swingAngle', (value) => `${value.toFixed(1)}°`);
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -807,11 +886,17 @@
           this.lockCompositionPose();
         }
 
-        playNextTransition() {
-          if (this.transitioning) return;
+        playNextTransition(forceRestart = false) {
+          if (this.transitioning && !forceRestart) return;
           this.transitioning = true;
           this.megaActive = false;
-          this.megaSequenceState = { left: false, right: false, title: false };
+          this.megaSequenceState = {
+            leftBall: false,
+            leftTopping: false,
+            rightBall: false,
+            rightTopping: false,
+            title: false
+          };
           nextButton.disabled = true;
           nextButton.textContent = 'Переходим…';
           this.prepareBigWinForTransition();
@@ -910,8 +995,13 @@
           });
           this.syncMegaHandHierarchy();
 
-          this.startMegaHandEntry('left', 0);
-          this.startMegaHandEntry('right', 140);
+          [['left', 0], ['right', 140]].forEach(([side, entryDelay]) => {
+            this.startMegaHandEntry(side, entryDelay);
+            const iceDelay = entryDelay + Math.max(0, MEGA_HAND_SETTLE_DURATION - MEGA_JUMPS.iceLead);
+            const toppingDelay = entryDelay + Math.max(0, MEGA_HAND_SETTLE_DURATION - MEGA_JUMPS.toppingLead);
+            this.sequenceTimers.push(this.time.delayedCall(iceDelay, () => this.launchMegaBallSequence(side)));
+            this.sequenceTimers.push(this.time.delayedCall(toppingDelay, () => this.launchMegaToppingSequence(side)));
+          });
         }
 
         startMegaHandEntry(side, delay) {
@@ -935,8 +1025,7 @@
               [property]: 0,
               duration: 120,
               ease: 'Sine.Out',
-              onUpdate: () => this.syncMegaHandHierarchy(),
-              onComplete: () => this.launchMegaDessertSequence(side)
+              onUpdate: () => this.syncMegaHandHierarchy()
             });
             return;
           }
@@ -962,36 +1051,39 @@
           });
         }
 
-        launchMegaDessertSequence(side) {
+        launchMegaBallSequence(side) {
           const ballProperty = `${side}BallY`;
-          const toppingProperty = `${side}ToppingY`;
           const impactProperty = `${side}ImpactY`;
-          const toppingImpactProperty = `${side}ToppingImpactY`;
+          const ballKey = side === 'left' ? 'mega_ice_2' : 'mega_ice_1';
           const iceTiming = this.getJumpTiming(ICE_HOLD, 290, 310);
-          const berryTiming = this.getJumpTiming(BERRY_HOLD, 250, 280);
-          const iceFlightDuration = iceTiming.riseDuration + iceTiming.holdDuration + iceTiming.landDuration;
-          const toppingStartDelay = Math.max(0, iceFlightDuration - BERRY_LEAD);
-
-          this.sequenceTimers.push(this.time.delayedCall(toppingStartDelay, () => {
-            this.megaJumpNode(
-              toppingProperty,
-              BERRY_JUMP_HEIGHT,
-              berryTiming.riseDuration,
-              berryTiming.holdDuration,
-              berryTiming.landDuration,
-              () => this.playMegaLandingImpact(toppingImpactProperty, 4, () => {
-                this.completeMegaTransitionPart(side);
-              })
-            );
-          }));
-
           this.megaJumpNode(
             ballProperty,
             ICE_JUMP_HEIGHT,
             iceTiming.riseDuration,
             iceTiming.holdDuration,
             iceTiming.landDuration,
-            () => this.playMegaLandingImpact(impactProperty, 6)
+            () => this.playMegaLandingImpact(impactProperty, 6, [ballKey], () => {
+              this.completeMegaTransitionPart(`${side}Ball`);
+            })
+          );
+        }
+
+        launchMegaToppingSequence(side) {
+          const toppingProperty = `${side}ToppingY`;
+          const toppingImpactProperty = `${side}ToppingImpactY`;
+          const toppingKeys = side === 'left'
+            ? ['mega_cherry_1', 'mega_cream_2']
+            : ['mega_cherry_2', 'mega_cream_1'];
+          const berryTiming = this.getJumpTiming(BERRY_HOLD, 250, 280);
+          this.megaJumpNode(
+            toppingProperty,
+            BERRY_JUMP_HEIGHT,
+            berryTiming.riseDuration,
+            berryTiming.holdDuration,
+            berryTiming.landDuration,
+            () => this.playMegaLandingImpact(toppingImpactProperty, 4, toppingKeys, () => {
+              this.completeMegaTransitionPart(`${side}Topping`);
+            })
           );
         }
 
@@ -1019,8 +1111,24 @@
           });
         }
 
-        playMegaLandingImpact(property, amplitude, onComplete = () => {}) {
-          const impact = amplitude * IMPACT_STRENGTH;
+        playMegaLandingImpact(property, amplitude, squashKeys, onComplete = () => {}) {
+          const impact = amplitude * MEGA_JUMPS.impact;
+          const squashSprites = squashKeys.map((key) => this.megaSprites.get(key));
+          if (impact === 0) {
+            this.megaHandMotion[property] = 0;
+            squashKeys.forEach((key) => this.megaSprites.get(key).setScale(megaAssetByKey.get(key).scale));
+            this.syncMegaHandHierarchy();
+            onComplete();
+            return;
+          }
+          this.tweens.add({
+            targets: squashSprites,
+            scaleX: 1 + 0.08 * MEGA_JUMPS.impact,
+            scaleY: 1 - 0.1 * MEGA_JUMPS.impact,
+            duration: 70,
+            ease: 'Sine.InOut',
+            yoyo: true
+          });
           this.tweens.add({
             targets: this.megaHandMotion,
             [property]: impact,
@@ -1034,7 +1142,10 @@
                 duration: 190,
                 ease: 'Back.Out',
                 onUpdate: () => this.syncMegaHandHierarchy(),
-                onComplete
+                onComplete: () => {
+                  squashKeys.forEach((key) => this.megaSprites.get(key).setScale(megaAssetByKey.get(key).scale));
+                  onComplete();
+                }
               });
             }
           });
@@ -1043,50 +1154,63 @@
         startCreamLongEntrance() {
           const asset = megaAssetByKey.get('mega_cream_long');
           const sprite = this.megaSprites.get(asset.key);
+          const appearSpeed = Math.max(0.1, CREAM_LONG_ANIMATION.appearSpeed);
           this.positionMegaSprite(asset.key);
-          sprite.setScale(0).setAngle(-5).setAlpha(1).setVisible(true);
+          sprite
+            .setScale(asset.scale, 0.001)
+            .setAngle(0)
+            .setAlpha(1)
+            .setVisible(true);
           this.tweens.add({
             targets: sprite,
-            scaleX: asset.scale * 1.1,
-            scaleY: asset.scale * 1.1,
-            angle: 6,
-            duration: 420,
+            scaleY: asset.scale,
+            duration: 420 / appearSpeed,
             delay: 180,
-            ease: 'Back.Out',
+            ease: 'Cubic.Out',
             onComplete: () => {
+              const angle = Math.max(0, CREAM_LONG_ANIMATION.swingAngle);
+              if (angle === 0) {
+                sprite.setAngle(0);
+                return;
+              }
               this.tweens.add({
                 targets: sprite,
-                scaleX: asset.scale,
-                scaleY: asset.scale,
-                angle: -3,
-                duration: 150,
-                ease: 'Sine.Out',
-                onComplete: () => {
-                  this.tweens.add({
-                    targets: sprite,
-                    angle: 3,
-                    duration: 170,
-                    ease: 'Sine.InOut',
-                    yoyo: true,
-                    repeat: 2,
-                    onComplete: () => sprite.setAngle(0)
-                  });
-                }
+                angle,
+                duration: 900 / Math.max(0.1, CREAM_LONG_ANIMATION.swingSpeed),
+                ease: 'Sine.InOut',
+                yoyo: true,
+                repeat: -1
               });
             }
           });
         }
 
         transitionMegaTitle() {
-          this.tweens.add({
-            targets: this.titleContainer,
-            y: 175,
-            angle: 13,
-            alpha: 0,
-            duration: 430,
-            ease: 'Back.In',
-            onComplete: () => this.titleContainer.setVisible(false)
-          });
+          const exitSpeed = Math.max(0.1, BIG_WIN_EXIT.speed);
+          const overshoot = Math.max(0, BIG_WIN_EXIT.overshoot);
+          const startFall = () => {
+            this.tweens.add({
+              targets: this.titleContainer,
+              x: 0,
+              y: HEIGHT + 100,
+              angle: BIG_WIN_EXIT.rotation,
+              duration: 600 / exitSpeed,
+              ease: 'Cubic.In',
+              onComplete: () => this.titleContainer.setVisible(false)
+            });
+          };
+          if (overshoot === 0) {
+            startFall();
+          } else {
+            this.tweens.add({
+              targets: this.titleContainer,
+              x: 0,
+              y: -overshoot,
+              duration: 170 / exitSpeed,
+              ease: 'Quad.Out',
+              onComplete: startFall
+            });
+          }
 
           MEGA_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.megaSprites.get(asset.key)
@@ -1096,17 +1220,19 @@
               .setVisible(true);
           });
           this.megaTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
-          this.sequenceTimers.push(this.time.delayedCall(160, () => {
+          const jumpDuration = overshoot === 0 ? 0 : 170 / exitSpeed;
+          const megaTitleDelay = jumpDuration + 520 / exitSpeed;
+          this.sequenceTimers.push(this.time.delayedCall(megaTitleDelay, () => {
             this.playDropEntrance(this.megaTitleContainer, 0, TITLE_DROP);
           }));
-          this.sequenceTimers.push(this.time.delayedCall(980, () => {
+          this.sequenceTimers.push(this.time.delayedCall(megaTitleDelay + 820, () => {
             this.completeMegaTransitionPart('title');
           }));
         }
 
         completeMegaTransitionPart(part) {
           this.megaSequenceState[part] = true;
-          if (!this.megaSequenceState.left || !this.megaSequenceState.right || !this.megaSequenceState.title) return;
+          if (!Object.values(this.megaSequenceState).every(Boolean)) return;
           this.transitioning = false;
           this.megaActive = true;
           nextButton.disabled = false;
