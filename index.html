@@ -219,6 +219,13 @@
       font-weight: 800;
     }
 
+    .settings-subtitle {
+      margin: 2px 0 -6px;
+      color: #ff9acb;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .settings-block .letter-scale-control + .letter-scale-control {
       margin-top: 14px;
     }
@@ -325,6 +332,7 @@
         <div class="label-row"><span>Активный слой</span><span class="value" id="active-mega-name">84.99</span></div>
         <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Mega Win">
           <button class="letter-button is-active" type="button" data-mega-key="mega_amount" aria-pressed="true">84.99</button>
+          <button class="letter-button" type="button" data-mega-key="mega_multiplier" aria-pressed="false">69x</button>
           <button class="letter-button" type="button" data-mega-key="mega_m" aria-pressed="false">M</button>
           <button class="letter-button" type="button" data-mega-key="mega_e" aria-pressed="false">E</button>
           <button class="letter-button" type="button" data-mega-key="mega_g" aria-pressed="false">G</button>
@@ -362,16 +370,44 @@
         <p class="settings-title">Падение BIG WIN</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот надписи</span><span class="value" id="big-exit-rotation-value">13°</span></span>
-            <input class="letter-scale-slider" id="big-exit-rotation" type="range" min="-45" max="45" step="1" value="13" aria-label="Поворот падающей надписи BIG WIN">
+            <span class="label-row"><span>Поворот надписи</span><span class="value" id="big-exit-rotation-value">0°</span></span>
+            <input class="letter-scale-slider" id="big-exit-rotation" type="range" min="-45" max="45" step="1" value="0" aria-label="Поворот падающей надписи BIG WIN">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость падения</span><span class="value" id="big-exit-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="big-exit-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость падения BIG WIN">
+            <span class="label-row"><span>Скорость падения</span><span class="value" id="big-exit-speed-value">1.30×</span></span>
+            <input class="letter-scale-slider" id="big-exit-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.30" aria-label="Скорость падения BIG WIN">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Заскок перед падением</span><span class="value" id="big-exit-overshoot-value">18 px</span></span>
-            <input class="letter-scale-slider" id="big-exit-overshoot" type="range" min="0" max="50" step="1" value="18" aria-label="Заскок BIG WIN перед падением">
+            <span class="label-row"><span>Заскок перед падением</span><span class="value" id="big-exit-overshoot-value">33 px</span></span>
+            <input class="letter-scale-slider" id="big-exit-overshoot" type="range" min="0" max="50" step="1" value="33" aria-label="Заскок BIG WIN перед падением">
+          </label>
+        </div>
+      </section>
+
+      <section class="control-group" id="mega-title-editor">
+        <p class="settings-title">Появление MEGA WIN</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Момент выпадения</span><span class="value" id="mega-title-delay-value">430 мс</span></span>
+            <input class="letter-scale-slider" id="mega-title-delay" type="range" min="0" max="1000" step="10" value="430" aria-label="Момент выпадения MEGA WIN">
+          </label>
+        </div>
+      </section>
+
+      <section class="control-group" id="mega-amount-editor">
+        <p class="settings-title">Появление 84.99</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость появления</span><span class="value" id="mega-amount-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="mega-amount-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость появления 84.99">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Момент появления</span><span class="value" id="mega-amount-delay-value">220 мс</span></span>
+            <input class="letter-scale-slider" id="mega-amount-delay" type="range" min="0" max="1200" step="10" value="220" aria-label="Момент появления 84.99">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Баунс в конце</span><span class="value" id="mega-amount-bounce-value">25%</span></span>
+            <input class="letter-scale-slider" id="mega-amount-bounce" type="range" min="0" max="80" step="1" value="25" aria-label="Сила баунса 84.99">
           </label>
         </div>
       </section>
@@ -380,16 +416,16 @@
         <p class="settings-title">Прыжки десертов</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение мороженок</span><span class="value" id="mega-ice-lead-value">720 мс</span></span>
-            <input class="letter-scale-slider" id="mega-ice-lead" type="range" min="-300" max="1200" step="10" value="720" aria-label="Офсет прыжка мороженок относительно рук">
+            <span class="label-row"><span>Опережение мороженок</span><span class="value" id="mega-ice-lead-value">860 мс</span></span>
+            <input class="letter-scale-slider" id="mega-ice-lead" type="range" min="-300" max="1200" step="10" value="860" aria-label="Офсет прыжка мороженок относительно рук">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение крема и вишен</span><span class="value" id="mega-topping-lead-value">570 мс</span></span>
-            <input class="letter-scale-slider" id="mega-topping-lead" type="range" min="-300" max="1200" step="10" value="570" aria-label="Офсет прыжка крема и вишен относительно рук">
+            <span class="label-row"><span>Опережение крема и вишен</span><span class="value" id="mega-topping-lead-value">830 мс</span></span>
+            <input class="letter-scale-slider" id="mega-topping-lead" type="range" min="-300" max="1200" step="10" value="830" aria-label="Офсет прыжка крема и вишен относительно рук">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Сила баунса при посадке</span><span class="value" id="mega-impact-value">125%</span></span>
-            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="2" step="0.05" value="1.25" aria-label="Сила баунса десертов при посадке">
+            <span class="label-row"><span>Сила баунса при посадке</span><span class="value" id="mega-impact-value">30%</span></span>
+            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="2" step="0.05" value="0.30" aria-label="Сила баунса десертов при посадке">
           </label>
         </div>
         <p class="letter-hint">Положительное опережение запускает прыжок раньше завершения выезда руки.</p>
@@ -399,16 +435,48 @@
         <p class="settings-title">Крем со стрелочкой</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость появления</span><span class="value" id="cream-appear-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="cream-appear-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.00" aria-label="Скорость появления длинного крема">
+            <span class="label-row"><span>Скорость появления</span><span class="value" id="cream-appear-speed-value">0.70×</span></span>
+            <input class="letter-scale-slider" id="cream-appear-speed" type="range" min="0.50" max="2.50" step="0.05" value="0.70" aria-label="Скорость появления длинного крема">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость качания</span><span class="value" id="cream-swing-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="cream-swing-speed" type="range" min="0.30" max="2.00" step="0.05" value="1.00" aria-label="Скорость качания длинного крема">
+            <span class="label-row"><span>Скорость качания</span><span class="value" id="cream-swing-speed-value">0.65×</span></span>
+            <input class="letter-scale-slider" id="cream-swing-speed" type="range" min="0.30" max="2.00" step="0.05" value="0.65" aria-label="Скорость качания длинного крема">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Амплитуда качания</span><span class="value" id="cream-swing-angle-value">3°</span></span>
-            <input class="letter-scale-slider" id="cream-swing-angle" type="range" min="0" max="12" step="0.5" value="3" aria-label="Амплитуда качания длинного крема">
+            <span class="label-row"><span>Амплитуда качания</span><span class="value" id="cream-swing-angle-value">1.5°</span></span>
+            <input class="letter-scale-slider" id="cream-swing-angle" type="range" min="0" max="12" step="0.5" value="1.5" aria-label="Амплитуда качания длинного крема">
+          </label>
+        </div>
+      </section>
+
+      <section class="control-group" id="hearts-editor">
+        <p class="settings-title">Секвенции hearts</p>
+        <div class="settings-stack">
+          <p class="settings-subtitle">Левая рука</p>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Положение X</span><span class="value" id="hearts-left-x-value">40 px</span></span>
+            <input class="letter-scale-slider" id="hearts-left-x" type="range" min="-40" max="220" step="1" value="40" aria-label="Положение X левой секвенции hearts">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Положение Y</span><span class="value" id="hearts-left-y-value">175 px</span></span>
+            <input class="letter-scale-slider" id="hearts-left-y" type="range" min="80" max="430" step="1" value="175" aria-label="Положение Y левой секвенции hearts">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб</span><span class="value" id="hearts-left-scale-value">0.90×</span></span>
+            <input class="letter-scale-slider" id="hearts-left-scale" type="range" min="0.20" max="2.00" step="0.05" value="0.90" aria-label="Масштаб левой секвенции hearts">
+          </label>
+          <p class="settings-subtitle">Правая рука · отражена</p>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Положение X</span><span class="value" id="hearts-right-x-value">145 px</span></span>
+            <input class="letter-scale-slider" id="hearts-right-x" type="range" min="-40" max="220" step="1" value="145" aria-label="Положение X правой секвенции hearts">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Положение Y</span><span class="value" id="hearts-right-y-value">195 px</span></span>
+            <input class="letter-scale-slider" id="hearts-right-y" type="range" min="80" max="430" step="1" value="195" aria-label="Положение Y правой секвенции hearts">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб</span><span class="value" id="hearts-right-scale-value">0.90×</span></span>
+            <input class="letter-scale-slider" id="hearts-right-scale" type="range" min="0.20" max="2.00" step="0.05" value="0.90" aria-label="Масштаб правой секвенции hearts">
           </label>
         </div>
       </section>
@@ -473,9 +541,17 @@
         fallDuration: 380,
         repeatDelay: 4000
       };
-      const BIG_WIN_EXIT = { rotation: 13, speed: 1, overshoot: 18 };
-      const MEGA_JUMPS = { iceLead: 720, toppingLead: 570, impact: 1.25 };
-      const CREAM_LONG_ANIMATION = { appearSpeed: 1, swingSpeed: 1, swingAngle: 3 };
+      const BIG_WIN_EXIT = { rotation: 0, speed: 1.3, overshoot: 33 };
+      const MEGA_SCREEN_DELAY = 160;
+      const MEGA_TITLE_ENTRANCE = { delay: 430 };
+      const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 220, bounce: 25 };
+      const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.3 };
+      const CREAM_LONG_ANIMATION = { appearSpeed: 0.7, swingSpeed: 0.65, swingAngle: 1.5 };
+      const HEARTS = {
+        frameRate: 30,
+        left: { x: 40, y: 175, scale: 0.9, flipX: false },
+        right: { x: 145, y: 195, scale: 0.9, flipX: true }
+      };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -504,6 +580,7 @@
 
       const MEGA_ASSETS = [
         { key: 'mega_amount', label: '84.99', file: 'mega_win/84.99.png', x: 91, y: 93, scale: 0.17, depth: 214 },
+        { key: 'mega_multiplier', label: '69x', file: 'mega_win/69x.png', x: 90, y: 302, scale: 0.17, depth: 214 },
         { key: 'mega_m', label: 'M', file: 'mega_win/m_win_mega.png', x: 53, y: 53, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_e', label: 'E', file: 'mega_win/e_win_mega.png', x: 67, y: 52, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_g', label: 'G', file: 'mega_win/g_win_mega.png', x: 81, y: 51, scale: 0.17, depth: 220, isLetter: true },
@@ -609,12 +686,22 @@
       bindTransitionControl('big-exit-rotation', 'big-exit-rotation-value', BIG_WIN_EXIT, 'rotation', (value) => `${Math.round(value)}°`);
       bindTransitionControl('big-exit-speed', 'big-exit-speed-value', BIG_WIN_EXIT, 'speed', (value) => `${value.toFixed(2)}×`);
       bindTransitionControl('big-exit-overshoot', 'big-exit-overshoot-value', BIG_WIN_EXIT, 'overshoot', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('mega-title-delay', 'mega-title-delay-value', MEGA_TITLE_ENTRANCE, 'delay', (value) => `${Math.round(value)} мс`);
+      bindTransitionControl('mega-amount-speed', 'mega-amount-speed-value', MEGA_AMOUNT_REVEAL, 'speed', (value) => `${value.toFixed(2)}×`);
+      bindTransitionControl('mega-amount-delay', 'mega-amount-delay-value', MEGA_AMOUNT_REVEAL, 'delay', (value) => `${Math.round(value)} мс`);
+      bindTransitionControl('mega-amount-bounce', 'mega-amount-bounce-value', MEGA_AMOUNT_REVEAL, 'bounce', (value) => `${Math.round(value)}%`);
       bindTransitionControl('mega-ice-lead', 'mega-ice-lead-value', MEGA_JUMPS, 'iceLead', (value) => `${Math.round(value)} мс`);
       bindTransitionControl('mega-topping-lead', 'mega-topping-lead-value', MEGA_JUMPS, 'toppingLead', (value) => `${Math.round(value)} мс`);
       bindTransitionControl('mega-impact', 'mega-impact-value', MEGA_JUMPS, 'impact', (value) => `${Math.round(value * 100)}%`);
       bindTransitionControl('cream-appear-speed', 'cream-appear-speed-value', CREAM_LONG_ANIMATION, 'appearSpeed', (value) => `${value.toFixed(2)}×`);
       bindTransitionControl('cream-swing-speed', 'cream-swing-speed-value', CREAM_LONG_ANIMATION, 'swingSpeed', (value) => `${value.toFixed(2)}×`);
       bindTransitionControl('cream-swing-angle', 'cream-swing-angle-value', CREAM_LONG_ANIMATION, 'swingAngle', (value) => `${value.toFixed(1)}°`);
+      bindTransitionControl('hearts-left-x', 'hearts-left-x-value', HEARTS.left, 'x', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('hearts-left-y', 'hearts-left-y-value', HEARTS.left, 'y', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('hearts-left-scale', 'hearts-left-scale-value', HEARTS.left, 'scale', (value) => `${value.toFixed(2)}×`);
+      bindTransitionControl('hearts-right-x', 'hearts-right-x-value', HEARTS.right, 'x', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('hearts-right-y', 'hearts-right-y-value', HEARTS.right, 'y', (value) => `${Math.round(value)} px`);
+      bindTransitionControl('hearts-right-scale', 'hearts-right-scale-value', HEARTS.right, 'scale', (value) => `${value.toFixed(2)}×`);
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -665,6 +752,7 @@
 
         preload() {
           this.load.atlas('explode', 'explode.png', 'explode.json');
+          this.load.atlas('hearts', 'mega_win/hearts.png', 'mega_win/hearts.json');
           this.load.image('example_overlay', 'mega_win/example_2.png');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
@@ -693,6 +781,20 @@
               repeat: 0
             });
           }
+          if (!this.anims.exists('hearts-burst')) {
+            this.anims.create({
+              key: 'hearts-burst',
+              frames: this.anims.generateFrameNames('hearts', {
+                prefix: 'frame',
+                start: 0,
+                end: 34,
+                zeroPad: 4,
+                suffix: '.png'
+              }),
+              frameRate: HEARTS.frameRate,
+              repeat: 0
+            });
+          }
 
           this.explode = this.add.sprite(0, 0, 'explode', 'frame0000.png')
             .setScale(EXPLODE.scale)
@@ -700,6 +802,18 @@
             .setVisible(false);
           this.explode.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'explode-burst', () => {
             this.explode.setVisible(false);
+          });
+
+          this.heartBursts = {};
+          ['left', 'right'].forEach((side) => {
+            const settings = HEARTS[side];
+            const sprite = this.add.sprite(settings.x, settings.y, 'hearts', 'frame0000.png')
+              .setScale(settings.scale)
+              .setFlipX(settings.flipX)
+              .setDepth(203)
+              .setVisible(false);
+            sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => sprite.setVisible(false));
+            this.heartBursts[side] = sprite;
           });
 
           this.sprites = new Map();
@@ -809,7 +923,7 @@
         }
 
         exportMegaLayout() {
-          return Object.fromEntries(MEGA_ASSETS.map((asset) => {
+          const layout = Object.fromEntries(MEGA_ASSETS.map((asset) => {
             const values = {
               x: Math.round(asset.x),
               y: Math.round(asset.y),
@@ -822,6 +936,19 @@
             if (asset.parent) values.parent = asset.parent;
             return [asset.key, values];
           }));
+          layout.mega_hearts_left = {
+            x: HEARTS.left.x,
+            y: HEARTS.left.y,
+            scale: HEARTS.left.scale,
+            flipX: false
+          };
+          layout.mega_hearts_right = {
+            x: HEARTS.right.x,
+            y: HEARTS.right.y,
+            scale: HEARTS.right.scale,
+            flipX: true
+          };
+          return layout;
         }
 
         resetMegaAssets() {
@@ -835,6 +962,9 @@
             this.positionMegaSprite(asset.key);
           });
           this.megaTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
+          Object.values(this.heartBursts ?? {}).forEach((sprite) => {
+            sprite.stop().setFrame('frame0000.png').setVisible(false);
+          });
           this.megaHandMotion = {
             leftY: 0,
             rightY: 0,
@@ -920,7 +1050,20 @@
             });
           });
 
-          MEGA_ASSETS.filter((asset) => !asset.isLetter && !asset.topAnchor && !MEGA_HAND_GROUP_KEYS.has(asset.key)).forEach((asset, index) => {
+          this.sequenceTimers.push(this.time.delayedCall(MEGA_SCREEN_DELAY, () => {
+            this.startMegaScreenEntrances();
+          }));
+          this.transitionMegaTitle();
+        }
+
+        startMegaScreenEntrances() {
+          const rewardKeys = new Set(['mega_amount', 'mega_multiplier']);
+          MEGA_ASSETS.filter((asset) => (
+            !asset.isLetter
+            && !asset.topAnchor
+            && !MEGA_HAND_GROUP_KEYS.has(asset.key)
+            && !rewardKeys.has(asset.key)
+          )).forEach((asset, index) => {
             const sprite = this.megaSprites.get(asset.key);
             sprite
               .setPosition(asset.x, asset.y + 7)
@@ -939,9 +1082,9 @@
             });
           });
 
+          this.startMegaRewardEntrances();
           this.startCreamLongEntrance();
           this.startMegaHandEntries();
-          this.transitionMegaTitle();
         }
 
         syncMegaHandHierarchy() {
@@ -1025,7 +1168,8 @@
               [property]: 0,
               duration: 120,
               ease: 'Sine.Out',
-              onUpdate: () => this.syncMegaHandHierarchy()
+              onUpdate: () => this.syncMegaHandHierarchy(),
+              onComplete: () => this.playHeartsBurst(side)
             });
             return;
           }
@@ -1049,6 +1193,16 @@
               });
             }
           });
+        }
+
+        playHeartsBurst(side) {
+          const settings = HEARTS[side];
+          this.heartBursts[side]
+            .setPosition(settings.x, settings.y)
+            .setScale(settings.scale)
+            .setFlipX(settings.flipX)
+            .setVisible(true)
+            .play('hearts-burst', true);
         }
 
         launchMegaBallSequence(side) {
@@ -1151,6 +1305,86 @@
           });
         }
 
+        startMegaRewardEntrances() {
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MEGA_AMOUNT_REVEAL.delay), () => {
+            this.playMegaAmountEntrance();
+          }));
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MULTIPLIER_REVEAL.delay), () => {
+            this.playMegaMultiplierEntrance();
+          }));
+        }
+
+        playMegaAmountEntrance() {
+          const asset = megaAssetByKey.get('mega_amount');
+          const sprite = this.megaSprites.get(asset.key);
+          const speed = Math.max(0.1, MEGA_AMOUNT_REVEAL.speed);
+          const bounce = Math.max(0, MEGA_AMOUNT_REVEAL.bounce) / 100;
+          sprite
+            .setPosition(asset.x, asset.y)
+            .setScale(0)
+            .setAlpha(1)
+            .setVisible(true);
+
+          this.tweens.add({
+            targets: sprite,
+            scaleX: asset.scale * (1 + bounce),
+            scaleY: asset.scale * (1 + bounce),
+            duration: 300 / speed,
+            ease: 'Cubic.Out',
+            onComplete: () => {
+              if (bounce === 0) {
+                sprite.setScale(asset.scale);
+                return;
+              }
+              this.tweens.add({
+                targets: sprite,
+                scaleX: asset.scale * (1 - bounce * 0.16),
+                scaleY: asset.scale * (1 - bounce * 0.16),
+                duration: 90 / speed,
+                ease: 'Sine.InOut',
+                onComplete: () => {
+                  this.tweens.add({
+                    targets: sprite,
+                    scaleX: asset.scale,
+                    scaleY: asset.scale,
+                    duration: 130 / speed,
+                    ease: 'Back.Out'
+                  });
+                }
+              });
+            }
+          });
+        }
+
+        playMegaMultiplierEntrance() {
+          const asset = megaAssetByKey.get('mega_multiplier');
+          const sprite = this.megaSprites.get(asset.key);
+          const speed = Math.max(0.1, MULTIPLIER_REVEAL.speed);
+          const bounceScale = 1 + Math.max(0, MULTIPLIER_REVEAL.bounce) / 100;
+          sprite
+            .setPosition(asset.x, asset.y)
+            .setScale(0)
+            .setAlpha(1)
+            .setVisible(true);
+
+          this.tweens.add({
+            targets: sprite,
+            scaleX: asset.scale * bounceScale,
+            scaleY: asset.scale * bounceScale,
+            duration: 260 / speed,
+            ease: 'Back.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets: sprite,
+                scaleX: asset.scale,
+                scaleY: asset.scale,
+                duration: 130 / speed,
+                ease: 'Sine.Out'
+              });
+            }
+          });
+        }
+
         startCreamLongEntrance() {
           const asset = megaAssetByKey.get('mega_cream_long');
           const sprite = this.megaSprites.get(asset.key);
@@ -1220,8 +1454,7 @@
               .setVisible(true);
           });
           this.megaTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
-          const jumpDuration = overshoot === 0 ? 0 : 170 / exitSpeed;
-          const megaTitleDelay = jumpDuration + 520 / exitSpeed;
+          const megaTitleDelay = Math.max(0, MEGA_TITLE_ENTRANCE.delay);
           this.sequenceTimers.push(this.time.delayedCall(megaTitleDelay, () => {
             this.playDropEntrance(this.megaTitleContainer, 0, TITLE_DROP);
           }));
