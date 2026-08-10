@@ -452,15 +452,15 @@
         { key: 'mega_w', label: 'W', file: 'mega_win/w_win_mega.png', x: 112, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 122, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 133, y: 48, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 142, y: 100, scale: 1, depth: 208 },
-        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 37, y: 157, scale: 1, depth: 213, parent: 'mega_ice_2' },
+        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 143, y: 103, scale: 1.05, depth: 208, topAnchor: true },
+        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 36, y: 156, scale: 1, depth: 213, parent: 'mega_ice_2' },
         { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png', x: 159, y: 181, scale: 1, depth: 213, parent: 'mega_ice_1' },
         { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png', x: 143, y: 237, scale: 1, depth: 209, parent: 'mega_hand_right' },
-        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 49, y: 209, scale: 1, depth: 209, parent: 'mega_hand_left' },
+        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 48, y: 208, scale: 1, depth: 209, parent: 'mega_hand_left' },
         { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png', x: 146, y: 223, scale: 1, depth: 212, parent: 'mega_ice_1' },
-        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 47, y: 207, scale: 1, depth: 212, parent: 'mega_ice_2' },
-        { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -32, y: 426, scale: 1.66, rotation: 0, depth: 204, isHand: true },
-        { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 215, y: 426, scale: 1.66, rotation: 0, depth: 204, isHand: true, flipX: true }
+        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 46, y: 206, scale: 1, depth: 212, parent: 'mega_ice_2' },
+        { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -21, y: 385, scale: 1.43, rotation: -3, depth: 204, isHand: true },
+        { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true }
       ];
       const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
       const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
@@ -657,7 +657,15 @@
               .setVisible(false)
               .setInteractive({ useHandCursor: true })
               .on('pointerdown', () => selectMegaLayer(asset.key));
+            if (asset.topAnchor) {
+              sprite.setOrigin(0.5, 0).setY(asset.y - sprite.height * asset.scale / 2);
+            }
             this.megaSprites.set(asset.key, sprite);
+          });
+
+          this.megaTitleContainer = this.add.container(0, 0).setDepth(220).setVisible(false);
+          MEGA_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.megaTitleContainer.add(this.megaSprites.get(asset.key));
           });
 
           const strawberry = this.sprites.get('strawberry');
@@ -681,6 +689,16 @@
         getMegaPosition(key) {
           const asset = megaAssetByKey.get(key);
           return { x: asset.x, y: asset.y };
+        }
+
+        getMegaSpriteFinalY(asset) {
+          if (!asset.topAnchor) return asset.y;
+          return asset.y - this.megaSprites.get(asset.key).height * asset.scale / 2;
+        }
+
+        positionMegaSprite(key, extraY = 0) {
+          const asset = megaAssetByKey.get(key);
+          this.megaSprites.get(key).setPosition(asset.x, this.getMegaSpriteFinalY(asset) + extraY);
         }
 
         setMegaScale(key, scale) {
@@ -707,7 +725,7 @@
           });
           this.syncMegaHandHierarchy();
           if (!MEGA_HAND_GROUP_KEYS.has(key)) {
-            this.megaSprites.get(key).setPosition(asset.x, asset.y);
+            this.positionMegaSprite(key);
           }
         }
 
@@ -729,15 +747,30 @@
 
         resetMegaAssets() {
           MEGA_ASSETS.forEach((asset) => {
-            this.megaSprites.get(asset.key)
-              .setPosition(asset.x, asset.y)
+            const sprite = this.megaSprites.get(asset.key)
               .setScale(asset.scale)
               .setAngle(asset.rotation ?? 0)
               .setFlipX(Boolean(asset.flipX))
               .setAlpha(0)
               .setVisible(false);
+            this.positionMegaSprite(asset.key);
           });
-          this.megaHandMotion = { leftY: 0, rightY: 0 };
+          this.megaTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
+          this.megaHandMotion = {
+            leftY: 0,
+            rightY: 0,
+            leftFloatY: 0,
+            rightFloatY: 0,
+            leftBallY: 0,
+            rightBallY: 0,
+            leftToppingY: 0,
+            rightToppingY: 0,
+            leftImpactY: 0,
+            rightImpactY: 0,
+            leftToppingImpactY: 0,
+            rightToppingImpactY: 0
+          };
+          this.megaFloatingActive = false;
         }
 
         prepareBigWinForTransition() {
@@ -756,7 +789,7 @@
               .setAlpha(1)
               .setVisible(true);
           });
-          this.titleContainer.setPosition(0, 0).setAlpha(1).setVisible(true);
+          this.titleContainer.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(true);
           this.sprites.get('big_win').setVisible(false);
 
           ['amount_42', 'x'].forEach((key) => {
@@ -778,6 +811,7 @@
           if (this.transitioning) return;
           this.transitioning = true;
           this.megaActive = false;
+          this.megaSequenceState = { left: false, right: false, title: false };
           nextButton.disabled = true;
           nextButton.textContent = 'Переходим…';
           this.prepareBigWinForTransition();
@@ -801,7 +835,7 @@
             });
           });
 
-          MEGA_ASSETS.filter((asset) => !asset.isLetter && !MEGA_HAND_GROUP_KEYS.has(asset.key)).forEach((asset, index) => {
+          MEGA_ASSETS.filter((asset) => !asset.isLetter && !asset.topAnchor && !MEGA_HAND_GROUP_KEYS.has(asset.key)).forEach((asset, index) => {
             const sprite = this.megaSprites.get(asset.key);
             sprite
               .setPosition(asset.x, asset.y + 7)
@@ -820,24 +854,51 @@
             });
           });
 
+          this.startCreamLongEntrance();
           this.startMegaHandEntries();
           this.transitionMegaTitle();
         }
 
         syncMegaHandHierarchy() {
-          const motion = this.megaHandMotion ?? { leftY: 0, rightY: 0 };
-          LEFT_HAND_KEYS.forEach((key) => {
+          const motion = this.megaHandMotion;
+          if (!motion) return;
+
+          const leftRootY = motion.leftY + motion.leftFloatY;
+          const leftBallY = leftRootY + motion.leftBallY + motion.leftImpactY;
+          const leftToppingY = leftBallY + motion.leftToppingY + motion.leftToppingImpactY;
+          this.megaSprites.get('mega_hand_left').setPosition(
+            megaAssetByKey.get('mega_hand_left').x,
+            megaAssetByKey.get('mega_hand_left').y + leftRootY
+          );
+          this.megaSprites.get('mega_ice_2').setPosition(
+            megaAssetByKey.get('mega_ice_2').x,
+            megaAssetByKey.get('mega_ice_2').y + leftBallY
+          );
+          ['mega_cherry_1', 'mega_cream_2'].forEach((key) => {
             const asset = megaAssetByKey.get(key);
-            this.megaSprites.get(key).setPosition(asset.x, asset.y + motion.leftY);
+            this.megaSprites.get(key).setPosition(asset.x, asset.y + leftToppingY);
           });
-          RIGHT_HAND_KEYS.forEach((key) => {
+
+          const rightRootY = motion.rightY + motion.rightFloatY;
+          const rightBallY = rightRootY + motion.rightBallY + motion.rightImpactY;
+          const rightToppingY = rightBallY + motion.rightToppingY + motion.rightToppingImpactY;
+          this.megaSprites.get('mega_hand_right').setPosition(
+            megaAssetByKey.get('mega_hand_right').x,
+            megaAssetByKey.get('mega_hand_right').y + rightRootY
+          );
+          this.megaSprites.get('mega_ice_1').setPosition(
+            megaAssetByKey.get('mega_ice_1').x,
+            megaAssetByKey.get('mega_ice_1').y + rightBallY
+          );
+          ['mega_cherry_2', 'mega_cream_1'].forEach((key) => {
             const asset = megaAssetByKey.get(key);
-            this.megaSprites.get(key).setPosition(asset.x, asset.y + motion.rightY);
+            this.megaSprites.get(key).setPosition(asset.x, asset.y + rightToppingY);
           });
         }
 
         startMegaHandEntries() {
-          this.megaHandMotion = { leftY: 260, rightY: 260 };
+          this.megaHandMotion.leftY = 260;
+          this.megaHandMotion.rightY = 260;
           [...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS].forEach((key) => {
             const asset = megaAssetByKey.get(key);
             this.megaSprites.get(key)
@@ -849,26 +910,33 @@
           });
           this.syncMegaHandHierarchy();
 
+          this.startMegaHandEntry('left', 0);
+          this.startMegaHandEntry('right', 140);
+        }
+
+        startMegaHandEntry(side, delay) {
+          const property = `${side}Y`;
           this.tweens.add({
             targets: this.megaHandMotion,
-            leftY: -ENTRY_OVERSHOOT,
-            rightY: -ENTRY_OVERSHOOT,
+            [property]: -ENTRY_OVERSHOOT,
             duration: 1000 / ENTRY_SPEED,
+            delay,
             ease: ENTRY_APPROACH_EASE,
             onUpdate: () => this.syncMegaHandHierarchy(),
-            onComplete: () => this.playMegaHandBounce(0)
+            onComplete: () => this.playMegaHandBounce(side, 0)
           });
         }
 
-        playMegaHandBounce(index) {
+        playMegaHandBounce(side, index) {
+          const property = `${side}Y`;
           if (index >= ENTRY_BOUNCE_COUNT) {
             this.tweens.add({
               targets: this.megaHandMotion,
-              leftY: 0,
-              rightY: 0,
+              [property]: 0,
               duration: 120,
               ease: 'Sine.Out',
-              onUpdate: () => this.syncMegaHandHierarchy()
+              onUpdate: () => this.syncMegaHandHierarchy(),
+              onComplete: () => this.launchMegaDessertSequence(side)
             });
             return;
           }
@@ -877,81 +945,178 @@
           const duration = Math.max(75, 145 - index * 18);
           this.tweens.add({
             targets: this.megaHandMotion,
-            leftY: amplitude,
-            rightY: amplitude,
+            [property]: amplitude,
             duration,
             ease: index === 0 ? 'Linear' : 'Sine.In',
             onUpdate: () => this.syncMegaHandHierarchy(),
             onComplete: () => {
               this.tweens.add({
                 targets: this.megaHandMotion,
-                leftY: -amplitude * 0.45,
-                rightY: -amplitude * 0.45,
+                [property]: -amplitude * 0.45,
                 duration: Math.max(65, duration - 20),
                 ease: 'Sine.Out',
                 onUpdate: () => this.syncMegaHandHierarchy(),
-                onComplete: () => this.playMegaHandBounce(index + 1)
+                onComplete: () => this.playMegaHandBounce(side, index + 1)
+              });
+            }
+          });
+        }
+
+        launchMegaDessertSequence(side) {
+          const ballProperty = `${side}BallY`;
+          const toppingProperty = `${side}ToppingY`;
+          const impactProperty = `${side}ImpactY`;
+          const toppingImpactProperty = `${side}ToppingImpactY`;
+          const iceTiming = this.getJumpTiming(ICE_HOLD, 290, 310);
+          const berryTiming = this.getJumpTiming(BERRY_HOLD, 250, 280);
+          const iceFlightDuration = iceTiming.riseDuration + iceTiming.holdDuration + iceTiming.landDuration;
+          const toppingStartDelay = Math.max(0, iceFlightDuration - BERRY_LEAD);
+
+          this.sequenceTimers.push(this.time.delayedCall(toppingStartDelay, () => {
+            this.megaJumpNode(
+              toppingProperty,
+              BERRY_JUMP_HEIGHT,
+              berryTiming.riseDuration,
+              berryTiming.holdDuration,
+              berryTiming.landDuration,
+              () => this.playMegaLandingImpact(toppingImpactProperty, 4, () => {
+                this.completeMegaTransitionPart(side);
+              })
+            );
+          }));
+
+          this.megaJumpNode(
+            ballProperty,
+            ICE_JUMP_HEIGHT,
+            iceTiming.riseDuration,
+            iceTiming.holdDuration,
+            iceTiming.landDuration,
+            () => this.playMegaLandingImpact(impactProperty, 6)
+          );
+        }
+
+        megaJumpNode(property, height, riseDuration, holdDuration, landDuration, onComplete) {
+          this.tweens.add({
+            targets: this.megaHandMotion,
+            [property]: -height,
+            duration: riseDuration,
+            ease: 'Quart.Out',
+            onUpdate: () => this.syncMegaHandHierarchy(),
+            onComplete: () => {
+              const startLanding = () => {
+                this.tweens.add({
+                  targets: this.megaHandMotion,
+                  [property]: 0,
+                  duration: landDuration,
+                  ease: 'Quart.In',
+                  onUpdate: () => this.syncMegaHandHierarchy(),
+                  onComplete
+                });
+              };
+              if (holdDuration === 0) startLanding();
+              else this.sequenceTimers.push(this.time.delayedCall(holdDuration, startLanding));
+            }
+          });
+        }
+
+        playMegaLandingImpact(property, amplitude, onComplete = () => {}) {
+          const impact = amplitude * IMPACT_STRENGTH;
+          this.tweens.add({
+            targets: this.megaHandMotion,
+            [property]: impact,
+            duration: 70,
+            ease: 'Cubic.In',
+            onUpdate: () => this.syncMegaHandHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.megaHandMotion,
+                [property]: 0,
+                duration: 190,
+                ease: 'Back.Out',
+                onUpdate: () => this.syncMegaHandHierarchy(),
+                onComplete
+              });
+            }
+          });
+        }
+
+        startCreamLongEntrance() {
+          const asset = megaAssetByKey.get('mega_cream_long');
+          const sprite = this.megaSprites.get(asset.key);
+          this.positionMegaSprite(asset.key);
+          sprite.setScale(0).setAngle(-5).setAlpha(1).setVisible(true);
+          this.tweens.add({
+            targets: sprite,
+            scaleX: asset.scale * 1.1,
+            scaleY: asset.scale * 1.1,
+            angle: 6,
+            duration: 420,
+            delay: 180,
+            ease: 'Back.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets: sprite,
+                scaleX: asset.scale,
+                scaleY: asset.scale,
+                angle: -3,
+                duration: 150,
+                ease: 'Sine.Out',
+                onComplete: () => {
+                  this.tweens.add({
+                    targets: sprite,
+                    angle: 3,
+                    duration: 170,
+                    ease: 'Sine.InOut',
+                    yoyo: true,
+                    repeat: 2,
+                    onComplete: () => sprite.setAngle(0)
+                  });
+                }
               });
             }
           });
         }
 
         transitionMegaTitle() {
-          const swaps = [
-            ['letter_b', 'mega_m'],
-            ['letter_i_big', 'mega_e'],
-            ['letter_g', 'mega_g'],
-            [null, 'mega_a'],
-            ['letter_w', 'mega_w'],
-            ['letter_i_win', 'mega_i'],
-            ['letter_n', 'mega_n']
-          ];
-          const stagger = 150;
-          const startDelay = 90;
-
-          swaps.forEach(([oldKey, megaKey], index) => {
-            this.sequenceTimers.push(this.time.delayedCall(startDelay + index * stagger, () => {
-              const revealMegaLetter = () => {
-                const asset = megaAssetByKey.get(megaKey);
-                const megaSprite = this.megaSprites.get(megaKey);
-                megaSprite
-                  .setPosition(asset.x, asset.y - 9)
-                  .setScale(asset.scale)
-                  .setAlpha(1)
-                  .setVisible(true);
-                this.tweens.add({
-                  targets: megaSprite,
-                  y: asset.y,
-                  duration: 175,
-                  ease: 'Back.Out',
-                  onComplete: index === swaps.length - 1 ? () => {
-                    this.titleContainer.setVisible(false);
-                    this.transitioning = false;
-                    this.megaActive = true;
-                    nextButton.disabled = false;
-                    nextButton.textContent = 'Повторить переход';
-                  } : undefined
-                });
-              };
-
-              if (!oldKey) {
-                revealMegaLetter();
-                return;
-              }
-
-              const oldSprite = this.letterSprites.get(oldKey);
-              this.tweens.add({
-                targets: oldSprite,
-                y: -9,
-                duration: 135,
-                ease: 'Sine.Out',
-                onComplete: () => {
-                  oldSprite.setVisible(false);
-                  revealMegaLetter();
-                }
-              });
-            }));
+          this.tweens.add({
+            targets: this.titleContainer,
+            y: 175,
+            angle: 13,
+            alpha: 0,
+            duration: 430,
+            ease: 'Back.In',
+            onComplete: () => this.titleContainer.setVisible(false)
           });
+
+          MEGA_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.megaSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          this.megaTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
+          this.sequenceTimers.push(this.time.delayedCall(160, () => {
+            this.playDropEntrance(this.megaTitleContainer, 0, TITLE_DROP);
+          }));
+          this.sequenceTimers.push(this.time.delayedCall(980, () => {
+            this.completeMegaTransitionPart('title');
+          }));
+        }
+
+        completeMegaTransitionPart(part) {
+          this.megaSequenceState[part] = true;
+          if (!this.megaSequenceState.left || !this.megaSequenceState.right || !this.megaSequenceState.title) return;
+          this.transitioning = false;
+          this.megaActive = true;
+          nextButton.disabled = false;
+          nextButton.textContent = 'Повторить переход';
+          this.startMegaFloating();
+        }
+
+        startMegaFloating() {
+          this.megaFloatingStartedAt = this.time.now;
+          this.megaFloatingActive = true;
         }
 
         playIntroAnimation() {
@@ -982,7 +1147,7 @@
               .setVisible(true);
           });
           this.sprites.get('big_win').setVisible(false);
-          this.titleContainer.setPosition(0, -100).setAlpha(1).setVisible(false);
+          this.titleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(false);
 
           const amountAsset = assetByKey.get('amount_42');
           const amount = this.sprites.get('amount_42');
@@ -1545,12 +1710,19 @@
         }
 
         update(time) {
-          if (!this.floatingActive) return;
-
           const period = 2600 / FLOAT_SPEED;
-          const phase = ((time - this.floatingStartedAt) % period) / period * Math.PI * 2;
-          this.lockCompositionPose();
-          this.compositionContainer.y = -Math.sin(phase) * FLOAT_HEIGHT;
+          if (this.floatingActive) {
+            const phase = ((time - this.floatingStartedAt) % period) / period * Math.PI * 2;
+            this.lockCompositionPose();
+            this.compositionContainer.y = -Math.sin(phase) * FLOAT_HEIGHT;
+          }
+
+          if (this.megaFloatingActive) {
+            const phase = ((time - this.megaFloatingStartedAt) % period) / period * Math.PI * 2;
+            this.megaHandMotion.leftFloatY = -Math.sin(phase) * FLOAT_HEIGHT;
+            this.megaHandMotion.rightFloatY = -Math.sin(phase - Math.PI / 3) * FLOAT_HEIGHT;
+            this.syncMegaHandHierarchy();
+          }
         }
 
         startFloating() {
