@@ -182,6 +182,26 @@
       color: #ff9acb;
     }
 
+    .start-over-button {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .coordinates-output {
+      width: 100%;
+      min-height: 150px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9px;
+      background: rgba(0, 0, 0, 0.24);
+      color: #fceaf3;
+      font: 11px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
+      resize: vertical;
+    }
+
+    [hidden] { display: none !important; }
+
     .settings-stack {
       display: grid;
       gap: 18px;
@@ -319,16 +339,27 @@
           <button class="letter-button" type="button" data-mega-key="mega_ice_2" aria-pressed="false">Шарик 2</button>
           <button class="letter-button" type="button" data-mega-key="mega_cream_1" aria-pressed="false">Крем 1</button>
           <button class="letter-button" type="button" data-mega-key="mega_cream_2" aria-pressed="false">Крем 2</button>
+          <button class="letter-button" type="button" data-mega-key="mega_hand_left" aria-pressed="false">Рука L</button>
+          <button class="letter-button" type="button" data-mega-key="mega_hand_right" aria-pressed="false">Рука R</button>
         </div>
         <p class="letter-position" id="mega-position">X 91 · Y 97</p>
-        <label class="letter-scale-control">
-          <span class="label-row"><span>Масштаб слоя</span><span class="value" id="mega-scale-value">0.17×</span></span>
-          <input class="letter-scale-slider" id="mega-scale" type="range" min="0.05" max="2.00" step="0.01" value="0.17" aria-label="Масштаб активного слоя Mega Win">
-        </label>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. После перехода слой также можно выбрать кликом в сцене.</p>
+        <div class="settings-stack" id="mega-hand-controls" hidden>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб руки</span><span class="value" id="mega-scale-value">1.66×</span></span>
+            <input class="letter-scale-slider" id="mega-scale" type="range" min="0.30" max="3.00" step="0.01" value="1.66" aria-label="Масштаб активной руки">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Поворот руки</span><span class="value" id="mega-rotation-value">0°</span></span>
+            <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активной руки">
+          </label>
+        </div>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны только для рук.</p>
+        <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты</button>
+        <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
       </section>
 
       <button class="replay-button" id="next-screen" type="button">Следующий</button>
+      <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
     </aside>
 
     <section class="stage-area">
@@ -413,29 +444,46 @@
       ];
 
       const MEGA_ASSETS = [
-        { key: 'mega_amount', label: '84.99', file: 'mega_win/84.99.png', x: 91, y: 97, scale: 0.17, depth: 214 },
-        { key: 'mega_m', label: 'M', file: 'mega_win/m_win_mega.png', x: 50, y: 55, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_e', label: 'E', file: 'mega_win/e_win_mega.png', x: 65, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_g', label: 'G', file: 'mega_win/g_win_mega.png', x: 80, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_a', label: 'A', file: 'mega_win/a_win_mega.png', x: 95, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_w', label: 'W', file: 'mega_win/w_win_mega.png', x: 110, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 124, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 137, y: 54, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 157, y: 55, scale: 0.82, depth: 208 },
-        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 42, y: 164, scale: 0.58, depth: 213 },
-        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png', x: 145, y: 190, scale: 0.58, depth: 213 },
-        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png', x: 52, y: 207, scale: 0.78, depth: 209 },
-        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 132, y: 231, scale: 0.78, depth: 209 },
-        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png', x: 53, y: 181, scale: 0.72, depth: 212 },
-        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 134, y: 207, scale: 0.72, depth: 212 }
+        { key: 'mega_amount', label: '84.99', file: 'mega_win/84.99.png', x: 91, y: 93, scale: 0.17, depth: 214 },
+        { key: 'mega_m', label: 'M', file: 'mega_win/m_win_mega.png', x: 53, y: 53, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_e', label: 'E', file: 'mega_win/e_win_mega.png', x: 67, y: 52, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_g', label: 'G', file: 'mega_win/g_win_mega.png', x: 81, y: 51, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_a', label: 'A', file: 'mega_win/a_win_mega.png', x: 94, y: 50, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_w', label: 'W', file: 'mega_win/w_win_mega.png', x: 112, y: 49, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 122, y: 49, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 133, y: 48, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 142, y: 100, scale: 1, depth: 208 },
+        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 37, y: 157, scale: 1, depth: 213, parent: 'mega_ice_2' },
+        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png', x: 159, y: 181, scale: 1, depth: 213, parent: 'mega_ice_1' },
+        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png', x: 143, y: 237, scale: 1, depth: 209, parent: 'mega_hand_right' },
+        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 49, y: 209, scale: 1, depth: 209, parent: 'mega_hand_left' },
+        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png', x: 146, y: 223, scale: 1, depth: 212, parent: 'mega_ice_1' },
+        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 47, y: 207, scale: 1, depth: 212, parent: 'mega_ice_2' },
+        { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -32, y: 426, scale: 1.66, rotation: 0, depth: 204, isHand: true },
+        { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 215, y: 426, scale: 1.66, rotation: 0, depth: 204, isHand: true, flipX: true }
       ];
+      const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
+      const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
+      const MEGA_HAND_GROUP_KEYS = new Set([...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS]);
+      const MEGA_CHILDREN = {
+        mega_hand_left: ['mega_ice_2', 'mega_cherry_1', 'mega_cream_2'],
+        mega_hand_right: ['mega_ice_1', 'mega_cherry_2', 'mega_cream_1'],
+        mega_ice_1: ['mega_cherry_2', 'mega_cream_1'],
+        mega_ice_2: ['mega_cherry_1', 'mega_cream_2']
+      };
       const loading = document.querySelector('#loading');
       const nextButton = document.querySelector('#next-screen');
+      const startOverButton = document.querySelector('#start-over');
+      const copyCoordinatesButton = document.querySelector('#copy-coordinates');
+      const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
       const activeMegaName = document.querySelector('#active-mega-name');
       const megaPosition = document.querySelector('#mega-position');
+      const megaHandControls = document.querySelector('#mega-hand-controls');
       const megaScaleSlider = document.querySelector('#mega-scale');
       const megaScaleValue = document.querySelector('#mega-scale-value');
+      const megaRotationSlider = document.querySelector('#mega-rotation');
+      const megaRotationValue = document.querySelector('#mega-rotation-value');
       const megaButtons = [...document.querySelectorAll('[data-mega-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
@@ -449,8 +497,13 @@
         const position = activeScene?.getMegaPosition(activeMegaKey) ?? asset;
         activeMegaName.textContent = asset.label;
         megaPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
-        megaScaleSlider.value = asset.scale;
-        megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        megaHandControls.hidden = !asset.isHand;
+        if (asset.isHand) {
+          megaScaleSlider.value = asset.scale;
+          megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+          megaRotationSlider.value = asset.rotation;
+          megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
+        }
         megaButtons.forEach((button) => {
           const isActive = button.dataset.megaKey === activeMegaKey;
           button.classList.toggle('is-active', isActive);
@@ -470,9 +523,18 @@
 
       megaScaleSlider.addEventListener('input', () => {
         const asset = megaAssetByKey.get(activeMegaKey);
+        if (!asset.isHand) return;
         asset.scale = Number(megaScaleSlider.value);
         megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
         activeScene?.setMegaScale(activeMegaKey, asset.scale);
+      });
+
+      megaRotationSlider.addEventListener('input', () => {
+        const asset = megaAssetByKey.get(activeMegaKey);
+        if (!asset.isHand) return;
+        asset.rotation = Number(megaRotationSlider.value);
+        megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
+        activeScene?.setMegaRotation(activeMegaKey, asset.rotation);
       });
 
       underlayButton.addEventListener('click', () => {
@@ -500,6 +562,23 @@
       });
 
       nextButton.addEventListener('click', () => activeScene?.playNextTransition());
+      startOverButton.addEventListener('click', () => activeScene?.playIntroAnimation());
+      copyCoordinatesButton.addEventListener('click', async () => {
+        const text = JSON.stringify(activeScene?.exportMegaLayout() ?? {}, null, 2);
+        coordinatesOutput.hidden = false;
+        coordinatesOutput.value = text;
+        coordinatesOutput.select();
+        try {
+          if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+          await navigator.clipboard.writeText(text);
+        } catch {
+          document.execCommand('copy');
+        }
+        copyCoordinatesButton.textContent = 'Координаты скопированы';
+        window.setTimeout(() => {
+          copyCoordinatesButton.textContent = 'Скопировать координаты';
+        }, 1600);
+      });
       updateMegaEditor();
 
       class BigWinScene extends Phaser.Scene {
@@ -571,6 +650,8 @@
           MEGA_ASSETS.forEach((asset) => {
             const sprite = this.add.image(asset.x, asset.y, asset.key)
               .setScale(asset.scale)
+              .setAngle(asset.rotation ?? 0)
+              .setFlipX(Boolean(asset.flipX))
               .setDepth(asset.depth)
               .setAlpha(0)
               .setVisible(false)
@@ -598,22 +679,52 @@
         }
 
         getMegaPosition(key) {
-          const sprite = this.megaSprites?.get(key);
-          return sprite ? { x: sprite.x, y: sprite.y } : megaAssetByKey.get(key);
+          const asset = megaAssetByKey.get(key);
+          return { x: asset.x, y: asset.y };
         }
 
         setMegaScale(key, scale) {
+          const asset = megaAssetByKey.get(key);
+          if (!asset?.isHand) return;
           this.megaSprites?.get(key)?.setScale(scale);
+        }
+
+        setMegaRotation(key, rotation) {
+          const asset = megaAssetByKey.get(key);
+          if (!asset?.isHand) return;
+          this.megaSprites?.get(key)?.setAngle(rotation);
         }
 
         moveMegaAsset(key, deltaX, deltaY) {
           const asset = megaAssetByKey.get(key);
-          const sprite = this.megaSprites?.get(key);
-          if (!asset || !sprite) return;
-          asset.x = Math.round(asset.x + deltaX);
-          asset.y = Math.round(asset.y + deltaY);
-          this.tweens.killTweensOf(sprite);
-          sprite.setPosition(asset.x, asset.y).setScale(asset.scale);
+          if (!asset) return;
+          const keysToMove = [key, ...(MEGA_CHILDREN[key] ?? [])];
+          keysToMove.forEach((movingKey) => {
+            const movingAsset = megaAssetByKey.get(movingKey);
+            movingAsset.x = Math.round(movingAsset.x + deltaX);
+            movingAsset.y = Math.round(movingAsset.y + deltaY);
+            this.tweens.killTweensOf(this.megaSprites.get(movingKey));
+          });
+          this.syncMegaHandHierarchy();
+          if (!MEGA_HAND_GROUP_KEYS.has(key)) {
+            this.megaSprites.get(key).setPosition(asset.x, asset.y);
+          }
+        }
+
+        exportMegaLayout() {
+          return Object.fromEntries(MEGA_ASSETS.map((asset) => {
+            const values = {
+              x: Math.round(asset.x),
+              y: Math.round(asset.y),
+              scale: Number(asset.scale.toFixed(2))
+            };
+            if (asset.isHand) {
+              values.rotation = Math.round(asset.rotation);
+              values.flipX = Boolean(asset.flipX);
+            }
+            if (asset.parent) values.parent = asset.parent;
+            return [asset.key, values];
+          }));
         }
 
         resetMegaAssets() {
@@ -621,9 +732,12 @@
             this.megaSprites.get(asset.key)
               .setPosition(asset.x, asset.y)
               .setScale(asset.scale)
+              .setAngle(asset.rotation ?? 0)
+              .setFlipX(Boolean(asset.flipX))
               .setAlpha(0)
               .setVisible(false);
           });
+          this.megaHandMotion = { leftY: 0, rightY: 0 };
         }
 
         prepareBigWinForTransition() {
@@ -687,7 +801,7 @@
             });
           });
 
-          MEGA_ASSETS.filter((asset) => !asset.isLetter).forEach((asset, index) => {
+          MEGA_ASSETS.filter((asset) => !asset.isLetter && !MEGA_HAND_GROUP_KEYS.has(asset.key)).forEach((asset, index) => {
             const sprite = this.megaSprites.get(asset.key);
             sprite
               .setPosition(asset.x, asset.y + 7)
@@ -706,7 +820,80 @@
             });
           });
 
+          this.startMegaHandEntries();
           this.transitionMegaTitle();
+        }
+
+        syncMegaHandHierarchy() {
+          const motion = this.megaHandMotion ?? { leftY: 0, rightY: 0 };
+          LEFT_HAND_KEYS.forEach((key) => {
+            const asset = megaAssetByKey.get(key);
+            this.megaSprites.get(key).setPosition(asset.x, asset.y + motion.leftY);
+          });
+          RIGHT_HAND_KEYS.forEach((key) => {
+            const asset = megaAssetByKey.get(key);
+            this.megaSprites.get(key).setPosition(asset.x, asset.y + motion.rightY);
+          });
+        }
+
+        startMegaHandEntries() {
+          this.megaHandMotion = { leftY: 260, rightY: 260 };
+          [...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS].forEach((key) => {
+            const asset = megaAssetByKey.get(key);
+            this.megaSprites.get(key)
+              .setScale(asset.scale)
+              .setAngle(asset.rotation ?? 0)
+              .setFlipX(Boolean(asset.flipX))
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          this.syncMegaHandHierarchy();
+
+          this.tweens.add({
+            targets: this.megaHandMotion,
+            leftY: -ENTRY_OVERSHOOT,
+            rightY: -ENTRY_OVERSHOOT,
+            duration: 1000 / ENTRY_SPEED,
+            ease: ENTRY_APPROACH_EASE,
+            onUpdate: () => this.syncMegaHandHierarchy(),
+            onComplete: () => this.playMegaHandBounce(0)
+          });
+        }
+
+        playMegaHandBounce(index) {
+          if (index >= ENTRY_BOUNCE_COUNT) {
+            this.tweens.add({
+              targets: this.megaHandMotion,
+              leftY: 0,
+              rightY: 0,
+              duration: 120,
+              ease: 'Sine.Out',
+              onUpdate: () => this.syncMegaHandHierarchy()
+            });
+            return;
+          }
+
+          const amplitude = ENTRY_BOUNCE_AMPLITUDE * 0.55 ** index;
+          const duration = Math.max(75, 145 - index * 18);
+          this.tweens.add({
+            targets: this.megaHandMotion,
+            leftY: amplitude,
+            rightY: amplitude,
+            duration,
+            ease: index === 0 ? 'Linear' : 'Sine.In',
+            onUpdate: () => this.syncMegaHandHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.megaHandMotion,
+                leftY: -amplitude * 0.45,
+                rightY: -amplitude * 0.45,
+                duration: Math.max(65, duration - 20),
+                ease: 'Sine.Out',
+                onUpdate: () => this.syncMegaHandHierarchy(),
+                onComplete: () => this.playMegaHandBounce(index + 1)
+              });
+            }
+          });
         }
 
         transitionMegaTitle() {
