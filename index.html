@@ -92,6 +92,10 @@
       gap: 6px;
     }
 
+    .mega-asset-picker {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .letter-button {
       min-width: 0;
       height: 36px;
@@ -216,6 +220,7 @@
 
     .replay-button:hover { filter: brightness(1.08); }
     .replay-button:active { transform: translateY(1px); }
+    .replay-button:disabled { cursor: wait; filter: saturate(0.45); opacity: 0.7; }
 
     .stage-area {
       min-width: 0;
@@ -283,94 +288,54 @@
   <main class="app">
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
-      <h1>Big Win<br>screen</h1>
-      <p class="lead">Позиции и размеры всех слоёв зафиксированы. Настраиваются только параметры анимации.</p>
+      <h1>Mega Win<br>editor</h1>
+      <p class="lead">Big Win зафиксирован. Теперь собираем следующий экран из новых слоёв Mega Win.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Финал</span></div>
-        <p class="lead">Экран 183 × 396 · восемь зафиксированных слоёв · Phaser 3</p>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Mega Win</span></div>
+        <p class="lead">Экран 183 × 396 · Big Win + редактируемые слои Mega Win · Phaser 3</p>
       </section>
 
       <section class="control-group" id="underlay-editor">
-        <div class="label-row"><span>Подложка example</span><span class="value">50%</span></div>
+        <div class="label-row"><span>Подложка example_2</span><span class="value">50%</span></div>
         <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
       </section>
 
-      <section class="control-group" id="wave-editor">
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость волны</span><span class="value" id="wave-speed-value">0.85×</span></span>
-            <input class="letter-scale-slider" id="wave-speed" type="range" min="0.50" max="2" step="0.05" value="0.85" aria-label="Скорость волны">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет между буквами</span><span class="value" id="wave-stagger-value">50 мс</span></span>
-            <input class="letter-scale-slider" id="wave-stagger" type="range" min="20" max="220" step="5" value="50" aria-label="Офсет между буквами">
-          </label>
+      <section class="control-group" id="mega-editor">
+        <div class="label-row"><span>Активный слой</span><span class="value" id="active-mega-name">84.99</span></div>
+        <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Mega Win">
+          <button class="letter-button is-active" type="button" data-mega-key="mega_amount" aria-pressed="true">84.99</button>
+          <button class="letter-button" type="button" data-mega-key="mega_m" aria-pressed="false">M</button>
+          <button class="letter-button" type="button" data-mega-key="mega_e" aria-pressed="false">E</button>
+          <button class="letter-button" type="button" data-mega-key="mega_g" aria-pressed="false">G</button>
+          <button class="letter-button" type="button" data-mega-key="mega_a" aria-pressed="false">A</button>
+          <button class="letter-button" type="button" data-mega-key="mega_w" aria-pressed="false">W</button>
+          <button class="letter-button" type="button" data-mega-key="mega_i" aria-pressed="false">I</button>
+          <button class="letter-button" type="button" data-mega-key="mega_n" aria-pressed="false">N</button>
+          <button class="letter-button" type="button" data-mega-key="mega_cream_long" aria-pressed="false">Крем ↑</button>
+          <button class="letter-button" type="button" data-mega-key="mega_cherry_1" aria-pressed="false">Вишня 1</button>
+          <button class="letter-button" type="button" data-mega-key="mega_cherry_2" aria-pressed="false">Вишня 2</button>
+          <button class="letter-button" type="button" data-mega-key="mega_ice_1" aria-pressed="false">Шарик 1</button>
+          <button class="letter-button" type="button" data-mega-key="mega_ice_2" aria-pressed="false">Шарик 2</button>
+          <button class="letter-button" type="button" data-mega-key="mega_cream_1" aria-pressed="false">Крем 1</button>
+          <button class="letter-button" type="button" data-mega-key="mega_cream_2" aria-pressed="false">Крем 2</button>
         </div>
-        <p class="letter-hint">Одна волна запускается в момент исчезновения капли.</p>
+        <p class="letter-position" id="mega-position">X 91 · Y 97</p>
+        <label class="letter-scale-control">
+          <span class="label-row"><span>Масштаб слоя</span><span class="value" id="mega-scale-value">0.17×</span></span>
+          <input class="letter-scale-slider" id="mega-scale" type="range" min="0.05" max="2.00" step="0.01" value="0.17" aria-label="Масштаб активного слоя Mega Win">
+        </label>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. После перехода слой также можно выбрать кликом в сцене.</p>
       </section>
 
-      <section class="control-group" id="drop-editor">
-        <div class="settings-stack">
-          <div class="settings-block">
-            <p class="settings-title">Появление 42.00</p>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Скорость выпадения</span><span class="value" id="amount-drop-speed-value">1.00×</span></span>
-              <input class="letter-scale-slider" id="amount-drop-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.00" aria-label="Скорость выпадения 42.00">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Момент выпадения</span><span class="value" id="amount-drop-delay-value">0 мс</span></span>
-              <input class="letter-scale-slider" id="amount-drop-delay" type="range" min="0" max="1000" step="20" value="0" aria-label="Момент выпадения 42.00">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Баунс</span><span class="value" id="amount-drop-bounce-value">21 px</span></span>
-              <input class="letter-scale-slider" id="amount-drop-bounce" type="range" min="0" max="30" step="1" value="21" aria-label="Баунс 42.00">
-            </label>
-          </div>
-
-          <div class="settings-block">
-            <p class="settings-title">Появление BIG WIN</p>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Скорость выпадения</span><span class="value" id="title-drop-speed-value">1.00×</span></span>
-              <input class="letter-scale-slider" id="title-drop-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.00" aria-label="Скорость выпадения BIG WIN">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Момент выпадения</span><span class="value" id="title-drop-delay-value">220 мс</span></span>
-              <input class="letter-scale-slider" id="title-drop-delay" type="range" min="0" max="1000" step="20" value="220" aria-label="Момент выпадения BIG WIN">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Баунс</span><span class="value" id="title-drop-bounce-value">14 px</span></span>
-              <input class="letter-scale-slider" id="title-drop-bounce" type="range" min="0" max="30" step="1" value="14" aria-label="Баунс BIG WIN">
-            </label>
-          </div>
-
-          <div class="settings-block">
-            <p class="settings-title">Появление 24x</p>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Скорость появления</span><span class="value" id="multiplier-reveal-speed-value">1.80×</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-speed" type="range" min="0.50" max="2.50" step="0.05" value="1.80" aria-label="Скорость появления 24x">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Момент появления</span><span class="value" id="multiplier-reveal-delay-value">780 мс</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-delay" type="range" min="0" max="1000" step="20" value="780" aria-label="Момент появления 24x">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Баунс по скейлу</span><span class="value" id="multiplier-reveal-bounce-value">50%</span></span>
-              <input class="letter-scale-slider" id="multiplier-reveal-bounce" type="range" min="0" max="50" step="1" value="50" aria-label="Баунс 24x">
-            </label>
-          </div>
-        </div>
-        <p class="letter-hint">Изменение параметров появления автоматически перезапускает сцену.</p>
-      </section>
-
-      <button class="replay-button" id="replay-animation" type="button">Повторить анимацию</button>
+      <button class="replay-button" id="next-screen" type="button">Следующий</button>
     </aside>
 
     <section class="stage-area">
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Анимированная финальная композиция.</p>
+          <p>Big Win → редактируемый Mega Win.</p>
         </div>
       </div>
       <div id="stage-shell">
@@ -429,7 +394,7 @@
 
       const ASSETS = [
         { key: 'big_win', label: 'Big Win', file: 'big_win.png', x: 91, y: 59, scale: 1, depth: 7 },
-        { key: 'amount_42', label: '42.00', file: '42.00.png?v=309dd0c5', x: 91, y: 95, scale: 0.18, depth: 8 },
+        { key: 'amount_42', label: '42.00', file: '42.00.png?v=13d72881', x: 91, y: 95, scale: 0.18, depth: 8 },
         { key: 'x', label: '24x', file: 'x.png?v=64824a35', x: 90, y: 302, scale: 0.17, depth: 6 },
         { key: 'strawberry', label: 'Клубника', file: 'strawberry.png', x: 99, y: 179, scale: 1, depth: 5 },
         { key: 'ice_cream', label: 'Мороженое', file: 'ice_cream.png', x: 92, y: 226, scale: 1, depth: 3 },
@@ -447,17 +412,68 @@
         { key: 'letter_n', label: 'N', file: 'n.png?v=bbd7a700', x: 127, y: 56, scale: 0.17 }
       ];
 
+      const MEGA_ASSETS = [
+        { key: 'mega_amount', label: '84.99', file: 'mega_win/84.99.png', x: 91, y: 97, scale: 0.17, depth: 214 },
+        { key: 'mega_m', label: 'M', file: 'mega_win/m_win_mega.png', x: 50, y: 55, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_e', label: 'E', file: 'mega_win/e_win_mega.png', x: 65, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_g', label: 'G', file: 'mega_win/g_win_mega.png', x: 80, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_a', label: 'A', file: 'mega_win/a_win_mega.png', x: 95, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_w', label: 'W', file: 'mega_win/w_win_mega.png', x: 110, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 124, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 137, y: 54, scale: 0.17, depth: 220, isLetter: true },
+        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 157, y: 55, scale: 0.82, depth: 208 },
+        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 42, y: 164, scale: 0.58, depth: 213 },
+        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png', x: 145, y: 190, scale: 0.58, depth: 213 },
+        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png', x: 52, y: 207, scale: 0.78, depth: 209 },
+        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 132, y: 231, scale: 0.78, depth: 209 },
+        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png', x: 53, y: 181, scale: 0.72, depth: 212 },
+        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 134, y: 207, scale: 0.72, depth: 212 }
+      ];
       const loading = document.querySelector('#loading');
-      const replayButton = document.querySelector('#replay-animation');
+      const nextButton = document.querySelector('#next-screen');
       const underlayButton = document.querySelector('#toggle-underlay');
-      const waveSpeedSlider = document.querySelector('#wave-speed');
-      const waveSpeedValue = document.querySelector('#wave-speed-value');
-      const waveStaggerSlider = document.querySelector('#wave-stagger');
-      const waveStaggerValue = document.querySelector('#wave-stagger-value');
+      const activeMegaName = document.querySelector('#active-mega-name');
+      const megaPosition = document.querySelector('#mega-position');
+      const megaScaleSlider = document.querySelector('#mega-scale');
+      const megaScaleValue = document.querySelector('#mega-scale-value');
+      const megaButtons = [...document.querySelectorAll('[data-mega-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
+      const megaAssetByKey = new Map(MEGA_ASSETS.map((asset) => [asset.key, asset]));
       let activeScene;
+      let activeMegaKey = 'mega_amount';
       let underlayVisible = false;
+
+      const updateMegaEditor = () => {
+        const asset = megaAssetByKey.get(activeMegaKey);
+        const position = activeScene?.getMegaPosition(activeMegaKey) ?? asset;
+        activeMegaName.textContent = asset.label;
+        megaPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
+        megaScaleSlider.value = asset.scale;
+        megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        megaButtons.forEach((button) => {
+          const isActive = button.dataset.megaKey === activeMegaKey;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-pressed', String(isActive));
+        });
+      };
+
+      const selectMegaLayer = (key) => {
+        if (!megaAssetByKey.has(key)) return;
+        activeMegaKey = key;
+        updateMegaEditor();
+      };
+
+      megaButtons.forEach((button) => {
+        button.addEventListener('click', () => selectMegaLayer(button.dataset.megaKey));
+      });
+
+      megaScaleSlider.addEventListener('input', () => {
+        const asset = megaAssetByKey.get(activeMegaKey);
+        asset.scale = Number(megaScaleSlider.value);
+        megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        activeScene?.setMegaScale(activeMegaKey, asset.scale);
+      });
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -467,46 +483,34 @@
         activeScene?.setUnderlayVisible(underlayVisible);
       });
 
-      waveSpeedSlider.addEventListener('input', () => {
-        LETTER_WAVE.speed = Number(waveSpeedSlider.value);
-        waveSpeedValue.textContent = `${LETTER_WAVE.speed.toFixed(2)}×`;
+      document.addEventListener('keydown', (event) => {
+        if (event.target instanceof HTMLInputElement) return;
+        const directions = {
+          ArrowLeft: [-1, 0],
+          ArrowRight: [1, 0],
+          ArrowUp: [0, -1],
+          ArrowDown: [0, 1]
+        };
+        const direction = directions[event.key];
+        if (!direction || !activeScene) return;
+        event.preventDefault();
+        const step = event.shiftKey ? 5 : 1;
+        activeScene.moveMegaAsset(activeMegaKey, direction[0] * step, direction[1] * step);
+        updateMegaEditor();
       });
 
-      waveStaggerSlider.addEventListener('input', () => {
-        LETTER_WAVE.stagger = Number(waveStaggerSlider.value);
-        waveStaggerValue.textContent = `${LETTER_WAVE.stagger} мс`;
-      });
-
-      const bindDropControl = (inputId, outputId, settings, property, formatValue) => {
-        const input = document.querySelector(`#${inputId}`);
-        const output = document.querySelector(`#${outputId}`);
-        input.addEventListener('input', () => {
-          settings[property] = Number(input.value);
-          output.textContent = formatValue(settings[property]);
-          activeScene?.playIntroAnimation();
-        });
-      };
-
-      bindDropControl('amount-drop-speed', 'amount-drop-speed-value', AMOUNT_DROP, 'speed', (value) => `${value.toFixed(2)}×`);
-      bindDropControl('amount-drop-delay', 'amount-drop-delay-value', AMOUNT_DROP, 'delay', (value) => `${value} мс`);
-      bindDropControl('amount-drop-bounce', 'amount-drop-bounce-value', AMOUNT_DROP, 'bounce', (value) => `${value} px`);
-      bindDropControl('title-drop-speed', 'title-drop-speed-value', TITLE_DROP, 'speed', (value) => `${value.toFixed(2)}×`);
-      bindDropControl('title-drop-delay', 'title-drop-delay-value', TITLE_DROP, 'delay', (value) => `${value} мс`);
-      bindDropControl('title-drop-bounce', 'title-drop-bounce-value', TITLE_DROP, 'bounce', (value) => `${value} px`);
-      bindDropControl('multiplier-reveal-speed', 'multiplier-reveal-speed-value', MULTIPLIER_REVEAL, 'speed', (value) => `${value.toFixed(2)}×`);
-      bindDropControl('multiplier-reveal-delay', 'multiplier-reveal-delay-value', MULTIPLIER_REVEAL, 'delay', (value) => `${value} мс`);
-      bindDropControl('multiplier-reveal-bounce', 'multiplier-reveal-bounce-value', MULTIPLIER_REVEAL, 'bounce', (value) => `${value}%`);
-
-      replayButton.addEventListener('click', () => activeScene?.playIntroAnimation());
+      nextButton.addEventListener('click', () => activeScene?.playNextTransition());
+      updateMegaEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
 
         preload() {
           this.load.atlas('explode', 'explode.png', 'explode.json');
-          this.load.image('example_overlay', 'example.png?v=584218e8');
+          this.load.image('example_overlay', 'mega_win/example_2.png');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
+          MEGA_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
@@ -563,6 +567,18 @@
           LETTER_ASSETS.forEach(({ key }) => this.titleContainer.add(this.letterNodes.get(key)));
           bigWinUnderlay.setVisible(false);
 
+          this.megaSprites = new Map();
+          MEGA_ASSETS.forEach((asset) => {
+            const sprite = this.add.image(asset.x, asset.y, asset.key)
+              .setScale(asset.scale)
+              .setDepth(asset.depth)
+              .setAlpha(0)
+              .setVisible(false)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerdown', () => selectMegaLayer(asset.key));
+            this.megaSprites.set(asset.key, sprite);
+          });
+
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
           const hand = this.sprites.get('hand');
@@ -573,6 +589,7 @@
 
           activeScene = this;
           this.playIntroAnimation();
+          updateMegaEditor();
           loading.classList.add('is-hidden');
         }
 
@@ -580,12 +597,191 @@
           this.exampleOverlay?.setVisible(visible);
         }
 
+        getMegaPosition(key) {
+          const sprite = this.megaSprites?.get(key);
+          return sprite ? { x: sprite.x, y: sprite.y } : megaAssetByKey.get(key);
+        }
+
+        setMegaScale(key, scale) {
+          this.megaSprites?.get(key)?.setScale(scale);
+        }
+
+        moveMegaAsset(key, deltaX, deltaY) {
+          const asset = megaAssetByKey.get(key);
+          const sprite = this.megaSprites?.get(key);
+          if (!asset || !sprite) return;
+          asset.x = Math.round(asset.x + deltaX);
+          asset.y = Math.round(asset.y + deltaY);
+          this.tweens.killTweensOf(sprite);
+          sprite.setPosition(asset.x, asset.y).setScale(asset.scale);
+        }
+
+        resetMegaAssets() {
+          MEGA_ASSETS.forEach((asset) => {
+            this.megaSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(0)
+              .setVisible(false);
+          });
+        }
+
+        prepareBigWinForTransition() {
+          this.tweens.killAll();
+          this.sequenceTimers?.forEach((timer) => timer.remove(false));
+          this.sequenceTimers = [];
+          this.floatingActive = false;
+          this.explode.stop().setFrame('frame0000.png').setVisible(false);
+          this.sprites.get('splash').setAlpha(0).setVisible(false);
+          this.resetMegaAssets();
+
+          this.letterSprites.forEach((sprite, key) => {
+            sprite
+              .setPosition(0, 0)
+              .setScale(letterAssetByKey.get(key).scale)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          this.titleContainer.setPosition(0, 0).setAlpha(1).setVisible(true);
+          this.sprites.get('big_win').setVisible(false);
+
+          ['amount_42', 'x'].forEach((key) => {
+            const asset = assetByKey.get(key);
+            this.sprites.get(key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+
+          this.berryTransform.scaleX = 1;
+          this.berryTransform.scaleY = 1;
+          this.compositionContainer.setPosition(0, 0).setAlpha(1).setVisible(true);
+          this.lockCompositionPose();
+        }
+
+        playNextTransition() {
+          if (this.transitioning) return;
+          this.transitioning = true;
+          this.megaActive = false;
+          nextButton.disabled = true;
+          nextButton.textContent = 'Переходим…';
+          this.prepareBigWinForTransition();
+
+          this.tweens.add({
+            targets: this.compositionContainer,
+            y: 285,
+            duration: 560,
+            ease: 'Cubic.In'
+          });
+
+          ['amount_42', 'x'].forEach((key) => {
+            this.tweens.add({
+              targets: this.sprites.get(key),
+              alpha: 0,
+              scaleX: 0.8 * assetByKey.get(key).scale,
+              scaleY: 0.8 * assetByKey.get(key).scale,
+              duration: 220,
+              ease: 'Quad.In',
+              onComplete: () => this.sprites.get(key).setVisible(false)
+            });
+          });
+
+          MEGA_ASSETS.filter((asset) => !asset.isLetter).forEach((asset, index) => {
+            const sprite = this.megaSprites.get(asset.key);
+            sprite
+              .setPosition(asset.x, asset.y + 7)
+              .setScale(asset.scale * 0.88)
+              .setAlpha(0)
+              .setVisible(true);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y,
+              alpha: 1,
+              scaleX: asset.scale,
+              scaleY: asset.scale,
+              duration: 260,
+              delay: 180 + index * 28,
+              ease: 'Back.Out'
+            });
+          });
+
+          this.transitionMegaTitle();
+        }
+
+        transitionMegaTitle() {
+          const swaps = [
+            ['letter_b', 'mega_m'],
+            ['letter_i_big', 'mega_e'],
+            ['letter_g', 'mega_g'],
+            [null, 'mega_a'],
+            ['letter_w', 'mega_w'],
+            ['letter_i_win', 'mega_i'],
+            ['letter_n', 'mega_n']
+          ];
+          const stagger = 150;
+          const startDelay = 90;
+
+          swaps.forEach(([oldKey, megaKey], index) => {
+            this.sequenceTimers.push(this.time.delayedCall(startDelay + index * stagger, () => {
+              const revealMegaLetter = () => {
+                const asset = megaAssetByKey.get(megaKey);
+                const megaSprite = this.megaSprites.get(megaKey);
+                megaSprite
+                  .setPosition(asset.x, asset.y - 9)
+                  .setScale(asset.scale)
+                  .setAlpha(1)
+                  .setVisible(true);
+                this.tweens.add({
+                  targets: megaSprite,
+                  y: asset.y,
+                  duration: 175,
+                  ease: 'Back.Out',
+                  onComplete: index === swaps.length - 1 ? () => {
+                    this.titleContainer.setVisible(false);
+                    this.transitioning = false;
+                    this.megaActive = true;
+                    nextButton.disabled = false;
+                    nextButton.textContent = 'Повторить переход';
+                  } : undefined
+                });
+              };
+
+              if (!oldKey) {
+                revealMegaLetter();
+                return;
+              }
+
+              const oldSprite = this.letterSprites.get(oldKey);
+              this.tweens.add({
+                targets: oldSprite,
+                y: -9,
+                duration: 135,
+                ease: 'Sine.Out',
+                onComplete: () => {
+                  oldSprite.setVisible(false);
+                  revealMegaLetter();
+                }
+              });
+            }));
+          });
+        }
+
         playIntroAnimation() {
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
+          this.transitioning = false;
+          this.megaActive = false;
+          nextButton.disabled = false;
+          nextButton.textContent = 'Следующий';
+          this.resetMegaAssets();
           this.letterSprites?.forEach((sprite, key) => {
-            sprite.setPosition(0, 0).setScale(letterAssetByKey.get(key).scale);
+            sprite
+              .setPosition(0, 0)
+              .setScale(letterAssetByKey.get(key).scale)
+              .setAlpha(1)
+              .setVisible(true);
           });
           this.floatingActive = false;
           this.floatingStartedAt = 0;
