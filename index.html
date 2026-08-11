@@ -382,8 +382,10 @@
           <button class="letter-button" type="button" data-max-key="max_pool" aria-pressed="false">Pool</button>
           <button class="letter-button" type="button" data-max-key="max_palm_1" aria-pressed="false">Palm 1</button>
           <button class="letter-button" type="button" data-max-key="max_palm_2" aria-pressed="false">Palm 2</button>
+          <button class="letter-button" type="button" data-max-key="max_sequence_left" aria-pressed="false">Firework L</button>
+          <button class="letter-button" type="button" data-max-key="max_sequence_right" aria-pressed="false">Firework R</button>
         </div>
-        <p class="letter-position" id="max-position">X 91 · Y 93</p>
+        <p class="letter-position" id="max-position">X 91 · Y 95</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
             <span class="label-row"><span>Масштаб слоя</span><span class="value" id="max-scale-value">0.17×</span></span>
@@ -406,8 +408,43 @@
             <span class="label-row"><span>Офсет 15000</span><span class="value" id="max-amount-offset-value">0 мс</span></span>
             <input class="letter-scale-slider" id="max-amount-offset" type="range" min="0" max="1200" step="10" value="0" aria-label="Офсет появления надписи 15000">
           </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет бассейна</span><span class="value" id="max-pool-offset-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="max-pool-offset" type="range" min="0" max="1600" step="10" value="0" aria-label="Офсет появления бассейна">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Прыжок мороженого</span><span class="value" id="max-ice-bounce-value">18 px</span></span>
+            <input class="letter-scale-slider" id="max-ice-bounce" type="range" min="0" max="50" step="1" value="18" aria-label="Высота прыжка мороженого Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Прыжок девчонки</span><span class="value" id="max-girl-bounce-value">24 px</span></span>
+            <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="60" step="1" value="24" aria-label="Высота прыжка девчонки Max Win">
+          </label>
         </div>
         <p class="letter-hint">Изменение офсета автоматически перезапускает MAX-анимацию, если экран уже открыт.</p>
+      </section>
+
+      <section class="control-group" id="max-sequence-editor">
+        <p class="settings-title">Фейерверки Max</p>
+        <div class="letter-picker" role="group" aria-label="Выбор секвенции Max">
+          <button class="letter-button is-active" id="max-sequence-left-button" type="button" aria-pressed="true">Левая</button>
+          <button class="letter-button" id="max-sequence-right-button" type="button" aria-pressed="false">Правая</button>
+        </div>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Позиция X</span><span class="value" id="max-sequence-x-value">20 px</span></span>
+            <input class="letter-scale-slider" id="max-sequence-x" type="range" min="-80" max="263" step="1" value="20" aria-label="Позиция X секвенции Max">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Позиция Y</span><span class="value" id="max-sequence-y-value">180 px</span></span>
+            <input class="letter-scale-slider" id="max-sequence-y" type="range" min="-80" max="476" step="1" value="180" aria-label="Позиция Y секвенции Max">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Масштаб</span><span class="value" id="max-sequence-scale-value">1.50×</span></span>
+            <input class="letter-scale-slider" id="max-sequence-scale" type="range" min="0.10" max="3.00" step="0.01" value="1.50" aria-label="Масштаб секвенции Max">
+          </label>
+        </div>
+        <p class="letter-hint">При изменении ползунка выбранный фейерверк сразу проигрывается повторно.</p>
       </section>
     </aside>
 
@@ -511,7 +548,11 @@
       const MAX_SCREEN_DELAY = 160;
       const MAX_WAVE_INTERVAL = 3000;
       const MAX_ENTRANCE = { titleDelay: 260, amountDelay: 0 };
-      const MAX_POOL_DROP = { duration: 720, bounce: 22, topMargin: 24 };
+      const MAX_POOL_DROP = { delay: 0, duration: 720, bounce: 22, topMargin: 24 };
+      const MAX_LANDING = { iceHeight: 18, girlHeight: 24 };
+      const MAX_PALMS = { duration: 480, rotation: 18, stagger: 80 };
+      const MAX_TOSS = { interval: 3000, poolHeight: 12 };
+      const MAX_SEQUENCE = { frameRate: 30 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -617,12 +658,19 @@
         { key: 'max_pool_cream_choko', label: 'Choko', file: 'max_win/pool_cream_choko.png', x: 199, y: 261, scale: 0.92, depth: 410, parent: 'max_pool' },
         { key: 'max_pool_icecream', label: 'Icecream', file: 'max_win/pool_icecream.png', x: 89, y: 234, scale: 0.93, depth: 409, parent: 'max_pool' },
         { key: 'max_pool', label: 'Pool', file: 'max_win/pool.png', x: 91, y: 256, scale: 0.92, depth: 408 },
-        { key: 'max_palm_1', label: 'Palm 1', file: 'max_win/palm_1.png', x: 25, y: 146, scale: 0.92, depth: 407, parent: 'max_pool' },
-        { key: 'max_palm_2', label: 'Palm 2', file: 'max_win/palm_2.png', x: 153, y: 147, scale: 0.92, depth: 406, parent: 'max_pool' }
+        { key: 'max_palm_1', label: 'Palm 1', file: 'max_win/palm_1.png', x: 25, y: 146, scale: 0.92, depth: 407, parent: 'max_pool', bottomAnchor: true },
+        { key: 'max_palm_2', label: 'Palm 2', file: 'max_win/palm_2.png', x: 153, y: 147, scale: 0.92, depth: 406, parent: 'max_pool', bottomAnchor: true }
       ];
+      const MAX_SEQUENCE_ASSETS = [
+        { key: 'max_sequence_left', label: 'Firework L', x: 20, y: 180, scale: 1.5, depth: 407.5, flipX: false, isSequence: true },
+        { key: 'max_sequence_right', label: 'Firework R', x: 163, y: 180, scale: 1.5, depth: 407.5, flipX: true, isSequence: true }
+      ];
+      const MAX_EDITABLE_ASSETS = [...MAX_ASSETS, ...MAX_SEQUENCE_ASSETS];
+      const MAX_PALM_KEYS = new Set(['max_palm_1', 'max_palm_2']);
       const MAX_COMPOSITION_KEYS = new Set(MAX_ASSETS.filter((asset) => (
         !asset.isLetter && !['max_amount', 'max_multiplier'].includes(asset.key)
       )).map((asset) => asset.key));
+      const MAX_FALLING_KEYS = new Set([...MAX_COMPOSITION_KEYS].filter((key) => !MAX_PALM_KEYS.has(key)));
       const getMaxDescendants = (key) => {
         const descendants = [];
         const visit = (parentKey) => {
@@ -660,15 +708,30 @@
       const maxTitleOffsetValue = document.querySelector('#max-title-offset-value');
       const maxAmountOffsetSlider = document.querySelector('#max-amount-offset');
       const maxAmountOffsetValue = document.querySelector('#max-amount-offset-value');
+      const maxPoolOffsetSlider = document.querySelector('#max-pool-offset');
+      const maxPoolOffsetValue = document.querySelector('#max-pool-offset-value');
+      const maxIceBounceSlider = document.querySelector('#max-ice-bounce');
+      const maxIceBounceValue = document.querySelector('#max-ice-bounce-value');
+      const maxGirlBounceSlider = document.querySelector('#max-girl-bounce');
+      const maxGirlBounceValue = document.querySelector('#max-girl-bounce-value');
+      const maxSequenceLeftButton = document.querySelector('#max-sequence-left-button');
+      const maxSequenceRightButton = document.querySelector('#max-sequence-right-button');
+      const maxSequenceXSlider = document.querySelector('#max-sequence-x');
+      const maxSequenceXValue = document.querySelector('#max-sequence-x-value');
+      const maxSequenceYSlider = document.querySelector('#max-sequence-y');
+      const maxSequenceYValue = document.querySelector('#max-sequence-y-value');
+      const maxSequenceScaleSlider = document.querySelector('#max-sequence-scale');
+      const maxSequenceScaleValue = document.querySelector('#max-sequence-scale-value');
       const maxButtons = [...document.querySelectorAll('[data-max-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       const megaAssetByKey = new Map(MEGA_ASSETS.map((asset) => [asset.key, asset]));
       const epicAssetByKey = new Map(EPIC_EDITABLE_ASSETS.map((asset) => [asset.key, asset]));
-      const maxAssetByKey = new Map(MAX_ASSETS.map((asset) => [asset.key, asset]));
+      const maxAssetByKey = new Map(MAX_EDITABLE_ASSETS.map((asset) => [asset.key, asset]));
       const canTransformMegaAsset = (asset) => Boolean(asset?.isHand || asset?.transformable);
       let activeScene;
       let activeMaxKey = 'max_amount';
+      let activeMaxSequenceKey = 'max_sequence_left';
       let underlayVisible = false;
       let underlayAbove = false;
       let maxReplayTimeout = 0;
@@ -689,7 +752,26 @@
       const selectMaxLayer = (key) => {
         if (!maxAssetByKey.has(key)) return;
         activeMaxKey = key;
+        if (maxAssetByKey.get(key).isSequence) {
+          activeMaxSequenceKey = key;
+          updateMaxSequenceEditor();
+        }
         updateMaxEditor();
+      };
+
+      const updateMaxSequenceEditor = () => {
+        const asset = maxAssetByKey.get(activeMaxSequenceKey);
+        maxSequenceXSlider.value = asset.x;
+        maxSequenceXValue.textContent = `${Math.round(asset.x)} px`;
+        maxSequenceYSlider.value = asset.y;
+        maxSequenceYValue.textContent = `${Math.round(asset.y)} px`;
+        maxSequenceScaleSlider.value = asset.scale;
+        maxSequenceScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        const leftActive = activeMaxSequenceKey === 'max_sequence_left';
+        maxSequenceLeftButton.classList.toggle('is-active', leftActive);
+        maxSequenceRightButton.classList.toggle('is-active', !leftActive);
+        maxSequenceLeftButton.setAttribute('aria-pressed', String(leftActive));
+        maxSequenceRightButton.setAttribute('aria-pressed', String(!leftActive));
       };
 
       maxButtons.forEach((button) => {
@@ -720,6 +802,49 @@
         maxAmountOffsetValue.textContent = `${MAX_ENTRANCE.amountDelay} мс`;
         scheduleMaxReplay();
       });
+
+      maxPoolOffsetSlider.addEventListener('input', () => {
+        MAX_POOL_DROP.delay = Number(maxPoolOffsetSlider.value);
+        maxPoolOffsetValue.textContent = `${MAX_POOL_DROP.delay} мс`;
+        scheduleMaxReplay();
+      });
+
+      maxIceBounceSlider.addEventListener('input', () => {
+        MAX_LANDING.iceHeight = Number(maxIceBounceSlider.value);
+        maxIceBounceValue.textContent = `${MAX_LANDING.iceHeight} px`;
+        scheduleMaxReplay();
+      });
+
+      maxGirlBounceSlider.addEventListener('input', () => {
+        MAX_LANDING.girlHeight = Number(maxGirlBounceSlider.value);
+        maxGirlBounceValue.textContent = `${MAX_LANDING.girlHeight} px`;
+        scheduleMaxReplay();
+      });
+
+      const selectMaxSequence = (key) => {
+        activeMaxSequenceKey = key;
+        updateMaxSequenceEditor();
+        selectMaxLayer(key);
+        activeScene?.previewMaxSequences();
+      };
+
+      maxSequenceLeftButton.addEventListener('click', () => selectMaxSequence('max_sequence_left'));
+      maxSequenceRightButton.addEventListener('click', () => selectMaxSequence('max_sequence_right'));
+
+      const updateActiveMaxSequence = () => {
+        const asset = maxAssetByKey.get(activeMaxSequenceKey);
+        asset.x = Number(maxSequenceXSlider.value);
+        asset.y = Number(maxSequenceYSlider.value);
+        asset.scale = Number(maxSequenceScaleSlider.value);
+        updateMaxSequenceEditor();
+        activeScene?.syncMaxSequenceTransforms();
+        activeScene?.previewMaxSequences();
+        updateMaxEditor();
+      };
+
+      maxSequenceXSlider.addEventListener('input', updateActiveMaxSequence);
+      maxSequenceYSlider.addEventListener('input', updateActiveMaxSequence);
+      maxSequenceScaleSlider.addEventListener('input', updateActiveMaxSequence);
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -774,6 +899,7 @@
         }, 1600);
       });
       updateMaxEditor();
+      updateMaxSequenceEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -782,6 +908,7 @@
           this.load.atlas('explode', 'explode.png', 'explode.json');
           this.load.atlas('hearts', 'mega_win/hearts.png', 'mega_win/hearts.json');
           this.load.atlas('epic_burst', 'epic_win/epic.png?v=005a4a13', 'epic_win/epic.json?v=a0fef501');
+          this.load.atlas('max_burst', 'max_win/max.png', 'max_win/max.json');
           this.load.image('example_overlay', 'max_win/example_4.png');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
@@ -824,6 +951,17 @@
                 suffix: '.png'
               }),
               frameRate: HEARTS.frameRate,
+              repeat: 0
+            });
+          }
+          if (!this.anims.exists('max-firework')) {
+            this.anims.create({
+              key: 'max-firework',
+              frames: Array.from({ length: 34 }, (_, index) => ({
+                key: 'max_burst',
+                frame: `directional_party_burst_001_large_yellow/frame${String(index).padStart(4, '0')}.png`
+              })),
+              frameRate: MAX_SEQUENCE.frameRate,
               repeat: 0
             });
           }
@@ -925,13 +1063,29 @@
               .setVisible(false)
               .setInteractive({ useHandCursor: true })
               .on('pointerdown', () => selectMaxLayer(asset.key));
+            if (asset.bottomAnchor) sprite.setOrigin(0.5, 1);
+            this.maxSprites.set(asset.key, sprite);
+          });
+          MAX_SEQUENCE_ASSETS.forEach((asset) => {
+            const firstFrame = 'directional_party_burst_001_large_yellow/frame0000.png';
+            const sprite = this.add.sprite(asset.x, asset.y, 'max_burst', firstFrame)
+              .setScale(asset.scale)
+              .setFlipX(asset.flipX)
+              .setDepth(asset.depth)
+              .setAlpha(0)
+              .setVisible(false)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerdown', () => selectMaxLayer(asset.key));
+            sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'max-firework', () => {
+              sprite.setVisible(false);
+            });
             this.maxSprites.set(asset.key, sprite);
           });
           this.maxTitleContainer = this.add.container(0, 0).setDepth(420).setVisible(false);
           MAX_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.maxTitleContainer.add(this.maxSprites.get(asset.key));
           });
-          this.maxPoolMotion = { rootY: 0 };
+          this.maxPoolMotion = { rootY: 0, poolY: 0, iceY: 0, girlY: 0 };
           this.maxActive = false;
 
           const strawberry = this.sprites.get('strawberry');
@@ -1074,13 +1228,32 @@
           if (!asset) return;
           this.tweens.killTweensOf(this.maxSprites.get(key));
           this.maxSprites.get(key).setScale(scale);
+          if (MAX_COMPOSITION_KEYS.has(key)) this.syncMaxPoolHierarchy();
+          if (asset.isSequence) this.syncMaxSequenceTransforms();
         }
 
         syncMaxPoolHierarchy() {
-          const offsetY = this.maxPoolMotion?.rootY ?? 0;
+          const motion = this.maxPoolMotion ?? {};
+          const offsetY = (motion.rootY ?? 0) + (motion.poolY ?? 0);
           MAX_COMPOSITION_KEYS.forEach((key) => {
             const asset = maxAssetByKey.get(key);
-            this.maxSprites.get(key).setPosition(asset.x, asset.y + offsetY);
+            const sprite = this.maxSprites.get(key);
+            let animatedOffsetY = offsetY;
+            if (key === 'max_pool_icecream') animatedOffsetY += motion.iceY ?? 0;
+            if (key === 'max_girl') animatedOffsetY += (motion.iceY ?? 0) + (motion.girlY ?? 0);
+            const anchorOffsetY = asset.bottomAnchor ? sprite.height * asset.scale / 2 : 0;
+            sprite.setPosition(asset.x, asset.y + anchorOffsetY + animatedOffsetY);
+          });
+          this.syncMaxSequenceTransforms();
+        }
+
+        syncMaxSequenceTransforms() {
+          const offsetY = (this.maxPoolMotion?.rootY ?? 0) + (this.maxPoolMotion?.poolY ?? 0);
+          MAX_SEQUENCE_ASSETS.forEach((asset) => {
+            this.maxSprites.get(asset.key)
+              .setPosition(asset.x, asset.y + offsetY)
+              .setScale(asset.scale)
+              .setFlipX(asset.flipX);
           });
         }
 
@@ -1098,16 +1271,18 @@
             }
           });
           if (MAX_COMPOSITION_KEYS.has(key)) this.syncMaxPoolHierarchy();
+          if (asset.isSequence) this.syncMaxSequenceTransforms();
         }
 
         exportMaxLayout() {
-          return Object.fromEntries(MAX_ASSETS.map((asset) => {
+          return Object.fromEntries(MAX_EDITABLE_ASSETS.map((asset) => {
             const values = {
               x: Math.round(asset.x),
               y: Math.round(asset.y),
               scale: Number(asset.scale.toFixed(2))
             };
             if (asset.parent) values.parent = asset.parent;
+            if (asset.isSequence) values.flipX = asset.flipX;
             return [asset.key, values];
           }));
         }
@@ -1138,18 +1313,33 @@
         }
 
         resetMaxAssets() {
+          this.maxPoolBounceTimer?.remove(false);
+          this.maxPoolBounceTimer = null;
+          window.clearInterval(this.maxSequenceInterval);
+          this.maxSequenceInterval = 0;
+          window.clearTimeout(this.maxSequencePreviewTimeout);
           this.maxWaveTimer?.remove(false);
           this.maxWaveTimer = null;
           this.maxActive = false;
           this.maxPoolMotion.rootY = 0;
-          MAX_ASSETS.forEach((asset) => {
-            this.maxSprites.get(asset.key)
+          this.maxPoolMotion.poolY = 0;
+          this.maxPoolMotion.iceY = 0;
+          this.maxPoolMotion.girlY = 0;
+          MAX_EDITABLE_ASSETS.forEach((asset) => {
+            const sprite = this.maxSprites.get(asset.key);
+            if (asset.isSequence) {
+              sprite.stop()
+                .setFrame('directional_party_burst_001_large_yellow/frame0000.png')
+                .setFlipX(asset.flipX);
+            }
+            sprite
               .setPosition(asset.x, asset.y)
               .setScale(asset.scale)
               .setAngle(0)
               .setAlpha(0)
               .setVisible(false);
           });
+          this.syncMaxPoolHierarchy();
           this.maxTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
         }
 
@@ -2271,7 +2461,10 @@
         }
 
         startMaxScreenEntrances() {
-          this.startMaxPoolEntrance();
+          this.sequenceTimers.push(this.time.delayedCall(
+            Math.max(0, MAX_POOL_DROP.delay),
+            () => this.startMaxPoolEntrance()
+          ));
 
           MAX_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.maxSprites.get(asset.key)
@@ -2304,20 +2497,25 @@
             1400,
             MAX_ENTRANCE.titleDelay + 900,
             MAX_ENTRANCE.amountDelay + 900,
-            MULTIPLIER_REVEAL.delay + 500
+            MULTIPLIER_REVEAL.delay + 500,
+            MAX_POOL_DROP.delay + MAX_POOL_DROP.duration + 1100
           );
           this.sequenceTimers.push(this.time.delayedCall(completionDelay, () => this.completeMaxTransition()));
         }
 
         startMaxPoolEntrance() {
-          MAX_COMPOSITION_KEYS.forEach((key) => {
+          MAX_FALLING_KEYS.forEach((key) => {
             const asset = maxAssetByKey.get(key);
             this.maxSprites.get(key)
               .setScale(asset.scale)
+              .setAngle(0)
               .setAlpha(1)
               .setVisible(true);
           });
-          const compositionBottom = Math.max(...[...MAX_COMPOSITION_KEYS].map((key) => {
+          MAX_PALM_KEYS.forEach((key) => {
+            this.maxSprites.get(key).setAlpha(1).setVisible(false);
+          });
+          const compositionBottom = Math.max(...[...MAX_FALLING_KEYS].map((key) => {
             const asset = maxAssetByKey.get(key);
             const sprite = this.maxSprites.get(key);
             return asset.y + sprite.height * asset.scale / 2;
@@ -2333,6 +2531,9 @@
             ease: 'Cubic.In',
             onUpdate: () => this.syncMaxPoolHierarchy(),
             onComplete: () => {
+              this.playMaxSequences();
+              this.playMaxDessertBounce();
+              this.playMaxPalmGrowth();
               this.tweens.add({
                 targets: this.maxPoolMotion,
                 rootY: -bounce * 0.42,
@@ -2352,6 +2553,174 @@
                         rootY: 0,
                         duration: 170,
                         ease: 'Back.Out',
+                        onUpdate: () => this.syncMaxPoolHierarchy()
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+
+        playMaxPalmGrowth() {
+          ['max_palm_1', 'max_palm_2'].forEach((key, index) => {
+            const asset = maxAssetByKey.get(key);
+            const sprite = this.maxSprites.get(key);
+            const direction = key === 'max_palm_1' ? 1 : -1;
+            sprite
+              .setScale(asset.scale * 0.02)
+              .setAngle(-direction * MAX_PALMS.rotation)
+              .setAlpha(1)
+              .setVisible(true);
+            this.syncMaxPoolHierarchy();
+            this.tweens.add({
+              targets: sprite,
+              scaleX: asset.scale * 1.06,
+              scaleY: asset.scale * 1.06,
+              angle: direction * MAX_PALMS.rotation * 0.34,
+              duration: MAX_PALMS.duration,
+              delay: index * MAX_PALMS.stagger,
+              ease: 'Cubic.Out',
+              onComplete: () => {
+                this.tweens.add({
+                  targets: sprite,
+                  scaleX: asset.scale * 0.98,
+                  scaleY: asset.scale * 0.98,
+                  angle: -direction * MAX_PALMS.rotation * 0.13,
+                  duration: 120,
+                  ease: 'Sine.InOut',
+                  onComplete: () => {
+                    this.tweens.add({
+                      targets: sprite,
+                      scaleX: asset.scale,
+                      scaleY: asset.scale,
+                      angle: 0,
+                      duration: 145,
+                      ease: 'Sine.Out'
+                    });
+                  }
+                });
+              }
+            });
+          });
+        }
+
+        playMaxDessertBounce(multiplier = 1) {
+          const iceHeight = MAX_LANDING.iceHeight * multiplier;
+          const girlRelativeHeight = (MAX_LANDING.girlHeight - MAX_LANDING.iceHeight) * multiplier;
+          const animateProperty = (property, height) => {
+            this.maxPoolMotion[property] = 0;
+            this.tweens.add({
+              targets: this.maxPoolMotion,
+              [property]: -height,
+              duration: 180,
+              ease: 'Quad.Out',
+              onUpdate: () => this.syncMaxPoolHierarchy(),
+              onComplete: () => {
+                this.tweens.add({
+                  targets: this.maxPoolMotion,
+                  [property]: 0,
+                  duration: 220,
+                  ease: 'Quad.In',
+                  onUpdate: () => this.syncMaxPoolHierarchy(),
+                  onComplete: () => {
+                    this.tweens.add({
+                      targets: this.maxPoolMotion,
+                      [property]: -height * 0.14,
+                      duration: 85,
+                      ease: 'Quad.Out',
+                      onUpdate: () => this.syncMaxPoolHierarchy(),
+                      onComplete: () => {
+                        this.tweens.add({
+                          targets: this.maxPoolMotion,
+                          [property]: 0,
+                          duration: 105,
+                          ease: 'Sine.In',
+                          onUpdate: () => this.syncMaxPoolHierarchy()
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          };
+          animateProperty('iceY', iceHeight);
+          animateProperty('girlY', girlRelativeHeight);
+        }
+
+        playMaxSequences() {
+          window.clearInterval(this.maxSequenceInterval);
+          MAX_SEQUENCE_ASSETS.forEach((asset) => {
+            this.maxSprites.get(asset.key)
+              .stop()
+              .setFrame('directional_party_burst_001_large_yellow/frame0000.png')
+              .setPosition(asset.x, asset.y + this.maxPoolMotion.rootY + this.maxPoolMotion.poolY)
+              .setScale(asset.scale)
+              .setFlipX(asset.flipX)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          let frameIndex = 0;
+          this.maxSequenceInterval = window.setInterval(() => {
+            frameIndex += 1;
+            if (frameIndex >= 34) {
+              window.clearInterval(this.maxSequenceInterval);
+              this.maxSequenceInterval = 0;
+              MAX_SEQUENCE_ASSETS.forEach((asset) => this.maxSprites.get(asset.key).setVisible(false));
+              return;
+            }
+            const frameName = `directional_party_burst_001_large_yellow/frame${String(frameIndex).padStart(4, '0')}.png`;
+            MAX_SEQUENCE_ASSETS.forEach((asset) => this.maxSprites.get(asset.key).setFrame(frameName));
+          }, 1000 / MAX_SEQUENCE.frameRate);
+        }
+
+        previewMaxSequences() {
+          if (!this.maxActive || this.transitioning) return;
+          window.clearTimeout(this.maxSequencePreviewTimeout);
+          this.maxSequencePreviewTimeout = window.setTimeout(() => this.playMaxSequences(), 80);
+        }
+
+        startMaxPoolBounceLoop() {
+          this.maxPoolBounceTimer?.remove(false);
+          this.maxPoolBounceTimer = this.time.addEvent({
+            delay: MAX_TOSS.interval,
+            loop: true,
+            callback: () => this.playMaxPoolBounce()
+          });
+        }
+
+        playMaxPoolBounce() {
+          if (!this.maxActive || this.transitioning) return;
+          this.maxPoolMotion.poolY = 0;
+          this.playMaxDessertBounce(0.72);
+          this.tweens.add({
+            targets: this.maxPoolMotion,
+            poolY: -MAX_TOSS.poolHeight,
+            duration: 190,
+            ease: 'Quad.Out',
+            onUpdate: () => this.syncMaxPoolHierarchy(),
+            onComplete: () => {
+              this.tweens.add({
+                targets: this.maxPoolMotion,
+                poolY: 0,
+                duration: 220,
+                ease: 'Quad.In',
+                onUpdate: () => this.syncMaxPoolHierarchy(),
+                onComplete: () => {
+                  this.tweens.add({
+                    targets: this.maxPoolMotion,
+                    poolY: -MAX_TOSS.poolHeight * 0.18,
+                    duration: 90,
+                    ease: 'Quad.Out',
+                    onUpdate: () => this.syncMaxPoolHierarchy(),
+                    onComplete: () => {
+                      this.tweens.add({
+                        targets: this.maxPoolMotion,
+                        poolY: 0,
+                        duration: 110,
+                        ease: 'Sine.In',
                         onUpdate: () => this.syncMaxPoolHierarchy()
                       });
                     }
@@ -2396,6 +2765,7 @@
           maxNextButton.disabled = false;
           maxNextButton.textContent = 'Повторить Max';
           this.startMaxWaveLoop();
+          this.startMaxPoolBounceLoop();
         }
 
         startMaxWaveLoop() {
