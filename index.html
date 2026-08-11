@@ -353,15 +353,15 @@
         <p class="letter-position" id="mega-position">X 91 · Y 97</p>
         <div class="settings-stack" id="mega-hand-controls" hidden>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб руки</span><span class="value" id="mega-scale-value">1.66×</span></span>
-            <input class="letter-scale-slider" id="mega-scale" type="range" min="0.30" max="3.00" step="0.01" value="1.66" aria-label="Масштаб активной руки">
+            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="mega-scale-value">1.66×</span></span>
+            <input class="letter-scale-slider" id="mega-scale" type="range" min="0.10" max="3.00" step="0.01" value="1.66" aria-label="Масштаб активного слоя">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот руки</span><span class="value" id="mega-rotation-value">0°</span></span>
-            <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активной руки">
+            <span class="label-row"><span>Поворот слоя</span><span class="value" id="mega-rotation-value">0°</span></span>
+            <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активного слоя">
           </label>
         </div>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны только для рук.</p>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук и трёх новых слоёв правой мороженки.</p>
         <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты</button>
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
       </section>
@@ -452,6 +452,10 @@
       <section class="control-group" id="hearts-editor">
         <p class="settings-title">Секвенции hearts</p>
         <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Опережение запуска</span><span class="value" id="hearts-lead-value">450 мс</span></span>
+            <input class="letter-scale-slider" id="hearts-lead" type="range" min="-500" max="1200" step="10" value="450" aria-label="Опережение запуска секвенций hearts">
+          </label>
           <p class="settings-subtitle">Левая рука</p>
           <label class="letter-scale-control">
             <span class="label-row"><span>Положение X</span><span class="value" id="hearts-left-x-value">40 px</span></span>
@@ -479,6 +483,7 @@
             <input class="letter-scale-slider" id="hearts-right-scale" type="range" min="0.20" max="2.00" step="0.05" value="0.90" aria-label="Масштаб правой секвенции hearts">
           </label>
         </div>
+        <p class="letter-hint">Положительное значение запускает hearts раньше завершения выезда рук.</p>
       </section>
 
       <button class="replay-button" id="next-screen" type="button">Следующий</button>
@@ -549,9 +554,13 @@
       const CREAM_LONG_ANIMATION = { appearSpeed: 0.7, swingSpeed: 0.65, swingAngle: 1.5 };
       const HEARTS = {
         frameRate: 30,
+        lead: 450,
         left: { x: 40, y: 175, scale: 0.9, flipX: false },
         right: { x: 145, y: 195, scale: 0.9, flipX: true }
       };
+      const MEGA_WAVE_INTERVAL = 3000;
+      const MEGA_TOSS_INTERVAL = 5000;
+      const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 3, sideDelay: 110, toppingDelay: 75 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -588,12 +597,12 @@
         { key: 'mega_w', label: 'W', file: 'mega_win/w_win_mega.png', x: 112, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 122, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 133, y: 48, scale: 0.17, depth: 220, isLetter: true },
-        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png', x: 143, y: 103, scale: 1.05, depth: 208, topAnchor: true },
+        { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png?v=189d34d8', x: 143, y: 103, scale: 1.05, depth: 208, topAnchor: true },
         { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 36, y: 156, scale: 1, depth: 213, parent: 'mega_ice_2' },
-        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png', x: 159, y: 181, scale: 1, depth: 213, parent: 'mega_ice_1' },
-        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png', x: 143, y: 237, scale: 1, depth: 209, parent: 'mega_hand_right' },
+        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png?v=c53f05fc', x: 159, y: 181, scale: 1, rotation: 0, depth: 213, parent: 'mega_ice_1', transformable: true },
+        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png?v=f009665d', x: 143, y: 237, scale: 1, rotation: 0, depth: 209, parent: 'mega_hand_right', transformable: true },
         { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 48, y: 208, scale: 1, depth: 209, parent: 'mega_hand_left' },
-        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png', x: 146, y: 223, scale: 1, depth: 212, parent: 'mega_ice_1' },
+        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png?v=8fdf90b1', x: 146, y: 223, scale: 1, rotation: 0, depth: 212, parent: 'mega_ice_1', transformable: true },
         { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 46, y: 206, scale: 1, depth: 212, parent: 'mega_ice_2' },
         { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -21, y: 385, scale: 1.43, rotation: -3, depth: 204, isHand: true },
         { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true }
@@ -624,6 +633,7 @@
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       const megaAssetByKey = new Map(MEGA_ASSETS.map((asset) => [asset.key, asset]));
+      const canTransformMegaAsset = (asset) => Boolean(asset?.isHand || asset?.transformable);
       let activeScene;
       let activeMegaKey = 'mega_amount';
       let underlayVisible = false;
@@ -633,12 +643,12 @@
         const position = activeScene?.getMegaPosition(activeMegaKey) ?? asset;
         activeMegaName.textContent = asset.label;
         megaPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
-        megaHandControls.hidden = !asset.isHand;
-        if (asset.isHand) {
+        megaHandControls.hidden = !canTransformMegaAsset(asset);
+        if (canTransformMegaAsset(asset)) {
           megaScaleSlider.value = asset.scale;
           megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
-          megaRotationSlider.value = asset.rotation;
-          megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
+          megaRotationSlider.value = asset.rotation ?? 0;
+          megaRotationValue.textContent = `${Math.round(asset.rotation ?? 0)}°`;
         }
         megaButtons.forEach((button) => {
           const isActive = button.dataset.megaKey === activeMegaKey;
@@ -659,7 +669,7 @@
 
       megaScaleSlider.addEventListener('input', () => {
         const asset = megaAssetByKey.get(activeMegaKey);
-        if (!asset.isHand) return;
+        if (!canTransformMegaAsset(asset)) return;
         asset.scale = Number(megaScaleSlider.value);
         megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
         activeScene?.setMegaScale(activeMegaKey, asset.scale);
@@ -667,7 +677,7 @@
 
       megaRotationSlider.addEventListener('input', () => {
         const asset = megaAssetByKey.get(activeMegaKey);
-        if (!asset.isHand) return;
+        if (!canTransformMegaAsset(asset)) return;
         asset.rotation = Number(megaRotationSlider.value);
         megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
         activeScene?.setMegaRotation(activeMegaKey, asset.rotation);
@@ -696,6 +706,7 @@
       bindTransitionControl('cream-appear-speed', 'cream-appear-speed-value', CREAM_LONG_ANIMATION, 'appearSpeed', (value) => `${value.toFixed(2)}×`);
       bindTransitionControl('cream-swing-speed', 'cream-swing-speed-value', CREAM_LONG_ANIMATION, 'swingSpeed', (value) => `${value.toFixed(2)}×`);
       bindTransitionControl('cream-swing-angle', 'cream-swing-angle-value', CREAM_LONG_ANIMATION, 'swingAngle', (value) => `${value.toFixed(1)}°`);
+      bindTransitionControl('hearts-lead', 'hearts-lead-value', HEARTS, 'lead', (value) => `${Math.round(value)} мс`);
       bindTransitionControl('hearts-left-x', 'hearts-left-x-value', HEARTS.left, 'x', (value) => `${Math.round(value)} px`);
       bindTransitionControl('hearts-left-y', 'hearts-left-y-value', HEARTS.left, 'y', (value) => `${Math.round(value)} px`);
       bindTransitionControl('hearts-left-scale', 'hearts-left-scale-value', HEARTS.left, 'scale', (value) => `${value.toFixed(2)}×`);
@@ -896,13 +907,13 @@
 
         setMegaScale(key, scale) {
           const asset = megaAssetByKey.get(key);
-          if (!asset?.isHand) return;
+          if (!canTransformMegaAsset(asset)) return;
           this.megaSprites?.get(key)?.setScale(scale);
         }
 
         setMegaRotation(key, rotation) {
           const asset = megaAssetByKey.get(key);
-          if (!asset?.isHand) return;
+          if (!canTransformMegaAsset(asset)) return;
           this.megaSprites?.get(key)?.setAngle(rotation);
         }
 
@@ -929,8 +940,10 @@
               y: Math.round(asset.y),
               scale: Number(asset.scale.toFixed(2))
             };
-            if (asset.isHand) {
+            if (canTransformMegaAsset(asset)) {
               values.rotation = Math.round(asset.rotation);
+            }
+            if (asset.isHand) {
               values.flipX = Boolean(asset.flipX);
             }
             if (asset.parent) values.parent = asset.parent;
@@ -948,10 +961,15 @@
             scale: HEARTS.right.scale,
             flipX: true
           };
+          layout.mega_hearts_timing = { lead: HEARTS.lead };
           return layout;
         }
 
         resetMegaAssets() {
+          this.megaWaveTimer?.remove(false);
+          this.megaTossTimer?.remove(false);
+          this.megaWaveTimer = null;
+          this.megaTossTimer = null;
           MEGA_ASSETS.forEach((asset) => {
             const sprite = this.megaSprites.get(asset.key)
               .setScale(asset.scale)
@@ -1142,8 +1160,10 @@
             this.startMegaHandEntry(side, entryDelay);
             const iceDelay = entryDelay + Math.max(0, MEGA_HAND_SETTLE_DURATION - MEGA_JUMPS.iceLead);
             const toppingDelay = entryDelay + Math.max(0, MEGA_HAND_SETTLE_DURATION - MEGA_JUMPS.toppingLead);
+            const heartsDelay = entryDelay + Math.max(0, MEGA_HAND_SETTLE_DURATION - HEARTS.lead);
             this.sequenceTimers.push(this.time.delayedCall(iceDelay, () => this.launchMegaBallSequence(side)));
             this.sequenceTimers.push(this.time.delayedCall(toppingDelay, () => this.launchMegaToppingSequence(side)));
+            this.sequenceTimers.push(this.time.delayedCall(heartsDelay, () => this.playHeartsBurst(side)));
           });
         }
 
@@ -1168,8 +1188,7 @@
               [property]: 0,
               duration: 120,
               ease: 'Sine.Out',
-              onUpdate: () => this.syncMegaHandHierarchy(),
-              onComplete: () => this.playHeartsBurst(side)
+              onUpdate: () => this.syncMegaHandHierarchy()
             });
             return;
           }
@@ -1267,7 +1286,6 @@
 
         playMegaLandingImpact(property, amplitude, squashKeys, onComplete = () => {}) {
           const impact = amplitude * MEGA_JUMPS.impact;
-          const squashSprites = squashKeys.map((key) => this.megaSprites.get(key));
           if (impact === 0) {
             this.megaHandMotion[property] = 0;
             squashKeys.forEach((key) => this.megaSprites.get(key).setScale(megaAssetByKey.get(key).scale));
@@ -1275,13 +1293,16 @@
             onComplete();
             return;
           }
-          this.tweens.add({
-            targets: squashSprites,
-            scaleX: 1 + 0.08 * MEGA_JUMPS.impact,
-            scaleY: 1 - 0.1 * MEGA_JUMPS.impact,
-            duration: 70,
-            ease: 'Sine.InOut',
-            yoyo: true
+          squashKeys.forEach((key) => {
+            const baseScale = megaAssetByKey.get(key).scale;
+            this.tweens.add({
+              targets: this.megaSprites.get(key),
+              scaleX: baseScale * (1 + 0.08 * MEGA_JUMPS.impact),
+              scaleY: baseScale * (1 - 0.1 * MEGA_JUMPS.impact),
+              duration: 70,
+              ease: 'Sine.InOut',
+              yoyo: true
+            });
           });
           this.tweens.add({
             targets: this.megaHandMotion,
@@ -1471,11 +1492,100 @@
           nextButton.disabled = false;
           nextButton.textContent = 'Повторить переход';
           this.startMegaFloating();
+          this.startMegaAmbientLoops();
         }
 
         startMegaFloating() {
           this.megaFloatingStartedAt = this.time.now;
           this.megaFloatingActive = true;
+        }
+
+        startMegaAmbientLoops() {
+          this.megaWaveTimer?.remove(false);
+          this.megaTossTimer?.remove(false);
+          this.megaWaveTimer = this.time.addEvent({
+            delay: MEGA_WAVE_INTERVAL,
+            loop: true,
+            callback: () => this.playMegaLetterWave()
+          });
+          this.megaTossTimer = this.time.addEvent({
+            delay: MEGA_TOSS_INTERVAL,
+            loop: true,
+            callback: () => this.playMegaDessertToss()
+          });
+        }
+
+        playMegaLetterWave() {
+          if (!this.megaActive || this.transitioning) return;
+          const speed = Math.max(0.1, LETTER_WAVE.speed);
+          const riseDuration = LETTER_WAVE.riseDuration / speed;
+          const holdDuration = LETTER_WAVE.holdDuration / speed;
+          const letters = MEGA_ASSETS.filter((asset) => asset.isLetter);
+
+          letters.forEach((asset) => {
+            const sprite = this.megaSprites.get(asset.key);
+            this.tweens.killTweensOf(sprite);
+            sprite.setY(asset.y);
+          });
+          letters.forEach((asset, index) => {
+            const sprite = this.megaSprites.get(asset.key);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y - LETTER_WAVE.height,
+              duration: riseDuration,
+              delay: index * LETTER_WAVE.stagger,
+              hold: holdDuration,
+              ease: 'Sine.Out',
+              yoyo: true,
+              onComplete: () => sprite.setY(asset.y)
+            });
+          });
+        }
+
+        playMegaDessertToss() {
+          if (!this.megaActive || this.transitioning) return;
+          ['left', 'right'].forEach((side, index) => {
+            const sideTimer = this.time.delayedCall(index * MEGA_TOSS.sideDelay, () => {
+              const rootProperty = `${side}Y`;
+              const ballProperty = `${side}BallY`;
+              const toppingProperty = `${side}ToppingY`;
+              const impactProperty = `${side}ImpactY`;
+              const toppingImpactProperty = `${side}ToppingImpactY`;
+              const ballKey = side === 'left' ? 'mega_ice_2' : 'mega_ice_1';
+              const toppingKeys = side === 'left'
+                ? ['mega_cherry_1', 'mega_cream_2']
+                : ['mega_cherry_2', 'mega_cream_1'];
+
+              this.tweens.add({
+                targets: this.megaHandMotion,
+                [rootProperty]: MEGA_TOSS.handDip,
+                duration: 80,
+                ease: 'Sine.InOut',
+                yoyo: true,
+                onUpdate: () => this.syncMegaHandHierarchy()
+              });
+              this.megaJumpNode(
+                ballProperty,
+                MEGA_TOSS.ballHeight,
+                180,
+                0,
+                210,
+                () => this.playMegaLandingImpact(impactProperty, 3, [ballKey])
+              );
+              const toppingTimer = this.time.delayedCall(MEGA_TOSS.toppingDelay, () => {
+                this.megaJumpNode(
+                  toppingProperty,
+                  MEGA_TOSS.toppingHeight,
+                  160,
+                  0,
+                  190,
+                  () => this.playMegaLandingImpact(toppingImpactProperty, 2, toppingKeys)
+                );
+              });
+              this.sequenceTimers.push(toppingTimer);
+            });
+            this.sequenceTimers.push(sideTimer);
+          });
         }
 
         playIntroAnimation() {
