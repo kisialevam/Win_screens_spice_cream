@@ -347,80 +347,51 @@
   <main class="app">
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
-      <h1>Epic Win<br>editor</h1>
-      <p class="lead">Big Win и Mega Win зафиксированы. Теперь собираем следующий экран из новых слоёв Epic Win.</p>
+      <h1>Max Win<br>editor</h1>
+      <p class="lead">Big Win, Mega Win и Epic Win зафиксированы. Теперь собираем финальный экран из новых слоёв Max Win.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Epic Win</span></div>
-        <p class="lead">Экран 183 × 396 · редактируются только новые слои Epic Win · Phaser 3</p>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Max Win</span></div>
+        <p class="lead">Экран 183 × 396 · редактируются только новые слои Max Win · Phaser 3</p>
       </section>
 
       <section class="control-group" id="underlay-editor">
-        <div class="label-row"><span>Подложка example_3</span><span class="value">50%</span></div>
+        <div class="label-row"><span>Подложка example_4</span><span class="value">50%</span></div>
         <div class="underlay-actions">
           <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
           <button class="secondary-button" id="toggle-underlay-depth" type="button" aria-pressed="false">Слой: снизу</button>
         </div>
       </section>
 
-      <section class="control-group" id="epic-editor">
-        <div class="label-row"><span>Активный слой</span><span class="value" id="active-epic-name">284.99</span></div>
-        <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Epic Win">
-          <button class="letter-button is-active" type="button" data-epic-key="epic_amount" aria-pressed="true">284.99</button>
-          <button class="letter-button" type="button" data-epic-key="epic_multiplier" aria-pressed="false">142x</button>
-          <button class="letter-button" type="button" data-epic-key="epic_e" aria-pressed="false">E</button>
-          <button class="letter-button" type="button" data-epic-key="epic_p" aria-pressed="false">P</button>
-          <button class="letter-button" type="button" data-epic-key="epic_i_title" aria-pressed="false">I₁</button>
-          <button class="letter-button" type="button" data-epic-key="epic_c" aria-pressed="false">C</button>
-          <button class="letter-button" type="button" data-epic-key="epic_w" aria-pressed="false">W</button>
-          <button class="letter-button" type="button" data-epic-key="epic_i_win" aria-pressed="false">I₂</button>
-          <button class="letter-button" type="button" data-epic-key="epic_n" aria-pressed="false">N</button>
-          <button class="letter-button" type="button" data-epic-key="epic_cream_down" aria-pressed="false">Крем ↓</button>
-          <button class="letter-button" type="button" data-epic-key="epic_peach" aria-pressed="false">Персик</button>
-          <button class="letter-button" type="button" data-epic-key="epic_peach_cream" aria-pressed="false">Крем</button>
-          <button class="letter-button" type="button" data-epic-key="epic_peach_ice" aria-pressed="false">Мороженое</button>
-          <button class="letter-button" type="button" data-epic-key="epic_waffle" aria-pressed="false">Вафля</button>
-          <button class="letter-button" type="button" data-epic-key="epic_hand" aria-pressed="false">Рука</button>
-          <button class="letter-button" type="button" data-epic-key="epic_sequence_left" aria-pressed="false">Epic FX L</button>
-          <button class="letter-button" type="button" data-epic-key="epic_sequence_right" aria-pressed="false">Epic FX R</button>
+      <section class="control-group" id="max-editor">
+        <div class="label-row"><span>Активный слой</span><span class="value" id="active-max-name">15000</span></div>
+        <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Max Win">
+          <button class="letter-button is-active" type="button" data-max-key="max_amount" aria-pressed="true">15000</button>
+          <button class="letter-button" type="button" data-max-key="max_m" aria-pressed="false">M</button>
+          <button class="letter-button" type="button" data-max-key="max_a" aria-pressed="false">A</button>
+          <button class="letter-button" type="button" data-max-key="max_x" aria-pressed="false">X</button>
+          <button class="letter-button" type="button" data-max-key="max_w" aria-pressed="false">W</button>
+          <button class="letter-button" type="button" data-max-key="max_i" aria-pressed="false">I</button>
+          <button class="letter-button" type="button" data-max-key="max_n" aria-pressed="false">N</button>
+          <button class="letter-button" type="button" data-max-key="max_girl" aria-pressed="false">Girl</button>
+          <button class="letter-button" type="button" data-max-key="max_pool_cream_vanila" aria-pressed="false">Vanila</button>
+          <button class="letter-button" type="button" data-max-key="max_pool_cream_pink" aria-pressed="false">Pink</button>
+          <button class="letter-button" type="button" data-max-key="max_pool_cream_choko" aria-pressed="false">Choko</button>
+          <button class="letter-button" type="button" data-max-key="max_pool_icecream" aria-pressed="false">Icecream</button>
+          <button class="letter-button" type="button" data-max-key="max_pool" aria-pressed="false">Pool</button>
+          <button class="letter-button" type="button" data-max-key="max_palm_1" aria-pressed="false">Palm 1</button>
+          <button class="letter-button" type="button" data-max-key="max_palm_2" aria-pressed="false">Palm 2</button>
         </div>
-        <p class="letter-position" id="epic-position">X 91 · Y 93</p>
+        <p class="letter-position" id="max-position">X 91 · Y 93</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="epic-scale-value">0.17×</span></span>
-            <input class="letter-scale-slider" id="epic-scale" type="range" min="0.05" max="3.00" step="0.01" value="0.17" aria-label="Масштаб активного слоя Epic Win">
+            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="max-scale-value">0.17×</span></span>
+            <input class="letter-scale-slider" id="max-scale" type="range" min="0.05" max="3.00" step="0.01" value="0.17" aria-label="Масштаб активного слоя Max Win">
           </label>
         </div>
         <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Выбранный слой также можно выбрать кликом прямо в сцене.</p>
-        <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты Epic Win</button>
-        <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Epic Win" readonly hidden></textarea>
-      </section>
-
-      <section class="control-group" id="epic-timing-editor">
-        <p class="settings-title">Появление надписей EPIC WIN</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет EPIC WIN</span><span class="value" id="epic-title-offset-value">260 мс</span></span>
-            <input class="letter-scale-slider" id="epic-title-offset" type="range" min="0" max="1200" step="10" value="260" aria-label="Офсет появления надписи EPIC WIN">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет 284.99</span><span class="value" id="epic-amount-offset-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="epic-amount-offset" type="range" min="0" max="1200" step="10" value="0" aria-label="Офсет появления надписи 284.99">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Задержка выезда руки</span><span class="value" id="epic-hand-delay-value">220 мс</span></span>
-            <input class="letter-scale-slider" id="epic-hand-delay" type="range" min="0" max="1600" step="20" value="220" aria-label="Задержка выезда руки Epic Win">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость выезда руки</span><span class="value" id="epic-hand-speed-value">1.5×</span></span>
-            <input class="letter-scale-slider" id="epic-hand-speed" type="range" min="0.5" max="4" step="0.1" value="1.5" aria-label="Скорость выезда руки Epic Win">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет секвенций epic</span><span class="value" id="epic-sequence-offset-value">200 мс</span></span>
-            <input class="letter-scale-slider" id="epic-sequence-offset" type="range" min="-400" max="800" step="20" value="200" aria-label="Офсет запуска секвенций Epic Win">
-          </label>
-        </div>
-        <p class="letter-hint">Изменение любого тайминга перезапускает EPIC-анимацию, если экран уже открыт.</p>
+        <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты Max Win</button>
+        <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Max Win" readonly hidden></textarea>
       </section>
     </aside>
 
@@ -428,7 +399,7 @@
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Big Win → Mega Win → редактируемый Epic Win.</p>
+          <p>Big Win → Mega Win → Epic Win → редактируемый Max Win.</p>
         </div>
       </div>
       <div class="stage-workspace">
@@ -440,6 +411,7 @@
           <p class="settings-title">Управление экраном</p>
           <button class="replay-button" id="next-screen" type="button">Следующий</button>
           <button class="replay-button" id="epic-next-screen" type="button" hidden>Далее</button>
+          <button class="replay-button" id="max-next-screen" type="button" hidden>Далее</button>
           <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
         </div>
       </div>
@@ -520,6 +492,9 @@
         handRotationBounce: 7
       };
       const EPIC_SEQUENCE = { frameRate: 30, offset: 200 };
+      const MAX_SCREEN_DELAY = 160;
+      const MAX_WAVE_INTERVAL = 3000;
+      const MAX_ENTRANCE = { titleDelay: 260, amountDelay: 0 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -610,6 +585,35 @@
         visit(key);
         return descendants;
       };
+      const MAX_ASSETS = [
+        { key: 'max_amount', label: '15000', file: 'max_win/15000.png', x: 91, y: 93, scale: 0.17, depth: 414 },
+        { key: 'max_m', label: 'M', file: 'max_win/m_mw.png', x: 55, y: 55, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_a', label: 'A', file: 'max_win/a_mw.png', x: 70, y: 54, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_x', label: 'X', file: 'max_win/x_mw.png', x: 84, y: 53, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_w', label: 'W', file: 'max_win/w_mw.png', x: 109, y: 51, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_i', label: 'I', file: 'max_win/i_mw.png', x: 121, y: 50, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_n', label: 'N', file: 'max_win/n_mw.png', x: 132, y: 50, scale: 0.17, depth: 420, isLetter: true },
+        { key: 'max_girl', label: 'Girl', file: 'max_win/girl.png', x: 90, y: 240, scale: 1, depth: 413, parent: 'max_pool_icecream' },
+        { key: 'max_pool_cream_vanila', label: 'Vanila', file: 'max_win/pool_cream_vanila.png', x: 38, y: 275, scale: 1, depth: 412, parent: 'max_pool' },
+        { key: 'max_pool_cream_pink', label: 'Pink', file: 'max_win/pool_cream_pink.png', x: 92, y: 268, scale: 1, depth: 411, parent: 'max_pool' },
+        { key: 'max_pool_cream_choko', label: 'Choko', file: 'max_win/pool_cream_choko.png', x: 145, y: 275, scale: 1, depth: 410, parent: 'max_pool' },
+        { key: 'max_pool_icecream', label: 'Icecream', file: 'max_win/pool_icecream.png', x: 92, y: 260, scale: 1, depth: 409, parent: 'max_pool' },
+        { key: 'max_pool', label: 'Pool', file: 'max_win/pool.png', x: 91, y: 306, scale: 1, depth: 408 },
+        { key: 'max_palm_1', label: 'Palm 1', file: 'max_win/palm_1.png', x: 35, y: 170, scale: 1, depth: 407, parent: 'max_pool' },
+        { key: 'max_palm_2', label: 'Palm 2', file: 'max_win/palm_2.png', x: 148, y: 180, scale: 1, depth: 406, parent: 'max_pool' }
+      ];
+      const MAX_COMPOSITION_KEYS = new Set(MAX_ASSETS.filter((asset) => !asset.isLetter && asset.key !== 'max_amount').map((asset) => asset.key));
+      const getMaxDescendants = (key) => {
+        const descendants = [];
+        const visit = (parentKey) => {
+          MAX_ASSETS.filter((asset) => asset.parent === parentKey).forEach((asset) => {
+            descendants.push(asset.key);
+            visit(asset.key);
+          });
+        };
+        visit(key);
+        return descendants;
+      };
       const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
       const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
       const MEGA_HAND_GROUP_KEYS = new Set([...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS]);
@@ -622,65 +626,56 @@
       const loading = document.querySelector('#loading');
       const nextButton = document.querySelector('#next-screen');
       const epicNextButton = document.querySelector('#epic-next-screen');
+      const maxNextButton = document.querySelector('#max-next-screen');
       const startOverButton = document.querySelector('#start-over');
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
       const underlayDepthButton = document.querySelector('#toggle-underlay-depth');
-      const activeEpicName = document.querySelector('#active-epic-name');
-      const epicPosition = document.querySelector('#epic-position');
-      const epicScaleSlider = document.querySelector('#epic-scale');
-      const epicScaleValue = document.querySelector('#epic-scale-value');
-      const epicTitleOffsetSlider = document.querySelector('#epic-title-offset');
-      const epicTitleOffsetValue = document.querySelector('#epic-title-offset-value');
-      const epicAmountOffsetSlider = document.querySelector('#epic-amount-offset');
-      const epicAmountOffsetValue = document.querySelector('#epic-amount-offset-value');
-      const epicHandSpeedSlider = document.querySelector('#epic-hand-speed');
-      const epicHandSpeedValue = document.querySelector('#epic-hand-speed-value');
-      const epicHandDelaySlider = document.querySelector('#epic-hand-delay');
-      const epicHandDelayValue = document.querySelector('#epic-hand-delay-value');
-      const epicSequenceOffsetSlider = document.querySelector('#epic-sequence-offset');
-      const epicSequenceOffsetValue = document.querySelector('#epic-sequence-offset-value');
-      const epicButtons = [...document.querySelectorAll('[data-epic-key]')];
+      const activeMaxName = document.querySelector('#active-max-name');
+      const maxPosition = document.querySelector('#max-position');
+      const maxScaleSlider = document.querySelector('#max-scale');
+      const maxScaleValue = document.querySelector('#max-scale-value');
+      const maxButtons = [...document.querySelectorAll('[data-max-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       const megaAssetByKey = new Map(MEGA_ASSETS.map((asset) => [asset.key, asset]));
       const epicAssetByKey = new Map(EPIC_EDITABLE_ASSETS.map((asset) => [asset.key, asset]));
+      const maxAssetByKey = new Map(MAX_ASSETS.map((asset) => [asset.key, asset]));
       const canTransformMegaAsset = (asset) => Boolean(asset?.isHand || asset?.transformable);
       let activeScene;
-      let activeEpicKey = 'epic_amount';
+      let activeMaxKey = 'max_amount';
       let underlayVisible = false;
       let underlayAbove = false;
-      let epicReplayTimeout = 0;
 
-      const updateEpicEditor = () => {
-        const asset = epicAssetByKey.get(activeEpicKey);
-        activeEpicName.textContent = asset.label;
-        epicPosition.textContent = `X ${Math.round(asset.x)} · Y ${Math.round(asset.y)}`;
-        epicScaleSlider.value = asset.scale;
-        epicScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
-        epicButtons.forEach((button) => {
-          const isActive = button.dataset.epicKey === activeEpicKey;
+      const updateMaxEditor = () => {
+        const asset = maxAssetByKey.get(activeMaxKey);
+        activeMaxName.textContent = asset.label;
+        maxPosition.textContent = `X ${Math.round(asset.x)} · Y ${Math.round(asset.y)}`;
+        maxScaleSlider.value = asset.scale;
+        maxScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        maxButtons.forEach((button) => {
+          const isActive = button.dataset.maxKey === activeMaxKey;
           button.classList.toggle('is-active', isActive);
           button.setAttribute('aria-pressed', String(isActive));
         });
       };
 
-      const selectEpicLayer = (key) => {
-        if (!epicAssetByKey.has(key)) return;
-        activeEpicKey = key;
-        updateEpicEditor();
+      const selectMaxLayer = (key) => {
+        if (!maxAssetByKey.has(key)) return;
+        activeMaxKey = key;
+        updateMaxEditor();
       };
 
-      epicButtons.forEach((button) => {
-        button.addEventListener('click', () => selectEpicLayer(button.dataset.epicKey));
+      maxButtons.forEach((button) => {
+        button.addEventListener('click', () => selectMaxLayer(button.dataset.maxKey));
       });
 
-      epicScaleSlider.addEventListener('input', () => {
-        const asset = epicAssetByKey.get(activeEpicKey);
-        asset.scale = Number(epicScaleSlider.value);
-        epicScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
-        activeScene?.setEpicScale(activeEpicKey, asset.scale);
+      maxScaleSlider.addEventListener('input', () => {
+        const asset = maxAssetByKey.get(activeMaxKey);
+        asset.scale = Number(maxScaleSlider.value);
+        maxScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        activeScene?.setMaxScale(activeMaxKey, asset.scale);
       });
 
       underlayButton.addEventListener('click', () => {
@@ -699,42 +694,6 @@
         activeScene?.setUnderlayAbove(underlayAbove);
       });
 
-      const scheduleEpicReplay = () => {
-        window.clearTimeout(epicReplayTimeout);
-        if (!activeScene?.epicActive || activeScene.transitioning) return;
-        epicReplayTimeout = window.setTimeout(() => activeScene?.playEpicTransition(true), 120);
-      };
-
-      epicTitleOffsetSlider.addEventListener('input', () => {
-        EPIC_ENTRANCE.titleDelay = Number(epicTitleOffsetSlider.value);
-        epicTitleOffsetValue.textContent = `${EPIC_ENTRANCE.titleDelay} мс`;
-        scheduleEpicReplay();
-      });
-
-      epicAmountOffsetSlider.addEventListener('input', () => {
-        EPIC_ENTRANCE.amountDelay = Number(epicAmountOffsetSlider.value);
-        epicAmountOffsetValue.textContent = `${EPIC_ENTRANCE.amountDelay} мс`;
-        scheduleEpicReplay();
-      });
-
-      epicHandSpeedSlider.addEventListener('input', () => {
-        EPIC_ENTRANCE.handSpeed = Number(epicHandSpeedSlider.value);
-        epicHandSpeedValue.textContent = `${EPIC_ENTRANCE.handSpeed.toFixed(1)}×`;
-        scheduleEpicReplay();
-      });
-
-      epicHandDelaySlider.addEventListener('input', () => {
-        EPIC_ENTRANCE.handDelay = Number(epicHandDelaySlider.value);
-        epicHandDelayValue.textContent = `${EPIC_ENTRANCE.handDelay} мс`;
-        scheduleEpicReplay();
-      });
-
-      epicSequenceOffsetSlider.addEventListener('input', () => {
-        EPIC_SEQUENCE.offset = Number(epicSequenceOffsetSlider.value);
-        epicSequenceOffsetValue.textContent = `${EPIC_SEQUENCE.offset} мс`;
-        scheduleEpicReplay();
-      });
-
       document.addEventListener('keydown', (event) => {
         if (event.target instanceof HTMLInputElement) return;
         const directions = {
@@ -747,15 +706,16 @@
         if (!direction || !activeScene) return;
         event.preventDefault();
         const step = event.shiftKey ? 5 : 1;
-        activeScene.moveEpicAsset(activeEpicKey, direction[0] * step, direction[1] * step);
-        updateEpicEditor();
+        activeScene.moveMaxAsset(activeMaxKey, direction[0] * step, direction[1] * step);
+        updateMaxEditor();
       });
 
       nextButton.addEventListener('click', () => activeScene?.playNextTransition());
       epicNextButton.addEventListener('click', () => activeScene?.playEpicTransition(activeScene?.epicActive));
+      maxNextButton.addEventListener('click', () => activeScene?.playMaxTransition(activeScene?.maxActive));
       startOverButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       copyCoordinatesButton.addEventListener('click', async () => {
-        const text = JSON.stringify(activeScene?.exportEpicLayout() ?? {}, null, 2);
+        const text = JSON.stringify(activeScene?.exportMaxLayout() ?? {}, null, 2);
         coordinatesOutput.hidden = false;
         coordinatesOutput.value = text;
         coordinatesOutput.select();
@@ -767,10 +727,10 @@
         }
         copyCoordinatesButton.textContent = 'Координаты скопированы';
         window.setTimeout(() => {
-          copyCoordinatesButton.textContent = 'Скопировать координаты Epic Win';
+          copyCoordinatesButton.textContent = 'Скопировать координаты Max Win';
         }, 1600);
       });
-      updateEpicEditor();
+      updateMaxEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -779,11 +739,12 @@
           this.load.atlas('explode', 'explode.png', 'explode.json');
           this.load.atlas('hearts', 'mega_win/hearts.png', 'mega_win/hearts.json');
           this.load.atlas('epic_burst', 'epic_win/epic.png?v=005a4a13', 'epic_win/epic.json?v=a0fef501');
-          this.load.image('example_overlay', 'epic_win/example_3.png?v=b337949c');
+          this.load.image('example_overlay', 'max_win/example_4.png');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           MEGA_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           EPIC_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
+          MAX_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
@@ -893,9 +854,7 @@
               .setScale(asset.scale)
               .setDepth(asset.depth)
               .setAlpha(0)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectEpicLayer(asset.key));
+              .setVisible(false);
             this.epicSprites.set(asset.key, sprite);
           });
           EPIC_SEQUENCE_ASSETS.forEach((asset) => {
@@ -903,9 +862,7 @@
               .setScale(asset.scale)
               .setFlipX(asset.flipX)
               .setDepth(asset.depth)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectEpicLayer(asset.key));
+              .setVisible(false);
             this.epicSprites.set(asset.key, sprite);
           });
 
@@ -915,6 +872,23 @@
           });
           this.epicHandMotion = { rootY: 0, floatY: 0, rotation: 0 };
           this.epicFloatingActive = false;
+
+          this.maxSprites = new Map();
+          MAX_ASSETS.forEach((asset) => {
+            const sprite = this.add.image(asset.x, asset.y, asset.key)
+              .setScale(asset.scale)
+              .setDepth(asset.depth)
+              .setAlpha(0)
+              .setVisible(false)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerdown', () => selectMaxLayer(asset.key));
+            this.maxSprites.set(asset.key, sprite);
+          });
+          this.maxTitleContainer = this.add.container(0, 0).setDepth(420).setVisible(false);
+          MAX_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.maxTitleContainer.add(this.maxSprites.get(asset.key));
+          });
+          this.maxActive = false;
 
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
@@ -926,7 +900,7 @@
 
           activeScene = this;
           this.playIntroAnimation();
-          updateEpicEditor();
+          updateMaxEditor();
           loading.classList.add('is-hidden');
         }
 
@@ -1051,6 +1025,38 @@
           }));
         }
 
+        setMaxScale(key, scale) {
+          const asset = maxAssetByKey.get(key);
+          if (!asset) return;
+          this.tweens.killTweensOf(this.maxSprites.get(key));
+          this.maxSprites.get(key).setScale(scale);
+        }
+
+        moveMaxAsset(key, deltaX, deltaY) {
+          const asset = maxAssetByKey.get(key);
+          if (!asset) return;
+          const keysToMove = [key, ...getMaxDescendants(key)];
+          keysToMove.forEach((movingKey) => {
+            const movingAsset = maxAssetByKey.get(movingKey);
+            movingAsset.x = Math.round(movingAsset.x + deltaX);
+            movingAsset.y = Math.round(movingAsset.y + deltaY);
+            this.tweens.killTweensOf(this.maxSprites.get(movingKey));
+            this.maxSprites.get(movingKey).setPosition(movingAsset.x, movingAsset.y);
+          });
+        }
+
+        exportMaxLayout() {
+          return Object.fromEntries(MAX_ASSETS.map((asset) => {
+            const values = {
+              x: Math.round(asset.x),
+              y: Math.round(asset.y),
+              scale: Number(asset.scale.toFixed(2))
+            };
+            if (asset.parent) values.parent = asset.parent;
+            return [asset.key, values];
+          }));
+        }
+
         resetEpicAssets() {
           window.clearInterval(this.epicSequenceInterval);
           this.epicSequenceInterval = 0;
@@ -1074,6 +1080,21 @@
               .setVisible(false);
           });
           this.epicTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
+        }
+
+        resetMaxAssets() {
+          this.maxWaveTimer?.remove(false);
+          this.maxWaveTimer = null;
+          this.maxActive = false;
+          MAX_ASSETS.forEach((asset) => {
+            this.maxSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAngle(0)
+              .setAlpha(0)
+              .setVisible(false);
+          });
+          this.maxTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
         }
 
         resetMegaAssets() {
@@ -1118,6 +1139,7 @@
           this.sprites.get('splash').setAlpha(0).setVisible(false);
           this.resetMegaAssets();
           this.resetEpicAssets();
+          this.resetMaxAssets();
 
           this.letterSprites.forEach((sprite, key) => {
             sprite
@@ -1148,6 +1170,8 @@
           if (this.transitioning && !forceRestart) return;
           this.transitioning = true;
           this.megaActive = false;
+          this.epicActive = false;
+          this.maxActive = false;
           this.megaSequenceState = {
             leftBall: false,
             leftTopping: false,
@@ -1158,6 +1182,7 @@
           nextButton.disabled = true;
           nextButton.textContent = 'Переходим…';
           epicNextButton.hidden = true;
+          maxNextButton.hidden = true;
           this.prepareBigWinForTransition();
 
           this.tweens.add({
@@ -1666,6 +1691,7 @@
           epicNextButton.hidden = false;
           epicNextButton.disabled = false;
           epicNextButton.textContent = 'Далее';
+          maxNextButton.hidden = true;
           this.startMegaFloating();
           this.startMegaAmbientLoops();
         }
@@ -1767,6 +1793,7 @@
           epicNextButton.hidden = false;
           epicNextButton.disabled = true;
           epicNextButton.textContent = 'Переходим…';
+          maxNextButton.hidden = true;
 
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
@@ -2052,8 +2079,10 @@
         completeEpicTransition() {
           this.transitioning = false;
           this.epicActive = true;
-          epicNextButton.disabled = false;
-          epicNextButton.textContent = 'Повторить Epic';
+          epicNextButton.hidden = true;
+          maxNextButton.hidden = false;
+          maxNextButton.disabled = false;
+          maxNextButton.textContent = 'Далее';
           this.startEpicWaveLoop();
           this.startEpicFloating();
         }
@@ -2100,20 +2129,205 @@
           });
         }
 
+        playMaxTransition(replayOnly = false) {
+          if (this.transitioning) return;
+          this.transitioning = true;
+          this.epicActive = false;
+          this.maxActive = false;
+          nextButton.hidden = true;
+          epicNextButton.hidden = true;
+          maxNextButton.hidden = false;
+          maxNextButton.disabled = true;
+          maxNextButton.textContent = 'Переходим…';
+
+          this.tweens.killAll();
+          this.sequenceTimers?.forEach((timer) => timer.remove(false));
+          this.sequenceTimers = [];
+          this.epicFloatingActive = false;
+          this.epicWaveTimer?.remove(false);
+          this.epicWaveTimer = null;
+          window.clearInterval(this.epicSequenceInterval);
+          this.epicSequenceInterval = 0;
+          EPIC_SEQUENCE_ASSETS.forEach((asset) => {
+            this.epicSprites.get(asset.key).setVisible(false);
+          });
+          this.resetMaxAssets();
+
+          if (!replayOnly) {
+            EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+              this.epicSprites.get(asset.key).setY(asset.y).setScale(asset.scale);
+            });
+            const exitSpeed = Math.max(0.1, BIG_WIN_EXIT.speed);
+            const startTitleFall = () => {
+              this.tweens.add({
+                targets: this.epicTitleContainer,
+                x: 0,
+                y: HEIGHT + 100,
+                angle: BIG_WIN_EXIT.rotation,
+                duration: 600 / exitSpeed,
+                ease: 'Cubic.In',
+                onComplete: () => this.epicTitleContainer.setVisible(false)
+              });
+            };
+            if (BIG_WIN_EXIT.overshoot > 0) {
+              this.tweens.add({
+                targets: this.epicTitleContainer,
+                x: 0,
+                y: -BIG_WIN_EXIT.overshoot,
+                duration: 170 / exitSpeed,
+                ease: 'Quad.Out',
+                onComplete: startTitleFall
+              });
+            } else {
+              startTitleFall();
+            }
+
+            ['epic_amount', 'epic_multiplier'].forEach((key) => {
+              const asset = epicAssetByKey.get(key);
+              const sprite = this.epicSprites.get(key).setScale(asset.scale).setAlpha(1);
+              this.tweens.add({
+                targets: sprite,
+                alpha: 0,
+                scaleX: asset.scale * 0.8,
+                scaleY: asset.scale * 0.8,
+                duration: 220,
+                ease: 'Quad.In',
+                onComplete: () => sprite.setVisible(false)
+              });
+            });
+
+            this.tweens.add({
+              targets: this.epicHandMotion,
+              rootY: 320,
+              duration: 560,
+              ease: 'Cubic.In',
+              onUpdate: () => this.syncEpicHierarchy(),
+              onComplete: () => {
+                EPIC_HAND_KEYS.forEach((key) => this.epicSprites.get(key).setVisible(false));
+              }
+            });
+          }
+
+          this.sequenceTimers.push(this.time.delayedCall(
+            replayOnly ? 0 : MAX_SCREEN_DELAY,
+            () => this.startMaxScreenEntrances()
+          ));
+        }
+
+        startMaxScreenEntrances() {
+          MAX_ASSETS.filter((asset) => MAX_COMPOSITION_KEYS.has(asset.key)).forEach((asset, index) => {
+            const sprite = this.maxSprites.get(asset.key);
+            sprite
+              .setPosition(asset.x, asset.y + 10)
+              .setScale(asset.scale * 0.86)
+              .setAlpha(0)
+              .setVisible(true);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y,
+              alpha: 1,
+              scaleX: asset.scale,
+              scaleY: asset.scale,
+              duration: 320,
+              delay: 170 + index * 24,
+              ease: 'Back.Out'
+            });
+          });
+
+          MAX_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.maxSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          this.maxTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MAX_ENTRANCE.titleDelay), () => {
+            this.playDropEntrance(this.maxTitleContainer, 0, TITLE_DROP);
+          }));
+
+          const amountAsset = maxAssetByKey.get('max_amount');
+          const amount = this.maxSprites.get('max_amount');
+          amount
+            .setPosition(amountAsset.x, -amount.height * amountAsset.scale / 2 - 8)
+            .setScale(amountAsset.scale)
+            .setAlpha(1)
+            .setVisible(true);
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MAX_ENTRANCE.amountDelay), () => {
+            this.playDropEntrance(amount, amountAsset.y, MEGA_AMOUNT_REVEAL);
+          }));
+
+          const completionDelay = Math.max(
+            1400,
+            MAX_ENTRANCE.titleDelay + 900,
+            MAX_ENTRANCE.amountDelay + 900
+          );
+          this.sequenceTimers.push(this.time.delayedCall(completionDelay, () => this.completeMaxTransition()));
+        }
+
+        completeMaxTransition() {
+          this.transitioning = false;
+          this.maxActive = true;
+          maxNextButton.disabled = false;
+          maxNextButton.textContent = 'Повторить Max';
+          this.startMaxWaveLoop();
+        }
+
+        startMaxWaveLoop() {
+          this.maxWaveTimer?.remove(false);
+          this.maxWaveTimer = this.time.addEvent({
+            delay: MAX_WAVE_INTERVAL,
+            loop: true,
+            callback: () => this.playMaxLetterWave()
+          });
+        }
+
+        playMaxLetterWave() {
+          if (!this.maxActive || this.transitioning) return;
+          const speed = Math.max(0.1, LETTER_WAVE.speed);
+          const riseDuration = LETTER_WAVE.riseDuration / speed;
+          const holdDuration = LETTER_WAVE.holdDuration / speed;
+          const letters = MAX_ASSETS.filter((asset) => asset.isLetter);
+          letters.forEach((asset) => {
+            const sprite = this.maxSprites.get(asset.key);
+            this.tweens.killTweensOf(sprite);
+            sprite.setY(asset.y);
+          });
+          letters.forEach((asset, index) => {
+            const sprite = this.maxSprites.get(asset.key);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y - LETTER_WAVE.height,
+              duration: riseDuration,
+              delay: index * LETTER_WAVE.stagger,
+              hold: holdDuration,
+              ease: 'Sine.Out',
+              yoyo: true,
+              onComplete: () => sprite.setY(asset.y)
+            });
+          });
+        }
+
         playIntroAnimation() {
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
           this.transitioning = false;
           this.megaActive = false;
+          this.epicActive = false;
+          this.maxActive = false;
           nextButton.disabled = false;
           nextButton.hidden = false;
           nextButton.textContent = 'Следующий';
           epicNextButton.hidden = true;
           epicNextButton.disabled = false;
           epicNextButton.textContent = 'Далее';
+          maxNextButton.hidden = true;
+          maxNextButton.disabled = false;
+          maxNextButton.textContent = 'Далее';
           this.resetMegaAssets();
           this.resetEpicAssets();
+          this.resetMaxAssets();
           this.letterSprites?.forEach((sprite, key) => {
             sprite
               .setPosition(0, 0)
