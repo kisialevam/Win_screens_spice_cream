@@ -400,24 +400,24 @@
         <p class="settings-title">Появление надписей EPIC WIN</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет EPIC WIN</span><span class="value" id="epic-title-offset-value">370 мс</span></span>
-            <input class="letter-scale-slider" id="epic-title-offset" type="range" min="0" max="1200" step="10" value="370" aria-label="Офсет появления надписи EPIC WIN">
+            <span class="label-row"><span>Офсет EPIC WIN</span><span class="value" id="epic-title-offset-value">260 мс</span></span>
+            <input class="letter-scale-slider" id="epic-title-offset" type="range" min="0" max="1200" step="10" value="260" aria-label="Офсет появления надписи EPIC WIN">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет 284.99</span><span class="value" id="epic-amount-offset-value">0 мс</span></span>
             <input class="letter-scale-slider" id="epic-amount-offset" type="range" min="0" max="1200" step="10" value="0" aria-label="Офсет появления надписи 284.99">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Задержка выезда руки</span><span class="value" id="epic-hand-delay-value">500 мс</span></span>
-            <input class="letter-scale-slider" id="epic-hand-delay" type="range" min="0" max="1600" step="20" value="500" aria-label="Задержка выезда руки Epic Win">
+            <span class="label-row"><span>Задержка выезда руки</span><span class="value" id="epic-hand-delay-value">220 мс</span></span>
+            <input class="letter-scale-slider" id="epic-hand-delay" type="range" min="0" max="1600" step="20" value="220" aria-label="Задержка выезда руки Epic Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Скорость выезда руки</span><span class="value" id="epic-hand-speed-value">1.5×</span></span>
             <input class="letter-scale-slider" id="epic-hand-speed" type="range" min="0.5" max="4" step="0.1" value="1.5" aria-label="Скорость выезда руки Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет секвенций epic</span><span class="value" id="epic-sequence-offset-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="epic-sequence-offset" type="range" min="-400" max="800" step="20" value="0" aria-label="Офсет запуска секвенций Epic Win">
+            <span class="label-row"><span>Офсет секвенций epic</span><span class="value" id="epic-sequence-offset-value">200 мс</span></span>
+            <input class="letter-scale-slider" id="epic-sequence-offset" type="range" min="-400" max="800" step="20" value="200" aria-label="Офсет запуска секвенций Epic Win">
           </label>
         </div>
         <p class="letter-hint">Изменение любого тайминга перезапускает EPIC-анимацию, если экран уже открыт.</p>
@@ -512,14 +512,14 @@
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
       const EPIC_ENTRANCE = {
-        titleDelay: 370,
+        titleDelay: 260,
         amountDelay: 0,
-        handDelay: 500,
+        handDelay: 220,
         handDuration: 620,
         handSpeed: 1.5,
         handRotationBounce: 7
       };
-      const EPIC_SEQUENCE = { frameRate: 30, offset: 0 };
+      const EPIC_SEQUENCE = { frameRate: 30, offset: 200 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
