@@ -587,8 +587,8 @@
         { key: 'epic_peach_ice', label: 'Мороженое', file: 'epic_win/peach_ice.png?v=4e516a4a', x: 92, y: 233, scale: 1, depth: 308, parent: 'epic_waffle' }
       ];
       const EPIC_SEQUENCE_ASSETS = [
-        { key: 'epic_sequence_left', label: 'Epic FX L', x: 40, y: 220, scale: 1, depth: 307, flipX: false, isSequence: true },
-        { key: 'epic_sequence_right', label: 'Epic FX R', x: 143, y: 220, scale: 1, depth: 307, flipX: true, isSequence: true }
+        { key: 'epic_sequence_left', label: 'Epic FX L', x: 40, y: 220, scale: 1.25, depth: 313.5, flipX: false, isSequence: true },
+        { key: 'epic_sequence_right', label: 'Epic FX R', x: 143, y: 220, scale: 1.25, depth: 313.5, flipX: true, isSequence: true }
       ];
       const EPIC_EDITABLE_ASSETS = [...EPIC_ASSETS, ...EPIC_SEQUENCE_ASSETS];
       const EPIC_HAND_KEYS = new Set([
@@ -1935,8 +1935,6 @@
         }
 
         startEpicHandEntrance() {
-          const handAsset = epicAssetByKey.get('epic_hand');
-          const handSprite = this.epicSprites.get('epic_hand');
           EPIC_HAND_KEYS.forEach((key) => {
             const asset = epicAssetByKey.get(key);
             this.epicSprites.get(key)
@@ -1946,7 +1944,12 @@
               .setVisible(true);
           });
 
-          this.epicHandMotion.rootY = HEIGHT - (handAsset.y - handSprite.height * handAsset.scale / 2) + 24;
+          const compositionTop = Math.min(...[...EPIC_HAND_KEYS].map((key) => {
+            const asset = epicAssetByKey.get(key);
+            const sprite = this.epicSprites.get(key);
+            return asset.y - sprite.height * asset.scale / 2;
+          }));
+          this.epicHandMotion.rootY = HEIGHT - compositionTop + 24;
           this.epicHandMotion.floatY = 0;
           this.epicHandMotion.rotation = 0;
           this.syncEpicHierarchy();
@@ -1974,6 +1977,7 @@
               .setPosition(asset.x, asset.y)
               .setScale(asset.scale)
               .setFlipX(asset.flipX)
+              .setAlpha(1)
               .setVisible(true);
           });
           let frameIndex = 0;
