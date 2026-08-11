@@ -361,7 +361,7 @@
             <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активного слоя">
           </label>
         </div>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук и трёх новых слоёв правой мороженки.</p>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук и слоёв обеих мороженок.</p>
         <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты</button>
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
       </section>
@@ -453,8 +453,8 @@
         <p class="settings-title">Секвенции hearts</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение запуска</span><span class="value" id="hearts-lead-value">450 мс</span></span>
-            <input class="letter-scale-slider" id="hearts-lead" type="range" min="-500" max="1200" step="10" value="450" aria-label="Опережение запуска секвенций hearts">
+            <span class="label-row"><span>Опережение запуска</span><span class="value" id="hearts-lead-value">310 мс</span></span>
+            <input class="letter-scale-slider" id="hearts-lead" type="range" min="-500" max="1200" step="10" value="310" aria-label="Опережение запуска секвенций hearts">
           </label>
           <p class="settings-subtitle">Левая рука</p>
           <label class="letter-scale-control">
@@ -554,11 +554,10 @@
       const CREAM_LONG_ANIMATION = { appearSpeed: 0.7, swingSpeed: 0.65, swingAngle: 1.5 };
       const HEARTS = {
         frameRate: 30,
-        lead: 450,
+        lead: 310,
         left: { x: 40, y: 175, scale: 0.9, flipX: false },
         right: { x: 145, y: 195, scale: 0.9, flipX: true }
       };
-      const MEGA_WAVE_INTERVAL = 3000;
       const MEGA_TOSS_INTERVAL = 5000;
       const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 3, sideDelay: 110, toppingDelay: 75 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
@@ -598,12 +597,12 @@
         { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 122, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 133, y: 48, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png?v=189d34d8', x: 143, y: 103, scale: 1.05, depth: 208, topAnchor: true },
-        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png', x: 36, y: 156, scale: 1, depth: 213, parent: 'mega_ice_2' },
-        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png?v=c53f05fc', x: 159, y: 181, scale: 1, rotation: 0, depth: 213, parent: 'mega_ice_1', transformable: true },
-        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png?v=f009665d', x: 143, y: 237, scale: 1, rotation: 0, depth: 209, parent: 'mega_hand_right', transformable: true },
-        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png', x: 48, y: 208, scale: 1, depth: 209, parent: 'mega_hand_left' },
-        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png?v=8fdf90b1', x: 146, y: 223, scale: 1, rotation: 0, depth: 212, parent: 'mega_ice_1', transformable: true },
-        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png', x: 46, y: 206, scale: 1, depth: 212, parent: 'mega_ice_2' },
+        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png?v=f1e6ec46', x: 36, y: 156, scale: 1, rotation: 0, depth: 213, parent: 'mega_ice_2', transformable: true },
+        { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png?v=c53f05fc', x: 161, y: 183, scale: 1, rotation: 17, depth: 213, parent: 'mega_ice_1', transformable: true },
+        { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png?v=f009665d', x: 141, y: 235, scale: 1, rotation: 18, depth: 209, parent: 'mega_hand_right', transformable: true },
+        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png?v=ff919946', x: 48, y: 208, scale: 1, rotation: 0, depth: 209, parent: 'mega_hand_left', transformable: true },
+        { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png?v=8fdf90b1', x: 144, y: 223, scale: 1, rotation: 18, depth: 212, parent: 'mega_ice_1', transformable: true },
+        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png?v=b182729a', x: 46, y: 206, scale: 1, rotation: 0, depth: 212, parent: 'mega_ice_2', transformable: true },
         { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -21, y: 385, scale: 1.43, rotation: -3, depth: 204, isHand: true },
         { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true }
       ];
@@ -966,9 +965,7 @@
         }
 
         resetMegaAssets() {
-          this.megaWaveTimer?.remove(false);
           this.megaTossTimer?.remove(false);
-          this.megaWaveTimer = null;
           this.megaTossTimer = null;
           MEGA_ASSETS.forEach((asset) => {
             const sprite = this.megaSprites.get(asset.key)
@@ -1501,13 +1498,7 @@
         }
 
         startMegaAmbientLoops() {
-          this.megaWaveTimer?.remove(false);
           this.megaTossTimer?.remove(false);
-          this.megaWaveTimer = this.time.addEvent({
-            delay: MEGA_WAVE_INTERVAL,
-            loop: true,
-            callback: () => this.playMegaLetterWave()
-          });
           this.megaTossTimer = this.time.addEvent({
             delay: MEGA_TOSS_INTERVAL,
             loop: true,
@@ -1544,6 +1535,7 @@
 
         playMegaDessertToss() {
           if (!this.megaActive || this.transitioning) return;
+          this.playMegaLetterWave();
           ['left', 'right'].forEach((side, index) => {
             const sideTimer = this.time.delayedCall(index * MEGA_TOSS.sideDelay, () => {
               const rootProperty = `${side}Y`;
