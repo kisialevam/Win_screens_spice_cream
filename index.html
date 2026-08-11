@@ -164,6 +164,12 @@
       grid-column: 1 / -1;
     }
 
+    .underlay-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
     .secondary-button {
       min-height: 38px;
       border: 1px solid rgba(255, 255, 255, 0.18);
@@ -351,7 +357,10 @@
 
       <section class="control-group" id="underlay-editor">
         <div class="label-row"><span>Подложка example_3</span><span class="value">50%</span></div>
-        <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
+        <div class="underlay-actions">
+          <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
+          <button class="secondary-button" id="toggle-underlay-depth" type="button" aria-pressed="false">Слой: снизу</button>
+        </div>
       </section>
 
       <section class="control-group" id="epic-editor">
@@ -383,6 +392,21 @@
         <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Выбранный слой также можно выбрать кликом прямо в сцене.</p>
         <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты Epic Win</button>
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Epic Win" readonly hidden></textarea>
+      </section>
+
+      <section class="control-group" id="epic-timing-editor">
+        <p class="settings-title">Появление надписей EPIC WIN</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет EPIC WIN</span><span class="value" id="epic-title-offset-value">370 мс</span></span>
+            <input class="letter-scale-slider" id="epic-title-offset" type="range" min="0" max="1200" step="10" value="370" aria-label="Офсет появления надписи EPIC WIN">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет 284.99</span><span class="value" id="epic-amount-offset-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="epic-amount-offset" type="range" min="0" max="1200" step="10" value="0" aria-label="Офсет появления надписи 284.99">
+          </label>
+        </div>
+        <p class="letter-hint">Изменение офсета перезапускает EPIC-анимацию, если экран уже открыт.</p>
       </section>
     </aside>
 
@@ -473,6 +497,12 @@
       const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 3, sideDelay: 110, toppingDelay: 75 };
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
+      const EPIC_ENTRANCE = {
+        titleDelay: 370,
+        amountDelay: 0,
+        handDuration: 620,
+        handRotationBounce: 7
+      };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -525,20 +555,39 @@
       const EPIC_ASSETS = [
         { key: 'epic_amount', label: '284.99', file: 'epic_win/284.99.png?v=389b656c', x: 91, y: 93, scale: 0.17, depth: 314 },
         { key: 'epic_multiplier', label: '142x', file: 'epic_win/142x.png?v=36d6e9ee', x: 90, y: 302, scale: 0.17, depth: 314 },
-        { key: 'epic_e', label: 'E', file: 'epic_win/e_ew.png?v=7c9b13cd', x: 50, y: 53, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_p', label: 'P', file: 'epic_win/p_ew.png?v=06e2ead1', x: 66, y: 52, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_i_title', label: 'I₁', file: 'epic_win/i_ew.png?v=7a215e78', x: 79, y: 51, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_c', label: 'C', file: 'epic_win/c_ew.png?v=73374d4b', x: 91, y: 50, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_w', label: 'W', file: 'epic_win/w_ew.png?v=477bb067', x: 111, y: 49, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_i_win', label: 'I₂', file: 'epic_win/i_ew.png?v=7a215e78', x: 126, y: 49, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_n', label: 'N', file: 'epic_win/n_ew.png?v=d4c3e485', x: 139, y: 48, scale: 0.17, depth: 320, isLetter: true },
-        { key: 'epic_cream_down', label: 'Крем ↓', file: 'epic_win/cream_down.png?v=f8df662e', x: 91, y: 197, scale: 1, depth: 313 },
-        { key: 'epic_peach', label: 'Персик', file: 'epic_win/peach.png?v=b5f865df', x: 91, y: 160, scale: 1, depth: 312 },
-        { key: 'epic_peach_cream', label: 'Крем', file: 'epic_win/peach_cream.png?v=f0b4d397', x: 91, y: 195, scale: 1, depth: 311 },
-        { key: 'epic_peach_ice', label: 'Мороженое', file: 'epic_win/peach_ice.png?v=4e516a4a', x: 91, y: 232, scale: 1, depth: 310 },
-        { key: 'epic_waffle', label: 'Вафля', file: 'epic_win/waffle.png?v=7d500149', x: 91, y: 276, scale: 1, depth: 309 },
-        { key: 'epic_hand', label: 'Рука', file: 'epic_win/hand_epic.png?v=c12da196', x: 91, y: 344, scale: 1, depth: 308 }
+        { key: 'epic_e', label: 'E', file: 'epic_win/e_ew.png?v=7c9b13cd', x: 57, y: 55, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_p', label: 'P', file: 'epic_win/p_ew.png?v=06e2ead1', x: 70, y: 54, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_i_title', label: 'I₁', file: 'epic_win/i_ew.png?v=7a215e78', x: 81, y: 53, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_c', label: 'C', file: 'epic_win/c_ew.png?v=73374d4b', x: 92, y: 53, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_w', label: 'W', file: 'epic_win/w_ew.png?v=477bb067', x: 112, y: 51, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_i_win', label: 'I₂', file: 'epic_win/i_ew.png?v=7a215e78', x: 123, y: 50, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_n', label: 'N', file: 'epic_win/n_ew.png?v=d4c3e485', x: 134, y: 50, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_hand', label: 'Рука', file: 'epic_win/hand_epic.png?v=c12da196', x: 129, y: 309, scale: 1, depth: 308 },
+        { key: 'epic_waffle', label: 'Вафля', file: 'epic_win/waffle.png?v=7d500149', x: 93, y: 272, scale: 1, depth: 309, parent: 'epic_hand' },
+        { key: 'epic_peach_cream', label: 'Крем', file: 'epic_win/peach_cream.png?v=f0b4d397', x: 104, y: 199, scale: 1, depth: 310, parent: 'epic_peach' },
+        { key: 'epic_peach', label: 'Персик', file: 'epic_win/peach.png?v=b5f865df', x: 97, y: 168, scale: 1, depth: 311, parent: 'epic_cream_down' },
+        { key: 'epic_cream_down', label: 'Крем ↓', file: 'epic_win/cream_down.png?v=f8df662e', x: 89, y: 202, scale: 1, depth: 312, parent: 'epic_peach_ice' },
+        { key: 'epic_peach_ice', label: 'Мороженое', file: 'epic_win/peach_ice.png?v=4e516a4a', x: 91, y: 232, scale: 1, depth: 313, parent: 'epic_waffle' }
       ];
+      const EPIC_HAND_KEYS = new Set([
+        'epic_hand',
+        'epic_waffle',
+        'epic_peach_cream',
+        'epic_peach',
+        'epic_cream_down',
+        'epic_peach_ice'
+      ]);
+      const getEpicDescendants = (key) => {
+        const descendants = [];
+        const visit = (parentKey) => {
+          EPIC_ASSETS.filter((asset) => asset.parent === parentKey).forEach((asset) => {
+            descendants.push(asset.key);
+            visit(asset.key);
+          });
+        };
+        visit(key);
+        return descendants;
+      };
       const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
       const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
       const MEGA_HAND_GROUP_KEYS = new Set([...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS]);
@@ -555,10 +604,15 @@
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
+      const underlayDepthButton = document.querySelector('#toggle-underlay-depth');
       const activeEpicName = document.querySelector('#active-epic-name');
       const epicPosition = document.querySelector('#epic-position');
       const epicScaleSlider = document.querySelector('#epic-scale');
       const epicScaleValue = document.querySelector('#epic-scale-value');
+      const epicTitleOffsetSlider = document.querySelector('#epic-title-offset');
+      const epicTitleOffsetValue = document.querySelector('#epic-title-offset-value');
+      const epicAmountOffsetSlider = document.querySelector('#epic-amount-offset');
+      const epicAmountOffsetValue = document.querySelector('#epic-amount-offset-value');
       const epicButtons = [...document.querySelectorAll('[data-epic-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
@@ -568,6 +622,8 @@
       let activeScene;
       let activeEpicKey = 'epic_amount';
       let underlayVisible = false;
+      let underlayAbove = false;
+      let epicReplayTimeout = 0;
 
       const updateEpicEditor = () => {
         const asset = epicAssetByKey.get(activeEpicKey);
@@ -605,6 +661,32 @@
         underlayButton.setAttribute('aria-pressed', String(underlayVisible));
         underlayButton.textContent = `Подложка: ${underlayVisible ? 'вкл' : 'выкл'}`;
         activeScene?.setUnderlayVisible(underlayVisible);
+      });
+
+      underlayDepthButton.addEventListener('click', () => {
+        underlayAbove = !underlayAbove;
+        underlayDepthButton.classList.toggle('is-active', underlayAbove);
+        underlayDepthButton.setAttribute('aria-pressed', String(underlayAbove));
+        underlayDepthButton.textContent = `Слой: ${underlayAbove ? 'сверху' : 'снизу'}`;
+        activeScene?.setUnderlayAbove(underlayAbove);
+      });
+
+      const scheduleEpicReplay = () => {
+        window.clearTimeout(epicReplayTimeout);
+        if (!activeScene?.epicActive || activeScene.transitioning) return;
+        epicReplayTimeout = window.setTimeout(() => activeScene?.playEpicTransition(true), 120);
+      };
+
+      epicTitleOffsetSlider.addEventListener('input', () => {
+        EPIC_ENTRANCE.titleDelay = Number(epicTitleOffsetSlider.value);
+        epicTitleOffsetValue.textContent = `${EPIC_ENTRANCE.titleDelay} мс`;
+        scheduleEpicReplay();
+      });
+
+      epicAmountOffsetSlider.addEventListener('input', () => {
+        EPIC_ENTRANCE.amountDelay = Number(epicAmountOffsetSlider.value);
+        epicAmountOffsetValue.textContent = `${EPIC_ENTRANCE.amountDelay} мс`;
+        scheduleEpicReplay();
       });
 
       document.addEventListener('keydown', (event) => {
@@ -662,7 +744,7 @@
 
           this.exampleOverlay = this.add.image(WIDTH / 2, HEIGHT / 2, 'example_overlay')
             .setDisplaySize(WIDTH, HEIGHT)
-            .setDepth(-200)
+            .setDepth(underlayAbove ? 1000 : -200)
             .setAlpha(0.5)
             .setVisible(underlayVisible);
 
@@ -774,6 +856,7 @@
           EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.epicTitleContainer.add(this.epicSprites.get(asset.key));
           });
+          this.epicHandMotion = { rootY: 0, rotation: 0 };
 
           const strawberry = this.sprites.get('strawberry');
           const cream = this.sprites.get('cream');
@@ -791,6 +874,10 @@
 
         setUnderlayVisible(visible) {
           this.exampleOverlay?.setVisible(visible);
+        }
+
+        setUnderlayAbove(above) {
+          this.exampleOverlay?.setDepth(above ? 1000 : -200);
         }
 
         getMegaPosition(key) {
@@ -873,33 +960,49 @@
           if (!asset) return;
           this.tweens.killTweensOf(this.epicSprites.get(key));
           this.epicSprites.get(key).setScale(scale);
+          if (EPIC_HAND_KEYS.has(key)) this.syncEpicHierarchy();
         }
 
         moveEpicAsset(key, deltaX, deltaY) {
           const asset = epicAssetByKey.get(key);
           if (!asset) return;
-          asset.x = Math.round(asset.x + deltaX);
-          asset.y = Math.round(asset.y + deltaY);
-          this.tweens.killTweensOf(this.epicSprites.get(key));
-          this.epicSprites.get(key).setPosition(asset.x, asset.y);
+          const keysToMove = [key, ...getEpicDescendants(key)];
+          keysToMove.forEach((movingKey) => {
+            const movingAsset = epicAssetByKey.get(movingKey);
+            movingAsset.x = Math.round(movingAsset.x + deltaX);
+            movingAsset.y = Math.round(movingAsset.y + deltaY);
+            this.tweens.killTweensOf(this.epicSprites.get(movingKey));
+          });
+          if (EPIC_HAND_KEYS.has(key)) {
+            this.syncEpicHierarchy();
+          } else {
+            this.epicSprites.get(key).setPosition(asset.x, asset.y);
+          }
         }
 
         exportEpicLayout() {
-          return Object.fromEntries(EPIC_ASSETS.map((asset) => [asset.key, {
-            x: Math.round(asset.x),
-            y: Math.round(asset.y),
-            scale: Number(asset.scale.toFixed(2))
-          }]));
+          return Object.fromEntries(EPIC_ASSETS.map((asset) => {
+            const values = {
+              x: Math.round(asset.x),
+              y: Math.round(asset.y),
+              scale: Number(asset.scale.toFixed(2))
+            };
+            if (asset.parent) values.parent = asset.parent;
+            return [asset.key, values];
+          }));
         }
 
         resetEpicAssets() {
           this.epicWaveTimer?.remove(false);
           this.epicWaveTimer = null;
           this.epicActive = false;
+          this.epicHandMotion.rootY = 0;
+          this.epicHandMotion.rotation = 0;
           EPIC_ASSETS.forEach((asset) => {
             this.epicSprites.get(asset.key)
               .setPosition(asset.x, asset.y)
               .setScale(asset.scale)
+              .setAngle(0)
               .setAlpha(0)
               .setVisible(false);
           });
@@ -1676,7 +1779,11 @@
 
         startEpicScreenEntrances() {
           const rewardKeys = new Set(['epic_amount', 'epic_multiplier']);
-          EPIC_ASSETS.filter((asset) => !asset.isLetter && !rewardKeys.has(asset.key)).forEach((asset, index) => {
+          EPIC_ASSETS.filter((asset) => (
+            !asset.isLetter
+            && !rewardKeys.has(asset.key)
+            && !EPIC_HAND_KEYS.has(asset.key)
+          )).forEach((asset, index) => {
             const sprite = this.epicSprites.get(asset.key);
             sprite
               .setPosition(asset.x, asset.y + 8)
@@ -1694,6 +1801,7 @@
               ease: 'Back.Out'
             });
           });
+          this.startEpicHandEntrance();
 
           EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.epicSprites.get(asset.key)
@@ -1703,7 +1811,7 @@
               .setVisible(true);
           });
           this.epicTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
-          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MEGA_TITLE_ENTRANCE.delay), () => {
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, EPIC_ENTRANCE.titleDelay), () => {
             this.playDropEntrance(this.epicTitleContainer, 0, TITLE_DROP);
           }));
 
@@ -1714,12 +1822,91 @@
             .setScale(amountAsset.scale)
             .setAlpha(1)
             .setVisible(true);
-          this.playDropEntrance(amount, amountAsset.y, MEGA_AMOUNT_REVEAL);
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, EPIC_ENTRANCE.amountDelay), () => {
+            this.playDropEntrance(amount, amountAsset.y, MEGA_AMOUNT_REVEAL);
+          }));
 
           this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MULTIPLIER_REVEAL.delay), () => {
             this.playEpicMultiplierEntrance();
           }));
-          this.sequenceTimers.push(this.time.delayedCall(1400, () => this.completeEpicTransition()));
+          const completionDelay = Math.max(
+            1400,
+            EPIC_ENTRANCE.titleDelay + 900,
+            EPIC_ENTRANCE.amountDelay + 900
+          );
+          this.sequenceTimers.push(this.time.delayedCall(completionDelay, () => this.completeEpicTransition()));
+        }
+
+        syncEpicHierarchy() {
+          const motion = this.epicHandMotion;
+          if (!motion) return;
+          const handAsset = epicAssetByKey.get('epic_hand');
+          const handSprite = this.epicSprites.get('epic_hand');
+          const pivotX = handAsset.x + handSprite.width * handAsset.scale / 2;
+          const pivotBaseY = handAsset.y;
+          const pivotY = pivotBaseY + motion.rootY;
+          const radians = Phaser.Math.DegToRad(motion.rotation);
+          const cosine = Math.cos(radians);
+          const sine = Math.sin(radians);
+
+          EPIC_HAND_KEYS.forEach((key) => {
+            const asset = epicAssetByKey.get(key);
+            const deltaX = asset.x - pivotX;
+            const deltaY = asset.y - pivotBaseY;
+            const rotatedX = pivotX + deltaX * cosine - deltaY * sine;
+            const rotatedY = pivotY + deltaX * sine + deltaY * cosine;
+            this.epicSprites.get(key)
+              .setPosition(rotatedX, rotatedY)
+              .setAngle(motion.rotation);
+          });
+        }
+
+        startEpicHandEntrance() {
+          const handAsset = epicAssetByKey.get('epic_hand');
+          const handSprite = this.epicSprites.get('epic_hand');
+          EPIC_HAND_KEYS.forEach((key) => {
+            const asset = epicAssetByKey.get(key);
+            this.epicSprites.get(key)
+              .setScale(asset.scale)
+              .setAngle(0)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+
+          this.epicHandMotion.rootY = HEIGHT - (handAsset.y - handSprite.height * handAsset.scale / 2) + 24;
+          this.epicHandMotion.rotation = 0;
+          this.syncEpicHierarchy();
+          this.tweens.add({
+            targets: this.epicHandMotion,
+            rootY: 0,
+            duration: EPIC_ENTRANCE.handDuration,
+            ease: ENTRY_APPROACH_EASE,
+            onUpdate: () => this.syncEpicHierarchy(),
+            onComplete: () => this.playEpicHandRotationBounce()
+          });
+        }
+
+        playEpicHandRotationBounce() {
+          const amplitude = EPIC_ENTRANCE.handRotationBounce;
+          const keyframes = [
+            { rotation: amplitude, duration: 105, ease: 'Quad.Out' },
+            { rotation: -amplitude * 0.48, duration: 125, ease: 'Sine.InOut' },
+            { rotation: amplitude * 0.2, duration: 100, ease: 'Sine.InOut' },
+            { rotation: 0, duration: 110, ease: 'Sine.Out' }
+          ];
+          const playFrame = (index) => {
+            if (index >= keyframes.length) return;
+            const frame = keyframes[index];
+            this.tweens.add({
+              targets: this.epicHandMotion,
+              rotation: frame.rotation,
+              duration: frame.duration,
+              ease: frame.ease,
+              onUpdate: () => this.syncEpicHierarchy(),
+              onComplete: () => playFrame(index + 1)
+            });
+          };
+          playFrame(0);
         }
 
         playEpicMultiplierEntrance() {
