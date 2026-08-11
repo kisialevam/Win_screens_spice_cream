@@ -266,6 +266,30 @@
     .stage-toolbar h2 { margin: 0; font-size: 16px; }
     .stage-toolbar p { margin: 5px 0 0; color: #a995b1; font-size: 12px; }
 
+    .stage-workspace {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .stage-actions {
+      position: sticky;
+      top: 38px;
+      display: grid;
+      gap: 10px;
+      width: 220px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      background: rgba(20, 8, 27, 0.82);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(14px);
+    }
+
+    .stage-actions .settings-title { margin-bottom: 2px; }
+    .stage-actions .replay-button,
+    .stage-actions .start-over-button { margin-top: 0; }
+
     #stage-shell {
       position: relative;
       width: 366px;
@@ -308,6 +332,8 @@
       .app { display: block; }
       .panel { position: relative; height: auto; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
       .stage-area { padding: 28px 20px 60px; }
+      .stage-workspace { flex-wrap: wrap; }
+      .stage-actions { position: static; width: 366px; }
     }
   </style>
 </head>
@@ -486,8 +512,6 @@
         <p class="letter-hint">Положительное значение запускает hearts раньше завершения выезда рук.</p>
       </section>
 
-      <button class="replay-button" id="next-screen" type="button">Следующий</button>
-      <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
     </aside>
 
     <section class="stage-area">
@@ -497,9 +521,16 @@
           <p>Big Win → редактируемый Mega Win.</p>
         </div>
       </div>
-      <div id="stage-shell">
-        <div class="loading" id="loading">Загружаю Phaser…</div>
-        <div id="game-container"></div>
+      <div class="stage-workspace">
+        <div id="stage-shell">
+          <div class="loading" id="loading">Загружаю Phaser…</div>
+          <div id="game-container"></div>
+        </div>
+        <div class="stage-actions" aria-label="Управление анимацией">
+          <p class="settings-title">Управление экраном</p>
+          <button class="replay-button" id="next-screen" type="button">Следующий</button>
+          <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
+        </div>
       </div>
     </section>
   </main>
@@ -597,12 +628,12 @@
         { key: 'mega_i', label: 'I', file: 'mega_win/i_win_mega.png', x: 122, y: 49, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_n', label: 'N', file: 'mega_win/n_win_mega.png', x: 133, y: 48, scale: 0.17, depth: 220, isLetter: true },
         { key: 'mega_cream_long', label: 'Крем ↑', file: 'mega_win/cream_long.png?v=189d34d8', x: 143, y: 103, scale: 1.05, depth: 208, topAnchor: true },
-        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png?v=f1e6ec46', x: 36, y: 156, scale: 1, rotation: 0, depth: 213, parent: 'mega_ice_2', transformable: true },
+        { key: 'mega_cherry_1', label: 'Вишня 1', file: 'mega_win/cher_1.png?v=f1e6ec46', x: 36, y: 158, scale: 1, rotation: -5, depth: 213, parent: 'mega_ice_2', transformable: true },
         { key: 'mega_cherry_2', label: 'Вишня 2', file: 'mega_win/cher_2.png?v=c53f05fc', x: 161, y: 183, scale: 1, rotation: 17, depth: 213, parent: 'mega_ice_1', transformable: true },
         { key: 'mega_ice_1', label: 'Шарик 1', file: 'mega_win/choc_ice_1.png?v=f009665d', x: 141, y: 235, scale: 1, rotation: 18, depth: 209, parent: 'mega_hand_right', transformable: true },
-        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png?v=ff919946', x: 48, y: 208, scale: 1, rotation: 0, depth: 209, parent: 'mega_hand_left', transformable: true },
+        { key: 'mega_ice_2', label: 'Шарик 2', file: 'mega_win/choc_ice_2.png?v=ff919946', x: 48, y: 208, scale: 1, rotation: -5, depth: 209, parent: 'mega_hand_left', transformable: true },
         { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png?v=8fdf90b1', x: 144, y: 223, scale: 1, rotation: 18, depth: 212, parent: 'mega_ice_1', transformable: true },
-        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png?v=b182729a', x: 46, y: 206, scale: 1, rotation: 0, depth: 212, parent: 'mega_ice_2', transformable: true },
+        { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png?v=b182729a', x: 48, y: 207, scale: 1, rotation: -5, depth: 212, parent: 'mega_ice_2', transformable: true },
         { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -21, y: 385, scale: 1.43, rotation: -3, depth: 204, isHand: true },
         { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true }
       ];
