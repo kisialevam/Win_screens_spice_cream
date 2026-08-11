@@ -341,194 +341,56 @@
   <main class="app">
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
-      <h1>Mega Win<br>editor</h1>
-      <p class="lead">Big Win зафиксирован. Теперь собираем следующий экран из новых слоёв Mega Win.</p>
+      <h1>Epic Win<br>editor</h1>
+      <p class="lead">Big Win и Mega Win зафиксированы. Теперь собираем следующий экран из новых слоёв Epic Win.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Mega Win</span></div>
-        <p class="lead">Экран 183 × 396 · Big Win + редактируемые слои Mega Win · Phaser 3</p>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Epic Win</span></div>
+        <p class="lead">Экран 183 × 396 · редактируются только новые слои Epic Win · Phaser 3</p>
       </section>
 
       <section class="control-group" id="underlay-editor">
-        <div class="label-row"><span>Подложка example_2</span><span class="value">50%</span></div>
+        <div class="label-row"><span>Подложка example_3</span><span class="value">50%</span></div>
         <button class="secondary-button" id="toggle-underlay" type="button" aria-pressed="false">Подложка: выкл</button>
       </section>
 
-      <section class="control-group" id="mega-editor">
-        <div class="label-row"><span>Активный слой</span><span class="value" id="active-mega-name">84.99</span></div>
-        <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Mega Win">
-          <button class="letter-button is-active" type="button" data-mega-key="mega_amount" aria-pressed="true">84.99</button>
-          <button class="letter-button" type="button" data-mega-key="mega_multiplier" aria-pressed="false">69x</button>
-          <button class="letter-button" type="button" data-mega-key="mega_m" aria-pressed="false">M</button>
-          <button class="letter-button" type="button" data-mega-key="mega_e" aria-pressed="false">E</button>
-          <button class="letter-button" type="button" data-mega-key="mega_g" aria-pressed="false">G</button>
-          <button class="letter-button" type="button" data-mega-key="mega_a" aria-pressed="false">A</button>
-          <button class="letter-button" type="button" data-mega-key="mega_w" aria-pressed="false">W</button>
-          <button class="letter-button" type="button" data-mega-key="mega_i" aria-pressed="false">I</button>
-          <button class="letter-button" type="button" data-mega-key="mega_n" aria-pressed="false">N</button>
-          <button class="letter-button" type="button" data-mega-key="mega_cream_long" aria-pressed="false">Крем ↑</button>
-          <button class="letter-button" type="button" data-mega-key="mega_cherry_1" aria-pressed="false">Вишня 1</button>
-          <button class="letter-button" type="button" data-mega-key="mega_cherry_2" aria-pressed="false">Вишня 2</button>
-          <button class="letter-button" type="button" data-mega-key="mega_ice_1" aria-pressed="false">Шарик 1</button>
-          <button class="letter-button" type="button" data-mega-key="mega_ice_2" aria-pressed="false">Шарик 2</button>
-          <button class="letter-button" type="button" data-mega-key="mega_cream_1" aria-pressed="false">Крем 1</button>
-          <button class="letter-button" type="button" data-mega-key="mega_cream_2" aria-pressed="false">Крем 2</button>
-          <button class="letter-button" type="button" data-mega-key="mega_hand_left" aria-pressed="false">Рука L</button>
-          <button class="letter-button" type="button" data-mega-key="mega_hand_right" aria-pressed="false">Рука R</button>
-          <button class="letter-button" type="button" data-mega-key="spark_2" aria-pressed="false">Spark 2</button>
-          <button class="letter-button" type="button" data-mega-key="spark_3" aria-pressed="false">Spark 3</button>
+      <section class="control-group" id="epic-editor">
+        <div class="label-row"><span>Активный слой</span><span class="value" id="active-epic-name">284.99</span></div>
+        <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Epic Win">
+          <button class="letter-button is-active" type="button" data-epic-key="epic_amount" aria-pressed="true">284.99</button>
+          <button class="letter-button" type="button" data-epic-key="epic_multiplier" aria-pressed="false">142x</button>
+          <button class="letter-button" type="button" data-epic-key="epic_e" aria-pressed="false">E</button>
+          <button class="letter-button" type="button" data-epic-key="epic_p" aria-pressed="false">P</button>
+          <button class="letter-button" type="button" data-epic-key="epic_i_title" aria-pressed="false">I₁</button>
+          <button class="letter-button" type="button" data-epic-key="epic_c" aria-pressed="false">C</button>
+          <button class="letter-button" type="button" data-epic-key="epic_w" aria-pressed="false">W</button>
+          <button class="letter-button" type="button" data-epic-key="epic_i_win" aria-pressed="false">I₂</button>
+          <button class="letter-button" type="button" data-epic-key="epic_n" aria-pressed="false">N</button>
+          <button class="letter-button" type="button" data-epic-key="epic_cream_down" aria-pressed="false">Крем ↓</button>
+          <button class="letter-button" type="button" data-epic-key="epic_peach" aria-pressed="false">Персик</button>
+          <button class="letter-button" type="button" data-epic-key="epic_peach_cream" aria-pressed="false">Крем</button>
+          <button class="letter-button" type="button" data-epic-key="epic_peach_ice" aria-pressed="false">Мороженое</button>
+          <button class="letter-button" type="button" data-epic-key="epic_waffle" aria-pressed="false">Вафля</button>
+          <button class="letter-button" type="button" data-epic-key="epic_hand" aria-pressed="false">Рука</button>
         </div>
-        <p class="letter-position" id="mega-position">X 91 · Y 97</p>
-        <div class="settings-stack" id="mega-hand-controls" hidden>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="mega-scale-value">1.66×</span></span>
-            <input class="letter-scale-slider" id="mega-scale" type="range" min="0.10" max="3.00" step="0.01" value="1.66" aria-label="Масштаб активного слоя">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот слоя</span><span class="value" id="mega-rotation-value">0°</span></span>
-            <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активного слоя">
-          </label>
-        </div>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук, слоёв обеих мороженок и звёздочек BIG WIN.</p>
-        <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты</button>
-        <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
-      </section>
-
-      <section class="control-group" id="big-win-exit-editor">
-        <p class="settings-title">Падение BIG WIN</p>
+        <p class="letter-position" id="epic-position">X 91 · Y 93</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот надписи</span><span class="value" id="big-exit-rotation-value">0°</span></span>
-            <input class="letter-scale-slider" id="big-exit-rotation" type="range" min="-45" max="45" step="1" value="0" aria-label="Поворот падающей надписи BIG WIN">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость падения</span><span class="value" id="big-exit-speed-value">1.30×</span></span>
-            <input class="letter-scale-slider" id="big-exit-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.30" aria-label="Скорость падения BIG WIN">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Заскок перед падением</span><span class="value" id="big-exit-overshoot-value">33 px</span></span>
-            <input class="letter-scale-slider" id="big-exit-overshoot" type="range" min="0" max="50" step="1" value="33" aria-label="Заскок BIG WIN перед падением">
+            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="epic-scale-value">0.17×</span></span>
+            <input class="letter-scale-slider" id="epic-scale" type="range" min="0.05" max="3.00" step="0.01" value="0.17" aria-label="Масштаб активного слоя Epic Win">
           </label>
         </div>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Выбранный слой также можно выбрать кликом прямо в сцене.</p>
+        <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты Epic Win</button>
+        <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Epic Win" readonly hidden></textarea>
       </section>
-
-      <section class="control-group" id="mega-title-editor">
-        <p class="settings-title">Появление MEGA WIN</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Момент выпадения</span><span class="value" id="mega-title-delay-value">190 мс</span></span>
-            <input class="letter-scale-slider" id="mega-title-delay" type="range" min="0" max="1000" step="10" value="190" aria-label="Момент выпадения MEGA WIN">
-          </label>
-        </div>
-      </section>
-
-      <section class="control-group" id="mega-amount-editor">
-        <p class="settings-title">Появление 84.99</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость появления</span><span class="value" id="mega-amount-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="mega-amount-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость появления 84.99">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Момент появления</span><span class="value" id="mega-amount-delay-value">220 мс</span></span>
-            <input class="letter-scale-slider" id="mega-amount-delay" type="range" min="0" max="1200" step="10" value="220" aria-label="Момент появления 84.99">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Баунс в конце</span><span class="value" id="mega-amount-bounce-value">25 px</span></span>
-            <input class="letter-scale-slider" id="mega-amount-bounce" type="range" min="0" max="80" step="1" value="25" aria-label="Высота баунса 84.99">
-          </label>
-        </div>
-      </section>
-
-      <section class="control-group" id="mega-timing-editor">
-        <p class="settings-title">Прыжки десертов</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение мороженок</span><span class="value" id="mega-ice-lead-value">860 мс</span></span>
-            <input class="letter-scale-slider" id="mega-ice-lead" type="range" min="-300" max="1200" step="10" value="860" aria-label="Офсет прыжка мороженок относительно рук">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение крема и вишен</span><span class="value" id="mega-topping-lead-value">830 мс</span></span>
-            <input class="letter-scale-slider" id="mega-topping-lead" type="range" min="-300" max="1200" step="10" value="830" aria-label="Офсет прыжка крема и вишен относительно рук">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Сила баунса при посадке</span><span class="value" id="mega-impact-value">30%</span></span>
-            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="2" step="0.05" value="0.30" aria-label="Сила баунса десертов при посадке">
-          </label>
-        </div>
-        <p class="letter-hint">Положительное опережение запускает прыжок раньше завершения выезда руки.</p>
-      </section>
-
-      <section class="control-group" id="cream-long-animation-editor">
-        <p class="settings-title">Крем со стрелочкой</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость появления</span><span class="value" id="cream-appear-speed-value">0.70×</span></span>
-            <input class="letter-scale-slider" id="cream-appear-speed" type="range" min="0.50" max="2.50" step="0.05" value="0.70" aria-label="Скорость появления длинного крема">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Пауза между поджиманиями</span><span class="value" id="cream-compress-interval-value">3.0 с</span></span>
-            <input class="letter-scale-slider" id="cream-compress-interval" type="range" min="1.2" max="6.0" step="0.1" value="3.0" aria-label="Пауза между поджиманиями длинного крема">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость поджимания</span><span class="value" id="cream-compress-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="cream-compress-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость поджимания длинного крема">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость баунса</span><span class="value" id="cream-bounce-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="cream-bounce-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.00" aria-label="Скорость баунса длинного крема">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Сила поджимания</span><span class="value" id="cream-compress-amount-value">8%</span></span>
-            <input class="letter-scale-slider" id="cream-compress-amount" type="range" min="0.02" max="0.20" step="0.01" value="0.08" aria-label="Сила поджимания длинного крема">
-          </label>
-        </div>
-      </section>
-
-      <section class="control-group" id="hearts-editor">
-        <p class="settings-title">Секвенции hearts</p>
-        <div class="settings-stack">
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Опережение запуска</span><span class="value" id="hearts-lead-value">310 мс</span></span>
-            <input class="letter-scale-slider" id="hearts-lead" type="range" min="-500" max="1200" step="10" value="310" aria-label="Опережение запуска секвенций hearts">
-          </label>
-          <p class="settings-subtitle">Левая рука</p>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Положение X</span><span class="value" id="hearts-left-x-value">40 px</span></span>
-            <input class="letter-scale-slider" id="hearts-left-x" type="range" min="-40" max="220" step="1" value="40" aria-label="Положение X левой секвенции hearts">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Положение Y</span><span class="value" id="hearts-left-y-value">175 px</span></span>
-            <input class="letter-scale-slider" id="hearts-left-y" type="range" min="80" max="430" step="1" value="175" aria-label="Положение Y левой секвенции hearts">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб</span><span class="value" id="hearts-left-scale-value">0.90×</span></span>
-            <input class="letter-scale-slider" id="hearts-left-scale" type="range" min="0.20" max="2.00" step="0.05" value="0.90" aria-label="Масштаб левой секвенции hearts">
-          </label>
-          <p class="settings-subtitle">Правая рука · отражена</p>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Положение X</span><span class="value" id="hearts-right-x-value">145 px</span></span>
-            <input class="letter-scale-slider" id="hearts-right-x" type="range" min="-40" max="220" step="1" value="145" aria-label="Положение X правой секвенции hearts">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Положение Y</span><span class="value" id="hearts-right-y-value">195 px</span></span>
-            <input class="letter-scale-slider" id="hearts-right-y" type="range" min="80" max="430" step="1" value="195" aria-label="Положение Y правой секвенции hearts">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб</span><span class="value" id="hearts-right-scale-value">0.90×</span></span>
-            <input class="letter-scale-slider" id="hearts-right-scale" type="range" min="0.20" max="2.00" step="0.05" value="0.90" aria-label="Масштаб правой секвенции hearts">
-          </label>
-        </div>
-        <p class="letter-hint">Положительное значение запускает hearts раньше завершения выезда рук.</p>
-      </section>
-
     </aside>
 
     <section class="stage-area">
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Big Win → редактируемый Mega Win.</p>
+          <p>Big Win → Mega Win → редактируемый Epic Win.</p>
         </div>
       </div>
       <div class="stage-workspace">
@@ -539,6 +401,7 @@
         <div class="stage-actions" aria-label="Управление анимацией">
           <p class="settings-title">Управление экраном</p>
           <button class="replay-button" id="next-screen" type="button">Следующий</button>
+          <button class="replay-button" id="epic-next-screen" type="button" hidden>Далее</button>
           <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
         </div>
       </div>
@@ -589,15 +452,15 @@
       };
       const BIG_WIN_EXIT = { rotation: 0, speed: 1.3, overshoot: 33 };
       const MEGA_SCREEN_DELAY = 160;
-      const MEGA_TITLE_ENTRANCE = { delay: 190 };
-      const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 220, bounce: 25 };
+      const MEGA_TITLE_ENTRANCE = { delay: 370 };
+      const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 0, bounce: 25 };
       const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.3 };
       const CREAM_LONG_ANIMATION = {
-        appearSpeed: 0.7,
-        compressInterval: 3,
-        compressSpeed: 1,
-        bounceSpeed: 1,
-        compressAmount: 0.08
+        appearSpeed: 0.95,
+        compressInterval: 4,
+        compressSpeed: 0.6,
+        bounceSpeed: 0.7,
+        compressAmount: 0.16
       };
       const BIG_SPARK_ANIMATION = { appearDuration: 120, disappearDuration: 160, rotation: 14 };
       const HEARTS = {
@@ -608,6 +471,8 @@
       };
       const MEGA_TOSS_INTERVAL = 5000;
       const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 3, sideDelay: 110, toppingDelay: 75 };
+      const EPIC_SCREEN_DELAY = 160;
+      const EPIC_WAVE_INTERVAL = 3000;
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
         const remaining = 1 - time;
@@ -656,6 +521,24 @@
         { key: 'spark_2', label: 'Spark 2', file: 'spark2.png?v=f411e5c2', x: 88, y: 208, scale: 0.27, rotation: 46, depth: 160, bigOnly: true, transformable: true },
         { key: 'spark_3', label: 'Spark 3', file: 'spark3.png?v=7fe1028b', x: 80, y: 253, scale: 0.25, rotation: 64, depth: 160, bigOnly: true, transformable: true }
       ];
+
+      const EPIC_ASSETS = [
+        { key: 'epic_amount', label: '284.99', file: 'epic_win/284.99.png?v=389b656c', x: 91, y: 93, scale: 0.17, depth: 314 },
+        { key: 'epic_multiplier', label: '142x', file: 'epic_win/142x.png?v=36d6e9ee', x: 90, y: 302, scale: 0.17, depth: 314 },
+        { key: 'epic_e', label: 'E', file: 'epic_win/e_ew.png?v=7c9b13cd', x: 50, y: 53, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_p', label: 'P', file: 'epic_win/p_ew.png?v=06e2ead1', x: 66, y: 52, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_i_title', label: 'I₁', file: 'epic_win/i_ew.png?v=7a215e78', x: 79, y: 51, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_c', label: 'C', file: 'epic_win/c_ew.png?v=73374d4b', x: 91, y: 50, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_w', label: 'W', file: 'epic_win/w_ew.png?v=477bb067', x: 111, y: 49, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_i_win', label: 'I₂', file: 'epic_win/i_ew.png?v=7a215e78', x: 126, y: 49, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_n', label: 'N', file: 'epic_win/n_ew.png?v=d4c3e485', x: 139, y: 48, scale: 0.17, depth: 320, isLetter: true },
+        { key: 'epic_cream_down', label: 'Крем ↓', file: 'epic_win/cream_down.png?v=f8df662e', x: 91, y: 197, scale: 1, depth: 313 },
+        { key: 'epic_peach', label: 'Персик', file: 'epic_win/peach.png?v=b5f865df', x: 91, y: 160, scale: 1, depth: 312 },
+        { key: 'epic_peach_cream', label: 'Крем', file: 'epic_win/peach_cream.png?v=f0b4d397', x: 91, y: 195, scale: 1, depth: 311 },
+        { key: 'epic_peach_ice', label: 'Мороженое', file: 'epic_win/peach_ice.png?v=4e516a4a', x: 91, y: 232, scale: 1, depth: 310 },
+        { key: 'epic_waffle', label: 'Вафля', file: 'epic_win/waffle.png?v=7d500149', x: 91, y: 276, scale: 1, depth: 309 },
+        { key: 'epic_hand', label: 'Рука', file: 'epic_win/hand_epic.png?v=c12da196', x: 91, y: 344, scale: 1, depth: 308 }
+      ];
       const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
       const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
       const MEGA_HAND_GROUP_KEYS = new Set([...LEFT_HAND_KEYS, ...RIGHT_HAND_KEYS]);
@@ -667,103 +550,54 @@
       };
       const loading = document.querySelector('#loading');
       const nextButton = document.querySelector('#next-screen');
+      const epicNextButton = document.querySelector('#epic-next-screen');
       const startOverButton = document.querySelector('#start-over');
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
-      const activeMegaName = document.querySelector('#active-mega-name');
-      const megaPosition = document.querySelector('#mega-position');
-      const megaHandControls = document.querySelector('#mega-hand-controls');
-      const megaScaleSlider = document.querySelector('#mega-scale');
-      const megaScaleValue = document.querySelector('#mega-scale-value');
-      const megaRotationSlider = document.querySelector('#mega-rotation');
-      const megaRotationValue = document.querySelector('#mega-rotation-value');
-      const megaButtons = [...document.querySelectorAll('[data-mega-key]')];
+      const activeEpicName = document.querySelector('#active-epic-name');
+      const epicPosition = document.querySelector('#epic-position');
+      const epicScaleSlider = document.querySelector('#epic-scale');
+      const epicScaleValue = document.querySelector('#epic-scale-value');
+      const epicButtons = [...document.querySelectorAll('[data-epic-key]')];
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
       const letterAssetByKey = new Map(LETTER_ASSETS.map((asset) => [asset.key, asset]));
       const megaAssetByKey = new Map(MEGA_ASSETS.map((asset) => [asset.key, asset]));
+      const epicAssetByKey = new Map(EPIC_ASSETS.map((asset) => [asset.key, asset]));
       const canTransformMegaAsset = (asset) => Boolean(asset?.isHand || asset?.transformable);
       let activeScene;
-      let activeMegaKey = 'mega_amount';
+      let activeEpicKey = 'epic_amount';
       let underlayVisible = false;
 
-      const updateMegaEditor = () => {
-        const asset = megaAssetByKey.get(activeMegaKey);
-        const position = activeScene?.getMegaPosition(activeMegaKey) ?? asset;
-        activeMegaName.textContent = asset.label;
-        megaPosition.textContent = `X ${Math.round(position.x)} · Y ${Math.round(position.y)}`;
-        megaHandControls.hidden = !canTransformMegaAsset(asset);
-        if (canTransformMegaAsset(asset)) {
-          megaScaleSlider.value = asset.scale;
-          megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
-          megaRotationSlider.value = asset.rotation ?? 0;
-          megaRotationValue.textContent = `${Math.round(asset.rotation ?? 0)}°`;
-        }
-        megaButtons.forEach((button) => {
-          const isActive = button.dataset.megaKey === activeMegaKey;
+      const updateEpicEditor = () => {
+        const asset = epicAssetByKey.get(activeEpicKey);
+        activeEpicName.textContent = asset.label;
+        epicPosition.textContent = `X ${Math.round(asset.x)} · Y ${Math.round(asset.y)}`;
+        epicScaleSlider.value = asset.scale;
+        epicScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        epicButtons.forEach((button) => {
+          const isActive = button.dataset.epicKey === activeEpicKey;
           button.classList.toggle('is-active', isActive);
           button.setAttribute('aria-pressed', String(isActive));
         });
       };
 
-      const selectMegaLayer = (key) => {
-        if (!megaAssetByKey.has(key)) return;
-        activeMegaKey = key;
-        updateMegaEditor();
+      const selectEpicLayer = (key) => {
+        if (!epicAssetByKey.has(key)) return;
+        activeEpicKey = key;
+        updateEpicEditor();
       };
 
-      megaButtons.forEach((button) => {
-        button.addEventListener('click', () => selectMegaLayer(button.dataset.megaKey));
+      epicButtons.forEach((button) => {
+        button.addEventListener('click', () => selectEpicLayer(button.dataset.epicKey));
       });
 
-      megaScaleSlider.addEventListener('input', () => {
-        const asset = megaAssetByKey.get(activeMegaKey);
-        if (!canTransformMegaAsset(asset)) return;
-        asset.scale = Number(megaScaleSlider.value);
-        megaScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
-        activeScene?.setMegaScale(activeMegaKey, asset.scale);
+      epicScaleSlider.addEventListener('input', () => {
+        const asset = epicAssetByKey.get(activeEpicKey);
+        asset.scale = Number(epicScaleSlider.value);
+        epicScaleValue.textContent = `${asset.scale.toFixed(2)}×`;
+        activeScene?.setEpicScale(activeEpicKey, asset.scale);
       });
-
-      megaRotationSlider.addEventListener('input', () => {
-        const asset = megaAssetByKey.get(activeMegaKey);
-        if (!canTransformMegaAsset(asset)) return;
-        asset.rotation = Number(megaRotationSlider.value);
-        megaRotationValue.textContent = `${Math.round(asset.rotation)}°`;
-        activeScene?.setMegaRotation(activeMegaKey, asset.rotation);
-      });
-
-      const bindTransitionControl = (inputId, outputId, settings, property, format) => {
-        const input = document.querySelector(`#${inputId}`);
-        const output = document.querySelector(`#${outputId}`);
-        input.addEventListener('input', () => {
-          settings[property] = Number(input.value);
-          output.textContent = format(settings[property]);
-          activeScene?.playNextTransition(true);
-        });
-      };
-
-      bindTransitionControl('big-exit-rotation', 'big-exit-rotation-value', BIG_WIN_EXIT, 'rotation', (value) => `${Math.round(value)}°`);
-      bindTransitionControl('big-exit-speed', 'big-exit-speed-value', BIG_WIN_EXIT, 'speed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('big-exit-overshoot', 'big-exit-overshoot-value', BIG_WIN_EXIT, 'overshoot', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('mega-title-delay', 'mega-title-delay-value', MEGA_TITLE_ENTRANCE, 'delay', (value) => `${Math.round(value)} мс`);
-      bindTransitionControl('mega-amount-speed', 'mega-amount-speed-value', MEGA_AMOUNT_REVEAL, 'speed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('mega-amount-delay', 'mega-amount-delay-value', MEGA_AMOUNT_REVEAL, 'delay', (value) => `${Math.round(value)} мс`);
-      bindTransitionControl('mega-amount-bounce', 'mega-amount-bounce-value', MEGA_AMOUNT_REVEAL, 'bounce', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('mega-ice-lead', 'mega-ice-lead-value', MEGA_JUMPS, 'iceLead', (value) => `${Math.round(value)} мс`);
-      bindTransitionControl('mega-topping-lead', 'mega-topping-lead-value', MEGA_JUMPS, 'toppingLead', (value) => `${Math.round(value)} мс`);
-      bindTransitionControl('mega-impact', 'mega-impact-value', MEGA_JUMPS, 'impact', (value) => `${Math.round(value * 100)}%`);
-      bindTransitionControl('cream-appear-speed', 'cream-appear-speed-value', CREAM_LONG_ANIMATION, 'appearSpeed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('cream-compress-interval', 'cream-compress-interval-value', CREAM_LONG_ANIMATION, 'compressInterval', (value) => `${value.toFixed(1)} с`);
-      bindTransitionControl('cream-compress-speed', 'cream-compress-speed-value', CREAM_LONG_ANIMATION, 'compressSpeed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('cream-bounce-speed', 'cream-bounce-speed-value', CREAM_LONG_ANIMATION, 'bounceSpeed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('cream-compress-amount', 'cream-compress-amount-value', CREAM_LONG_ANIMATION, 'compressAmount', (value) => `${Math.round(value * 100)}%`);
-      bindTransitionControl('hearts-lead', 'hearts-lead-value', HEARTS, 'lead', (value) => `${Math.round(value)} мс`);
-      bindTransitionControl('hearts-left-x', 'hearts-left-x-value', HEARTS.left, 'x', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('hearts-left-y', 'hearts-left-y-value', HEARTS.left, 'y', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('hearts-left-scale', 'hearts-left-scale-value', HEARTS.left, 'scale', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('hearts-right-x', 'hearts-right-x-value', HEARTS.right, 'x', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('hearts-right-y', 'hearts-right-y-value', HEARTS.right, 'y', (value) => `${Math.round(value)} px`);
-      bindTransitionControl('hearts-right-scale', 'hearts-right-scale-value', HEARTS.right, 'scale', (value) => `${value.toFixed(2)}×`);
 
       underlayButton.addEventListener('click', () => {
         underlayVisible = !underlayVisible;
@@ -785,14 +619,15 @@
         if (!direction || !activeScene) return;
         event.preventDefault();
         const step = event.shiftKey ? 5 : 1;
-        activeScene.moveMegaAsset(activeMegaKey, direction[0] * step, direction[1] * step);
-        updateMegaEditor();
+        activeScene.moveEpicAsset(activeEpicKey, direction[0] * step, direction[1] * step);
+        updateEpicEditor();
       });
 
       nextButton.addEventListener('click', () => activeScene?.playNextTransition());
+      epicNextButton.addEventListener('click', () => activeScene?.playEpicTransition(activeScene?.epicActive));
       startOverButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       copyCoordinatesButton.addEventListener('click', async () => {
-        const text = JSON.stringify(activeScene?.exportMegaLayout() ?? {}, null, 2);
+        const text = JSON.stringify(activeScene?.exportEpicLayout() ?? {}, null, 2);
         coordinatesOutput.hidden = false;
         coordinatesOutput.value = text;
         coordinatesOutput.select();
@@ -804,10 +639,10 @@
         }
         copyCoordinatesButton.textContent = 'Координаты скопированы';
         window.setTimeout(() => {
-          copyCoordinatesButton.textContent = 'Скопировать координаты';
+          copyCoordinatesButton.textContent = 'Скопировать координаты Epic Win';
         }, 1600);
       });
-      updateMegaEditor();
+      updateEpicEditor();
 
       class BigWinScene extends Phaser.Scene {
         constructor() { super('BigWinScene'); }
@@ -815,16 +650,18 @@
         preload() {
           this.load.atlas('explode', 'explode.png', 'explode.json');
           this.load.atlas('hearts', 'mega_win/hearts.png', 'mega_win/hearts.json');
-          this.load.image('example_overlay', 'mega_win/example_2.png');
+          this.load.image('example_overlay', 'epic_win/example_3.png?v=b337949c');
           ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           LETTER_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
           MEGA_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
+          EPIC_ASSETS.forEach(({ key, file }) => this.load.image(key, file));
         }
 
         create() {
           this.cameras.main.setOrigin(0, 0).setZoom(RENDER_SCALE);
 
           this.exampleOverlay = this.add.image(WIDTH / 2, HEIGHT / 2, 'example_overlay')
+            .setDisplaySize(WIDTH, HEIGHT)
             .setDepth(-200)
             .setAlpha(0.5)
             .setVisible(underlayVisible);
@@ -909,9 +746,7 @@
               .setFlipX(Boolean(asset.flipX))
               .setDepth(asset.depth)
               .setAlpha(0)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectMegaLayer(asset.key));
+              .setVisible(false);
             if (asset.topAnchor) {
               sprite.setOrigin(0.5, 0).setY(asset.y - sprite.height * asset.scale / 2);
             }
@@ -921,6 +756,23 @@
           this.megaTitleContainer = this.add.container(0, 0).setDepth(220).setVisible(false);
           MEGA_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.megaTitleContainer.add(this.megaSprites.get(asset.key));
+          });
+
+          this.epicSprites = new Map();
+          EPIC_ASSETS.forEach((asset) => {
+            const sprite = this.add.image(asset.x, asset.y, asset.key)
+              .setScale(asset.scale)
+              .setDepth(asset.depth)
+              .setAlpha(0)
+              .setVisible(false)
+              .setInteractive({ useHandCursor: true })
+              .on('pointerdown', () => selectEpicLayer(asset.key));
+            this.epicSprites.set(asset.key, sprite);
+          });
+
+          this.epicTitleContainer = this.add.container(0, 0).setDepth(320).setVisible(false);
+          EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.epicTitleContainer.add(this.epicSprites.get(asset.key));
           });
 
           const strawberry = this.sprites.get('strawberry');
@@ -933,7 +785,7 @@
 
           activeScene = this;
           this.playIntroAnimation();
-          updateMegaEditor();
+          updateEpicEditor();
           loading.classList.add('is-hidden');
         }
 
@@ -1016,6 +868,44 @@
           return layout;
         }
 
+        setEpicScale(key, scale) {
+          const asset = epicAssetByKey.get(key);
+          if (!asset) return;
+          this.tweens.killTweensOf(this.epicSprites.get(key));
+          this.epicSprites.get(key).setScale(scale);
+        }
+
+        moveEpicAsset(key, deltaX, deltaY) {
+          const asset = epicAssetByKey.get(key);
+          if (!asset) return;
+          asset.x = Math.round(asset.x + deltaX);
+          asset.y = Math.round(asset.y + deltaY);
+          this.tweens.killTweensOf(this.epicSprites.get(key));
+          this.epicSprites.get(key).setPosition(asset.x, asset.y);
+        }
+
+        exportEpicLayout() {
+          return Object.fromEntries(EPIC_ASSETS.map((asset) => [asset.key, {
+            x: Math.round(asset.x),
+            y: Math.round(asset.y),
+            scale: Number(asset.scale.toFixed(2))
+          }]));
+        }
+
+        resetEpicAssets() {
+          this.epicWaveTimer?.remove(false);
+          this.epicWaveTimer = null;
+          this.epicActive = false;
+          EPIC_ASSETS.forEach((asset) => {
+            this.epicSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(0)
+              .setVisible(false);
+          });
+          this.epicTitleContainer?.setPosition(0, 0).setAngle(0).setAlpha(1).setVisible(false);
+        }
+
         resetMegaAssets() {
           this.megaTossTimer?.remove(false);
           this.megaTossTimer = null;
@@ -1057,6 +947,7 @@
           this.explode.stop().setFrame('frame0000.png').setVisible(false);
           this.sprites.get('splash').setAlpha(0).setVisible(false);
           this.resetMegaAssets();
+          this.resetEpicAssets();
 
           this.letterSprites.forEach((sprite, key) => {
             sprite
@@ -1096,6 +987,7 @@
           };
           nextButton.disabled = true;
           nextButton.textContent = 'Переходим…';
+          epicNextButton.hidden = true;
           this.prepareBigWinForTransition();
 
           this.tweens.add({
@@ -1601,6 +1493,9 @@
           this.megaActive = true;
           nextButton.disabled = false;
           nextButton.textContent = 'Повторить переход';
+          epicNextButton.hidden = false;
+          epicNextButton.disabled = false;
+          epicNextButton.textContent = 'Далее';
           this.startMegaFloating();
           this.startMegaAmbientLoops();
         }
@@ -1693,6 +1588,211 @@
           });
         }
 
+        playEpicTransition(replayOnly = false) {
+          if (this.transitioning) return;
+          this.transitioning = true;
+          this.megaActive = false;
+          this.epicActive = false;
+          nextButton.hidden = true;
+          epicNextButton.hidden = false;
+          epicNextButton.disabled = true;
+          epicNextButton.textContent = 'Переходим…';
+
+          this.tweens.killAll();
+          this.sequenceTimers?.forEach((timer) => timer.remove(false));
+          this.sequenceTimers = [];
+          this.megaTossTimer?.remove(false);
+          this.megaTossTimer = null;
+          this.megaFloatingActive = false;
+          Object.values(this.heartBursts).forEach((sprite) => sprite.stop().setVisible(false));
+          this.resetEpicAssets();
+
+          if (!replayOnly) {
+            MEGA_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+              this.megaSprites.get(asset.key).setY(asset.y).setScale(asset.scale);
+            });
+            const exitSpeed = Math.max(0.1, BIG_WIN_EXIT.speed);
+            const startTitleFall = () => {
+              this.tweens.add({
+                targets: this.megaTitleContainer,
+                x: 0,
+                y: HEIGHT + 100,
+                angle: BIG_WIN_EXIT.rotation,
+                duration: 600 / exitSpeed,
+                ease: 'Cubic.In',
+                onComplete: () => this.megaTitleContainer.setVisible(false)
+              });
+            };
+            if (BIG_WIN_EXIT.overshoot > 0) {
+              this.tweens.add({
+                targets: this.megaTitleContainer,
+                x: 0,
+                y: -BIG_WIN_EXIT.overshoot,
+                duration: 170 / exitSpeed,
+                ease: 'Quad.Out',
+                onComplete: startTitleFall
+              });
+            } else {
+              startTitleFall();
+            }
+
+            ['mega_amount', 'mega_multiplier'].forEach((key) => {
+              const asset = megaAssetByKey.get(key);
+              const sprite = this.megaSprites.get(key).setScale(asset.scale).setAlpha(1);
+              this.tweens.add({
+                targets: sprite,
+                alpha: 0,
+                scaleX: asset.scale * 0.8,
+                scaleY: asset.scale * 0.8,
+                duration: 220,
+                ease: 'Quad.In',
+                onComplete: () => sprite.setVisible(false)
+              });
+            });
+
+            const longCream = this.megaSprites.get('mega_cream_long');
+            this.tweens.add({
+              targets: longCream,
+              alpha: 0,
+              duration: 220,
+              ease: 'Quad.In',
+              onComplete: () => longCream.setVisible(false)
+            });
+            this.tweens.add({
+              targets: this.megaHandMotion,
+              leftY: 300,
+              rightY: 300,
+              duration: 560,
+              ease: 'Cubic.In',
+              onUpdate: () => this.syncMegaHandHierarchy()
+            });
+          }
+
+          this.sequenceTimers.push(this.time.delayedCall(
+            replayOnly ? 0 : EPIC_SCREEN_DELAY,
+            () => this.startEpicScreenEntrances()
+          ));
+        }
+
+        startEpicScreenEntrances() {
+          const rewardKeys = new Set(['epic_amount', 'epic_multiplier']);
+          EPIC_ASSETS.filter((asset) => !asset.isLetter && !rewardKeys.has(asset.key)).forEach((asset, index) => {
+            const sprite = this.epicSprites.get(asset.key);
+            sprite
+              .setPosition(asset.x, asset.y + 8)
+              .setScale(asset.scale * 0.82)
+              .setAlpha(0)
+              .setVisible(true);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y,
+              alpha: 1,
+              scaleX: asset.scale,
+              scaleY: asset.scale,
+              duration: 300,
+              delay: 190 + index * 32,
+              ease: 'Back.Out'
+            });
+          });
+
+          EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
+            this.epicSprites.get(asset.key)
+              .setPosition(asset.x, asset.y)
+              .setScale(asset.scale)
+              .setAlpha(1)
+              .setVisible(true);
+          });
+          this.epicTitleContainer.setPosition(0, -100).setAngle(0).setAlpha(1).setVisible(true);
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MEGA_TITLE_ENTRANCE.delay), () => {
+            this.playDropEntrance(this.epicTitleContainer, 0, TITLE_DROP);
+          }));
+
+          const amountAsset = epicAssetByKey.get('epic_amount');
+          const amount = this.epicSprites.get('epic_amount');
+          amount
+            .setPosition(amountAsset.x, -amount.height * amountAsset.scale / 2 - 8)
+            .setScale(amountAsset.scale)
+            .setAlpha(1)
+            .setVisible(true);
+          this.playDropEntrance(amount, amountAsset.y, MEGA_AMOUNT_REVEAL);
+
+          this.sequenceTimers.push(this.time.delayedCall(Math.max(0, MULTIPLIER_REVEAL.delay), () => {
+            this.playEpicMultiplierEntrance();
+          }));
+          this.sequenceTimers.push(this.time.delayedCall(1400, () => this.completeEpicTransition()));
+        }
+
+        playEpicMultiplierEntrance() {
+          const asset = epicAssetByKey.get('epic_multiplier');
+          const sprite = this.epicSprites.get(asset.key);
+          const speed = Math.max(0.1, MULTIPLIER_REVEAL.speed);
+          const bounceScale = 1 + Math.max(0, MULTIPLIER_REVEAL.bounce) / 100;
+          sprite
+            .setPosition(asset.x, asset.y)
+            .setScale(0)
+            .setAlpha(1)
+            .setVisible(true);
+          this.tweens.add({
+            targets: sprite,
+            scaleX: asset.scale * bounceScale,
+            scaleY: asset.scale * bounceScale,
+            duration: 260 / speed,
+            ease: 'Back.Out',
+            onComplete: () => {
+              this.tweens.add({
+                targets: sprite,
+                scaleX: asset.scale,
+                scaleY: asset.scale,
+                duration: 130 / speed,
+                ease: 'Sine.Out'
+              });
+            }
+          });
+        }
+
+        completeEpicTransition() {
+          this.transitioning = false;
+          this.epicActive = true;
+          epicNextButton.disabled = false;
+          epicNextButton.textContent = 'Повторить Epic';
+          this.startEpicWaveLoop();
+        }
+
+        startEpicWaveLoop() {
+          this.epicWaveTimer?.remove(false);
+          this.epicWaveTimer = this.time.addEvent({
+            delay: EPIC_WAVE_INTERVAL,
+            loop: true,
+            callback: () => this.playEpicLetterWave()
+          });
+        }
+
+        playEpicLetterWave() {
+          if (!this.epicActive || this.transitioning) return;
+          const speed = Math.max(0.1, LETTER_WAVE.speed);
+          const riseDuration = LETTER_WAVE.riseDuration / speed;
+          const holdDuration = LETTER_WAVE.holdDuration / speed;
+          const letters = EPIC_ASSETS.filter((asset) => asset.isLetter);
+          letters.forEach((asset) => {
+            const sprite = this.epicSprites.get(asset.key);
+            this.tweens.killTweensOf(sprite);
+            sprite.setY(asset.y);
+          });
+          letters.forEach((asset, index) => {
+            const sprite = this.epicSprites.get(asset.key);
+            this.tweens.add({
+              targets: sprite,
+              y: asset.y - LETTER_WAVE.height,
+              duration: riseDuration,
+              delay: index * LETTER_WAVE.stagger,
+              hold: holdDuration,
+              ease: 'Sine.Out',
+              yoyo: true,
+              onComplete: () => sprite.setY(asset.y)
+            });
+          });
+        }
+
         playIntroAnimation() {
           this.tweens.killAll();
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
@@ -1700,8 +1800,13 @@
           this.transitioning = false;
           this.megaActive = false;
           nextButton.disabled = false;
+          nextButton.hidden = false;
           nextButton.textContent = 'Следующий';
+          epicNextButton.hidden = true;
+          epicNextButton.disabled = false;
+          epicNextButton.textContent = 'Далее';
           this.resetMegaAssets();
+          this.resetEpicAssets();
           this.letterSprites?.forEach((sprite, key) => {
             sprite
               .setPosition(0, 0)
