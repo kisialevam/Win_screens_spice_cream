@@ -375,6 +375,8 @@
           <button class="letter-button" type="button" data-mega-key="mega_cream_2" aria-pressed="false">Крем 2</button>
           <button class="letter-button" type="button" data-mega-key="mega_hand_left" aria-pressed="false">Рука L</button>
           <button class="letter-button" type="button" data-mega-key="mega_hand_right" aria-pressed="false">Рука R</button>
+          <button class="letter-button" type="button" data-mega-key="spark_2" aria-pressed="false">Spark 2</button>
+          <button class="letter-button" type="button" data-mega-key="spark_3" aria-pressed="false">Spark 3</button>
         </div>
         <p class="letter-position" id="mega-position">X 91 · Y 97</p>
         <div class="settings-stack" id="mega-hand-controls" hidden>
@@ -387,7 +389,7 @@
             <input class="letter-scale-slider" id="mega-rotation" type="range" min="-180" max="180" step="1" value="0" aria-label="Поворот активного слоя">
           </label>
         </div>
-        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук и слоёв обеих мороженок.</p>
+        <p class="letter-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px. Масштаб и поворот доступны для рук, слоёв обеих мороженок и звёздочек BIG WIN.</p>
         <button class="secondary-button start-over-button" id="copy-coordinates" type="button">Скопировать координаты</button>
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Mega Win" readonly hidden></textarea>
       </section>
@@ -414,8 +416,8 @@
         <p class="settings-title">Появление MEGA WIN</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Момент выпадения</span><span class="value" id="mega-title-delay-value">430 мс</span></span>
-            <input class="letter-scale-slider" id="mega-title-delay" type="range" min="0" max="1000" step="10" value="430" aria-label="Момент выпадения MEGA WIN">
+            <span class="label-row"><span>Момент выпадения</span><span class="value" id="mega-title-delay-value">190 мс</span></span>
+            <input class="letter-scale-slider" id="mega-title-delay" type="range" min="0" max="1000" step="10" value="190" aria-label="Момент выпадения MEGA WIN">
           </label>
         </div>
       </section>
@@ -465,12 +467,8 @@
             <input class="letter-scale-slider" id="cream-appear-speed" type="range" min="0.50" max="2.50" step="0.05" value="0.70" aria-label="Скорость появления длинного крема">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость качания</span><span class="value" id="cream-swing-speed-value">0.65×</span></span>
-            <input class="letter-scale-slider" id="cream-swing-speed" type="range" min="0.30" max="2.00" step="0.05" value="0.65" aria-label="Скорость качания длинного крема">
-          </label>
-          <label class="letter-scale-control">
-            <span class="label-row"><span>Амплитуда качания</span><span class="value" id="cream-swing-angle-value">1.5°</span></span>
-            <input class="letter-scale-slider" id="cream-swing-angle" type="range" min="0" max="12" step="0.5" value="1.5" aria-label="Амплитуда качания длинного крема">
+            <span class="label-row"><span>Пауза между поджиманиями</span><span class="value" id="cream-compress-interval-value">2.8 с</span></span>
+            <input class="letter-scale-slider" id="cream-compress-interval" type="range" min="1.2" max="6.0" step="0.1" value="2.8" aria-label="Пауза между поджиманиями длинного крема">
           </label>
         </div>
       </section>
@@ -579,10 +577,11 @@
       };
       const BIG_WIN_EXIT = { rotation: 0, speed: 1.3, overshoot: 33 };
       const MEGA_SCREEN_DELAY = 160;
-      const MEGA_TITLE_ENTRANCE = { delay: 430 };
+      const MEGA_TITLE_ENTRANCE = { delay: 190 };
       const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 220, bounce: 25 };
       const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.3 };
-      const CREAM_LONG_ANIMATION = { appearSpeed: 0.7, swingSpeed: 0.65, swingAngle: 1.5 };
+      const CREAM_LONG_ANIMATION = { appearSpeed: 0.7, compressInterval: 2.8, compressAmount: 0.08 };
+      const BIG_SPARK_ANIMATION = { appearDuration: 120, disappearDuration: 160, rotation: 14 };
       const HEARTS = {
         frameRate: 30,
         lead: 310,
@@ -635,7 +634,9 @@
         { key: 'mega_cream_1', label: 'Крем 1', file: 'mega_win/crm_ch_1.png?v=8fdf90b1', x: 144, y: 223, scale: 1, rotation: 18, depth: 212, parent: 'mega_ice_1', transformable: true },
         { key: 'mega_cream_2', label: 'Крем 2', file: 'mega_win/crm_ch_2.png?v=b182729a', x: 48, y: 207, scale: 1, rotation: -5, depth: 212, parent: 'mega_ice_2', transformable: true },
         { key: 'mega_hand_left', label: 'Рука L', file: 'hand.png?v=b2917e95', x: -21, y: 385, scale: 1.43, rotation: -3, depth: 204, isHand: true },
-        { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true }
+        { key: 'mega_hand_right', label: 'Рука R', file: 'hand.png?v=b2917e95', x: 197, y: 411, scale: 1.43, rotation: 7, depth: 204, isHand: true, flipX: true },
+        { key: 'spark_2', label: 'Spark 2', file: 'spark2.png?v=f411e5c2', x: 32, y: 124, scale: 0.55, rotation: 0, depth: 160, bigOnly: true, transformable: true },
+        { key: 'spark_3', label: 'Spark 3', file: 'spark3.png?v=7fe1028b', x: 153, y: 148, scale: 0.55, rotation: 0, depth: 160, bigOnly: true, transformable: true }
       ];
       const LEFT_HAND_KEYS = ['mega_hand_left', 'mega_ice_2', 'mega_cherry_1', 'mega_cream_2'];
       const RIGHT_HAND_KEYS = ['mega_hand_right', 'mega_ice_1', 'mega_cherry_2', 'mega_cream_1'];
@@ -734,8 +735,7 @@
       bindTransitionControl('mega-topping-lead', 'mega-topping-lead-value', MEGA_JUMPS, 'toppingLead', (value) => `${Math.round(value)} мс`);
       bindTransitionControl('mega-impact', 'mega-impact-value', MEGA_JUMPS, 'impact', (value) => `${Math.round(value * 100)}%`);
       bindTransitionControl('cream-appear-speed', 'cream-appear-speed-value', CREAM_LONG_ANIMATION, 'appearSpeed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('cream-swing-speed', 'cream-swing-speed-value', CREAM_LONG_ANIMATION, 'swingSpeed', (value) => `${value.toFixed(2)}×`);
-      bindTransitionControl('cream-swing-angle', 'cream-swing-angle-value', CREAM_LONG_ANIMATION, 'swingAngle', (value) => `${value.toFixed(1)}°`);
+      bindTransitionControl('cream-compress-interval', 'cream-compress-interval-value', CREAM_LONG_ANIMATION, 'compressInterval', (value) => `${value.toFixed(1)} с`);
       bindTransitionControl('hearts-lead', 'hearts-lead-value', HEARTS, 'lead', (value) => `${Math.round(value)} мс`);
       bindTransitionControl('hearts-left-x', 'hearts-left-x-value', HEARTS.left, 'x', (value) => `${Math.round(value)} px`);
       bindTransitionControl('hearts-left-y', 'hearts-left-y-value', HEARTS.left, 'y', (value) => `${Math.round(value)} px`);
@@ -1106,6 +1106,7 @@
           const rewardKeys = new Set(['mega_amount', 'mega_multiplier']);
           MEGA_ASSETS.filter((asset) => (
             !asset.isLetter
+            && !asset.bigOnly
             && !asset.topAnchor
             && !MEGA_HAND_GROUP_KEYS.has(asset.key)
             && !rewardKeys.has(asset.key)
@@ -1368,18 +1369,20 @@
           const sprite = this.megaSprites.get(asset.key);
           const speed = Math.max(0.1, MEGA_AMOUNT_REVEAL.speed);
           const bounce = Math.max(0, MEGA_AMOUNT_REVEAL.bounce) / 100;
+          const startScale = asset.scale * (1.65 + bounce * 0.35);
+          const undershootScale = asset.scale * (1 - bounce * 0.16);
           sprite
             .setPosition(asset.x, asset.y)
-            .setScale(0)
+            .setScale(startScale)
             .setAlpha(1)
             .setVisible(true);
 
           this.tweens.add({
             targets: sprite,
-            scaleX: asset.scale * (1 + bounce),
-            scaleY: asset.scale * (1 + bounce),
+            scaleX: bounce === 0 ? asset.scale : undershootScale,
+            scaleY: bounce === 0 ? asset.scale : undershootScale,
             duration: 300 / speed,
-            ease: 'Cubic.Out',
+            ease: 'Quart.Out',
             onComplete: () => {
               if (bounce === 0) {
                 sprite.setScale(asset.scale);
@@ -1387,8 +1390,8 @@
               }
               this.tweens.add({
                 targets: sprite,
-                scaleX: asset.scale * (1 - bounce * 0.16),
-                scaleY: asset.scale * (1 - bounce * 0.16),
+                scaleX: asset.scale * (1 + bounce * 0.08),
+                scaleY: asset.scale * (1 + bounce * 0.08),
                 duration: 90 / speed,
                 ease: 'Sine.InOut',
                 onComplete: () => {
@@ -1450,19 +1453,74 @@
             duration: 420 / appearSpeed,
             delay: 180,
             ease: 'Cubic.Out',
+            onComplete: () => this.startCreamLongCompression()
+          });
+        }
+
+        startCreamLongCompression() {
+          const asset = megaAssetByKey.get('mega_cream_long');
+          const sprite = this.megaSprites.get(asset.key);
+          const pause = Math.max(0.5, CREAM_LONG_ANIMATION.compressInterval) * 1000;
+          const compressedScale = asset.scale * (1 - CREAM_LONG_ANIMATION.compressAmount);
+          sprite.setAngle(0).setScale(asset.scale);
+          this.tweens.add({
+            targets: sprite,
+            scaleY: compressedScale,
+            duration: 220,
+            delay: pause,
+            ease: 'Sine.InOut',
+            yoyo: true,
+            repeat: -1,
+            repeatDelay: pause
+          });
+        }
+
+        startBigSparkAnimations() {
+          const configurations = [
+            { key: 'spark_2', initialDelay: 650, interval: 1900 },
+            { key: 'spark_3', initialDelay: 1250, interval: 2300 }
+          ];
+          configurations.forEach(({ key, initialDelay, interval }) => {
+            const initialTimer = this.time.delayedCall(initialDelay, () => {
+              this.playBigSparkPulse(key);
+              const loopTimer = this.time.addEvent({
+                delay: interval,
+                loop: true,
+                callback: () => this.playBigSparkPulse(key)
+              });
+              this.sequenceTimers.push(loopTimer);
+            });
+            this.sequenceTimers.push(initialTimer);
+          });
+        }
+
+        playBigSparkPulse(key) {
+          if (this.transitioning || this.megaActive) return;
+          const asset = megaAssetByKey.get(key);
+          const sprite = this.megaSprites.get(key);
+          this.tweens.killTweensOf(sprite);
+          sprite
+            .setPosition(asset.x, asset.y)
+            .setScale(0)
+            .setAngle(asset.rotation - BIG_SPARK_ANIMATION.rotation * 0.5)
+            .setAlpha(1)
+            .setVisible(true);
+          this.tweens.add({
+            targets: sprite,
+            scaleX: asset.scale,
+            scaleY: asset.scale,
+            angle: asset.rotation + BIG_SPARK_ANIMATION.rotation * 0.35,
+            duration: BIG_SPARK_ANIMATION.appearDuration,
+            ease: 'Back.Out',
             onComplete: () => {
-              const angle = Math.max(0, CREAM_LONG_ANIMATION.swingAngle);
-              if (angle === 0) {
-                sprite.setAngle(0);
-                return;
-              }
               this.tweens.add({
                 targets: sprite,
-                angle,
-                duration: 900 / Math.max(0.1, CREAM_LONG_ANIMATION.swingSpeed),
-                ease: 'Sine.InOut',
-                yoyo: true,
-                repeat: -1
+                scaleX: 0,
+                scaleY: 0,
+                angle: asset.rotation + BIG_SPARK_ANIMATION.rotation,
+                duration: BIG_SPARK_ANIMATION.disappearDuration,
+                ease: 'Cubic.In',
+                onComplete: () => sprite.setVisible(false)
               });
             }
           });
@@ -1692,6 +1750,7 @@
           };
           this.syncHierarchy();
           this.startRewardEntrances();
+          this.startBigSparkAnimations();
 
           const speed = ENTRY_SPEED;
           const entryDuration = 1000 / speed;
