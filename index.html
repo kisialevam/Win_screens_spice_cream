@@ -278,12 +278,18 @@
       gap: 24px;
     }
 
-    .stage-actions {
+    .stage-controls {
       position: sticky;
       top: 38px;
       display: grid;
-      gap: 10px;
+      gap: 16px;
       width: 220px;
+    }
+
+    .stage-actions,
+    .stage-next-actions {
+      display: grid;
+      gap: 10px;
       padding: 16px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 14px;
@@ -292,9 +298,19 @@
       backdrop-filter: blur(14px);
     }
 
-    .stage-actions .settings-title { margin-bottom: 2px; }
+    .stage-next-actions {
+      border-color: rgba(255, 92, 173, 0.58);
+      background: rgba(48, 10, 39, 0.94);
+      box-shadow: 0 18px 50px rgba(255, 46, 150, 0.12);
+    }
+
+    .stage-next-actions:not(:has(button:not([hidden]))) { display: none; }
+
+    .stage-actions .settings-title,
+    .stage-next-actions .settings-title { margin-bottom: 2px; }
     .stage-actions .replay-button,
-    .stage-actions .start-over-button { margin-top: 0; }
+    .stage-actions .start-over-button,
+    .stage-next-actions .replay-button { margin-top: 0; }
 
     #stage-shell {
       position: relative;
@@ -339,7 +355,7 @@
       .panel { position: relative; height: auto; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
       .stage-area { padding: 28px 20px 60px; }
       .stage-workspace { flex-wrap: wrap; }
-      .stage-actions { position: static; width: 366px; }
+      .stage-controls { position: static; width: 366px; }
     }
   </style>
 </head>
@@ -420,6 +436,19 @@
             <span class="label-row"><span>Прыжок девчонки</span><span class="value" id="max-girl-bounce-value">24 px</span></span>
             <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="60" step="1" value="24" aria-label="Высота прыжка девчонки Max Win">
           </label>
+          <p class="settings-subtitle">Появление пальм</p>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость появления</span><span class="value" id="max-palm-speed-value">1.20×</span></span>
+            <input class="letter-scale-slider" id="max-palm-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.20" aria-label="Скорость появления пальм">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Поворот при появлении</span><span class="value" id="max-palm-rotation-value">18°</span></span>
+            <input class="letter-scale-slider" id="max-palm-rotation" type="range" min="0" max="45" step="1" value="18" aria-label="Поворот пальм при появлении">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Баунс в конце</span><span class="value" id="max-palm-bounce-value">3°</span></span>
+            <input class="letter-scale-slider" id="max-palm-bounce" type="range" min="0" max="12" step="0.5" value="3" aria-label="Баунс пальм в конце">
+          </label>
         </div>
         <p class="letter-hint">Изменение офсета автоматически перезапускает MAX-анимацию, если экран уже открыт.</p>
       </section>
@@ -460,12 +489,17 @@
           <div class="loading" id="loading">Загружаю Phaser…</div>
           <div id="game-container"></div>
         </div>
-        <div class="stage-actions" aria-label="Управление анимацией">
-          <p class="settings-title">Управление экраном</p>
-          <button class="replay-button" id="next-screen" type="button">Следующий</button>
-          <button class="replay-button" id="epic-next-screen" type="button" hidden>Далее</button>
-          <button class="replay-button" id="max-next-screen" type="button" hidden>Далее</button>
-          <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
+        <div class="stage-controls">
+          <div class="stage-next-actions" aria-label="Переход на следующий экран">
+            <p class="settings-title">Переход дальше</p>
+            <button class="replay-button" id="epic-next-screen" type="button" hidden>Далее</button>
+            <button class="replay-button" id="max-next-screen" type="button" hidden>Далее</button>
+          </div>
+          <div class="stage-actions" aria-label="Управление анимацией">
+            <p class="settings-title">Управление экраном</p>
+            <button class="replay-button" id="next-screen" type="button">Следующий</button>
+            <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
+          </div>
         </div>
       </div>
     </section>
@@ -536,6 +570,7 @@
       const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 3, sideDelay: 110, toppingDelay: 75 };
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
+      const EPIC_SHAKE = { interval: 3000, rotation: 3.5 };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
         amountDelay: 0,
@@ -550,7 +585,7 @@
       const MAX_ENTRANCE = { titleDelay: 260, amountDelay: 0 };
       const MAX_POOL_DROP = { delay: 0, duration: 720, bounce: 22, topMargin: 24 };
       const MAX_LANDING = { iceHeight: 18, girlHeight: 24 };
-      const MAX_PALMS = { duration: 480, rotation: 18, stagger: 80 };
+      const MAX_PALMS = { duration: 480, speed: 1.2, rotation: 18, bounce: 3, stagger: 80 };
       const MAX_TOSS = { interval: 3000, poolHeight: 12 };
       const MAX_SEQUENCE = { frameRate: 30 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
@@ -714,6 +749,12 @@
       const maxIceBounceValue = document.querySelector('#max-ice-bounce-value');
       const maxGirlBounceSlider = document.querySelector('#max-girl-bounce');
       const maxGirlBounceValue = document.querySelector('#max-girl-bounce-value');
+      const maxPalmSpeedSlider = document.querySelector('#max-palm-speed');
+      const maxPalmSpeedValue = document.querySelector('#max-palm-speed-value');
+      const maxPalmRotationSlider = document.querySelector('#max-palm-rotation');
+      const maxPalmRotationValue = document.querySelector('#max-palm-rotation-value');
+      const maxPalmBounceSlider = document.querySelector('#max-palm-bounce');
+      const maxPalmBounceValue = document.querySelector('#max-palm-bounce-value');
       const maxSequenceLeftButton = document.querySelector('#max-sequence-left-button');
       const maxSequenceRightButton = document.querySelector('#max-sequence-right-button');
       const maxSequenceXSlider = document.querySelector('#max-sequence-x');
@@ -818,6 +859,24 @@
       maxGirlBounceSlider.addEventListener('input', () => {
         MAX_LANDING.girlHeight = Number(maxGirlBounceSlider.value);
         maxGirlBounceValue.textContent = `${MAX_LANDING.girlHeight} px`;
+        scheduleMaxReplay();
+      });
+
+      maxPalmSpeedSlider.addEventListener('input', () => {
+        MAX_PALMS.speed = Number(maxPalmSpeedSlider.value);
+        maxPalmSpeedValue.textContent = `${MAX_PALMS.speed.toFixed(2)}×`;
+        scheduleMaxReplay();
+      });
+
+      maxPalmRotationSlider.addEventListener('input', () => {
+        MAX_PALMS.rotation = Number(maxPalmRotationSlider.value);
+        maxPalmRotationValue.textContent = `${MAX_PALMS.rotation}°`;
+        scheduleMaxReplay();
+      });
+
+      maxPalmBounceSlider.addEventListener('input', () => {
+        MAX_PALMS.bounce = Number(maxPalmBounceSlider.value);
+        maxPalmBounceValue.textContent = `${MAX_PALMS.bounce}°`;
         scheduleMaxReplay();
       });
 
@@ -1085,7 +1144,8 @@
           MAX_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.maxTitleContainer.add(this.maxSprites.get(asset.key));
           });
-          this.maxPoolMotion = { rootY: 0, poolY: 0, iceY: 0, girlY: 0 };
+          this.maxPoolMotion = { rootY: 0, poolY: 0, floatY: 0, iceY: 0, girlY: 0 };
+          this.maxFloatingActive = false;
           this.maxActive = false;
 
           const strawberry = this.sprites.get('strawberry');
@@ -1234,7 +1294,7 @@
 
         syncMaxPoolHierarchy() {
           const motion = this.maxPoolMotion ?? {};
-          const offsetY = (motion.rootY ?? 0) + (motion.poolY ?? 0);
+          const offsetY = (motion.rootY ?? 0) + (motion.poolY ?? 0) + (motion.floatY ?? 0);
           MAX_COMPOSITION_KEYS.forEach((key) => {
             const asset = maxAssetByKey.get(key);
             const sprite = this.maxSprites.get(key);
@@ -1248,7 +1308,9 @@
         }
 
         syncMaxSequenceTransforms() {
-          const offsetY = (this.maxPoolMotion?.rootY ?? 0) + (this.maxPoolMotion?.poolY ?? 0);
+          const offsetY = (this.maxPoolMotion?.rootY ?? 0)
+            + (this.maxPoolMotion?.poolY ?? 0)
+            + (this.maxPoolMotion?.floatY ?? 0);
           MAX_SEQUENCE_ASSETS.forEach((asset) => {
             this.maxSprites.get(asset.key)
               .setPosition(asset.x, asset.y + offsetY)
@@ -1290,6 +1352,8 @@
         resetEpicAssets() {
           window.clearInterval(this.epicSequenceInterval);
           this.epicSequenceInterval = 0;
+          this.epicShakeTimer?.remove(false);
+          this.epicShakeTimer = null;
           this.epicWaveTimer?.remove(false);
           this.epicWaveTimer = null;
           this.epicActive = false;
@@ -1321,8 +1385,10 @@
           this.maxWaveTimer?.remove(false);
           this.maxWaveTimer = null;
           this.maxActive = false;
+          this.maxFloatingActive = false;
           this.maxPoolMotion.rootY = 0;
           this.maxPoolMotion.poolY = 0;
+          this.maxPoolMotion.floatY = 0;
           this.maxPoolMotion.iceY = 0;
           this.maxPoolMotion.girlY = 0;
           MAX_EDITABLE_ASSETS.forEach((asset) => {
@@ -1988,6 +2054,7 @@
           this.playMegaLetterWave();
           ['left', 'right'].forEach((side, index) => {
             const sideTimer = this.time.delayedCall(index * MEGA_TOSS.sideDelay, () => {
+              this.playHeartsBurst(side);
               const rootProperty = `${side}Y`;
               const ballProperty = `${side}BallY`;
               const toppingProperty = `${side}ToppingY`;
@@ -2331,6 +2398,7 @@
           maxNextButton.textContent = 'Далее';
           this.startEpicWaveLoop();
           this.startEpicFloating();
+          this.startEpicShakeLoop();
         }
 
         startEpicFloating() {
@@ -2347,6 +2415,40 @@
             loop: true,
             callback: () => this.playEpicLetterWave()
           });
+        }
+
+        startEpicShakeLoop() {
+          this.epicShakeTimer?.remove(false);
+          this.epicShakeTimer = this.time.addEvent({
+            delay: EPIC_SHAKE.interval,
+            loop: true,
+            callback: () => this.playEpicHandShake()
+          });
+        }
+
+        playEpicHandShake() {
+          if (!this.epicActive || this.transitioning) return;
+          this.playEpicSequences();
+          const amplitude = EPIC_SHAKE.rotation;
+          const keyframes = [
+            { rotation: amplitude, duration: 90, ease: 'Sine.Out' },
+            { rotation: -amplitude * 0.72, duration: 125, ease: 'Sine.InOut' },
+            { rotation: amplitude * 0.3, duration: 105, ease: 'Sine.InOut' },
+            { rotation: 0, duration: 120, ease: 'Sine.Out' }
+          ];
+          const playFrame = (index) => {
+            if (index >= keyframes.length || !this.epicActive) return;
+            const frame = keyframes[index];
+            this.tweens.add({
+              targets: this.epicHandMotion,
+              rotation: frame.rotation,
+              duration: frame.duration,
+              ease: frame.ease,
+              onUpdate: () => this.syncEpicHierarchy(),
+              onComplete: () => playFrame(index + 1)
+            });
+          };
+          playFrame(0);
         }
 
         playEpicLetterWave() {
@@ -2392,6 +2494,8 @@
           this.epicFloatingActive = false;
           this.epicWaveTimer?.remove(false);
           this.epicWaveTimer = null;
+          this.epicShakeTimer?.remove(false);
+          this.epicShakeTimer = null;
           window.clearInterval(this.epicSequenceInterval);
           this.epicSequenceInterval = 0;
           EPIC_SEQUENCE_ASSETS.forEach((asset) => {
@@ -2564,6 +2668,7 @@
         }
 
         playMaxPalmGrowth() {
+          const speed = Math.max(0.1, MAX_PALMS.speed);
           ['max_palm_1', 'max_palm_2'].forEach((key, index) => {
             const asset = maxAssetByKey.get(key);
             const sprite = this.maxSprites.get(key);
@@ -2576,28 +2681,38 @@
             this.syncMaxPoolHierarchy();
             this.tweens.add({
               targets: sprite,
-              scaleX: asset.scale * 1.06,
-              scaleY: asset.scale * 1.06,
-              angle: direction * MAX_PALMS.rotation * 0.34,
-              duration: MAX_PALMS.duration,
-              delay: index * MAX_PALMS.stagger,
+              scaleX: asset.scale * 1.03,
+              scaleY: asset.scale * 1.03,
+              angle: 0,
+              duration: MAX_PALMS.duration / speed,
+              delay: index * MAX_PALMS.stagger / speed,
               ease: 'Cubic.Out',
               onComplete: () => {
                 this.tweens.add({
                   targets: sprite,
-                  scaleX: asset.scale * 0.98,
-                  scaleY: asset.scale * 0.98,
-                  angle: -direction * MAX_PALMS.rotation * 0.13,
-                  duration: 120,
-                  ease: 'Sine.InOut',
+                  scaleX: asset.scale * 0.99,
+                  scaleY: asset.scale * 0.99,
+                  angle: direction * MAX_PALMS.bounce,
+                  duration: 100 / speed,
+                  ease: 'Sine.Out',
                   onComplete: () => {
                     this.tweens.add({
                       targets: sprite,
-                      scaleX: asset.scale,
-                      scaleY: asset.scale,
-                      angle: 0,
-                      duration: 145,
-                      ease: 'Sine.Out'
+                      scaleX: asset.scale * 1.01,
+                      scaleY: asset.scale * 1.01,
+                      angle: -direction * MAX_PALMS.bounce * 0.35,
+                      duration: 115 / speed,
+                      ease: 'Sine.InOut',
+                      onComplete: () => {
+                        this.tweens.add({
+                          targets: sprite,
+                          scaleX: asset.scale,
+                          scaleY: asset.scale,
+                          angle: 0,
+                          duration: 125 / speed,
+                          ease: 'Sine.Out'
+                        });
+                      }
                     });
                   }
                 });
@@ -2693,6 +2808,7 @@
 
         playMaxPoolBounce() {
           if (!this.maxActive || this.transitioning) return;
+          this.playMaxSequences();
           this.maxPoolMotion.poolY = 0;
           this.playMaxDessertBounce(0.72);
           this.tweens.add({
@@ -2766,6 +2882,14 @@
           maxNextButton.textContent = 'Повторить Max';
           this.startMaxWaveLoop();
           this.startMaxPoolBounceLoop();
+          this.startMaxFloating();
+        }
+
+        startMaxFloating() {
+          this.maxPoolMotion.floatY = 0;
+          this.maxFloatingStartedAt = this.time.now;
+          this.maxFloatingActive = true;
+          this.syncMaxPoolHierarchy();
         }
 
         startMaxWaveLoop() {
@@ -3145,6 +3269,7 @@
               this.sequenceTimers.push(this.time.delayedCall(SPLASH.hangDuration, () => {
                 this.tweens.killTweensOf(splash);
                 splash.setScale(baseScale).setAlpha(1);
+                this.playExplodeSequence();
 
                 const currentBerryPosition = this.getBerryWorldPosition();
                 const contactY = currentBerryPosition.y
@@ -3424,6 +3549,12 @@
             const phase = ((time - this.epicFloatingStartedAt) % period) / period * Math.PI * 2;
             this.epicHandMotion.floatY = -Math.sin(phase) * FLOAT_HEIGHT;
             this.syncEpicHierarchy();
+          }
+
+          if (this.maxFloatingActive) {
+            const phase = ((time - this.maxFloatingStartedAt) % period) / period * Math.PI * 2;
+            this.maxPoolMotion.floatY = -Math.sin(phase) * FLOAT_HEIGHT;
+            this.syncMaxPoolHierarchy();
           }
         }
 
