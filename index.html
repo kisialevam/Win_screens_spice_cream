@@ -498,8 +498,12 @@
             <span class="label-row"><span>Пауза после броска</span><span class="value" id="big-repeat-delay-value">950 мс</span></span>
             <input class="letter-scale-slider" id="big-repeat-delay" type="range" min="450" max="1450" step="50" value="950" aria-label="Пауза после броска Big Win">
           </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет секвенции от приземления</span><span class="value" id="big-sequence-offset-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="big-sequence-offset" type="range" min="-500" max="500" step="10" value="0" aria-label="Офсет секвенции от приземления мороженки Big Win">
+          </label>
         </div>
-        <p class="letter-hint">Положительный офсет запускает клубничку позже мороженки, отрицательный — раньше.</p>
+        <p class="letter-hint">Положительный офсет запускает секвенцию после приземления мороженки, отрицательный — до него.</p>
       </section>
 
       <section class="control-group" id="mega-animation-editor">
@@ -577,12 +581,12 @@
             <input class="letter-scale-slider" id="epic-peach-height" type="range" min="0" max="50" step="1" value="25" aria-label="Высота броска персика Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость полёта десерта</span><span class="value" id="epic-flight-speed-value">1.50×</span></span>
-            <input class="letter-scale-slider" id="epic-flight-speed" type="range" min="1.00" max="2.00" step="0.05" value="1.50" aria-label="Скорость полёта десерта Epic Win">
+            <span class="label-row"><span>Скорость полёта десерта</span><span class="value" id="epic-flight-speed-value">1.30×</span></span>
+            <input class="letter-scale-slider" id="epic-flight-speed" type="range" min="0.80" max="1.80" step="0.05" value="1.30" aria-label="Скорость полёта десерта Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет крема</span><span class="value" id="epic-cream-delay-value">55 мс</span></span>
-            <input class="letter-scale-slider" id="epic-cream-delay" type="range" min="-245" max="355" step="5" value="55" aria-label="Офсет крема Epic Win">
+            <span class="label-row"><span>Офсет крема</span><span class="value" id="epic-cream-delay-value">20 мс</span></span>
+            <input class="letter-scale-slider" id="epic-cream-delay" type="range" min="-280" max="320" step="5" value="20" aria-label="Офсет крема Epic Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет персика</span><span class="value" id="epic-peach-delay-value">110 мс</span></span>
@@ -788,7 +792,8 @@
         berryOffset: -20,
         impact: 5.5,
         berryImpact: 4,
-        repeatDelay: 950
+        repeatDelay: 950,
+        sequenceOffset: 0
       };
       const HEARTS = {
         frameRate: 30,
@@ -817,8 +822,8 @@
         iceHeight: 36,
         creamHeight: 20,
         peachHeight: 25,
-        flightSpeed: 1.5,
-        creamDelay: 55,
+        flightSpeed: 1.3,
+        creamDelay: 20,
         peachDelay: 110,
         landingBounce: 5,
         handCatch: 21
@@ -1087,6 +1092,8 @@
       const bigBerryImpactValue = document.querySelector('#big-berry-impact-value');
       const bigRepeatDelaySlider = document.querySelector('#big-repeat-delay');
       const bigRepeatDelayValue = document.querySelector('#big-repeat-delay-value');
+      const bigSequenceOffsetSlider = document.querySelector('#big-sequence-offset');
+      const bigSequenceOffsetValue = document.querySelector('#big-sequence-offset-value');
       const megaIdleIntervalSlider = document.querySelector('#mega-idle-interval');
       const megaIdleIntervalValue = document.querySelector('#mega-idle-interval-value');
       const megaHandDipSlider = document.querySelector('#mega-hand-dip');
@@ -1413,6 +1420,10 @@
       bigRepeatDelaySlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.repeatDelay = Number(bigRepeatDelaySlider.value);
         bigRepeatDelayValue.textContent = `${BIG_IDLE_TOSS.repeatDelay} мс`;
+      });
+      bigSequenceOffsetSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.sequenceOffset = Number(bigSequenceOffsetSlider.value);
+        bigSequenceOffsetValue.textContent = `${BIG_IDLE_TOSS.sequenceOffset} мс`;
       });
 
       const previewMegaIdle = () => {
@@ -4351,9 +4362,9 @@
                 0,
                 230 / iceLandSpeed,
                 () => {
-                  this.playExplodeSequence();
                   this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, markComplete);
-                }
+                },
+                () => this.scheduleExplodeForLanding(230 / iceLandSpeed)
               );
               const launchBerry = () => this.jumpNode(
                 'idleBerryY',
@@ -4374,7 +4385,6 @@
         }
 
         playSplashImpact(onComplete = () => {}) {
-          this.playExplodeSequence();
           const strength = SPLASH.reactionStrength;
           this.tweens.killTweensOf(this.berryTransform);
           this.berryTransform.scaleX = 1;
@@ -4438,8 +4448,14 @@
                 this.completeSequencePart('iceComplete');
               });
             },
-            () => this.playExplodeSequence()
+            () => this.scheduleExplodeForLanding(iceTiming.holdDuration + iceTiming.landDuration)
           );
+        }
+
+        scheduleExplodeForLanding(landDuration) {
+          const delay = Math.max(0, landDuration + BIG_IDLE_TOSS.sequenceOffset);
+          const timer = this.time.delayedCall(delay, () => this.playExplodeSequence());
+          this.sequenceTimers.push(timer);
         }
 
         playExplodeSequence() {
