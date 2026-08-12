@@ -455,28 +455,48 @@
             <input class="letter-scale-slider" id="big-dip-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость заскока руки Big Win">
           </label>
           <label class="letter-scale-control">
+            <span class="label-row"><span>Подхват руки вверх</span><span class="value" id="big-hand-lift-value">5 px</span></span>
+            <input class="letter-scale-slider" id="big-hand-lift" type="range" min="0" max="10" step="1" value="5" aria-label="Подхват руки вверх Big Win">
+          </label>
+          <label class="letter-scale-control">
             <span class="label-row"><span>Высота броска мороженки</span><span class="value" id="big-ice-height-value">30 px</span></span>
             <input class="letter-scale-slider" id="big-ice-height" type="range" min="0" max="60" step="1" value="30" aria-label="Высота броска мороженки Big Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость полёта мороженки</span><span class="value" id="big-flight-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="big-flight-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта мороженки Big Win">
+            <span class="label-row"><span>Скорость взлёта мороженки</span><span class="value" id="big-flight-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-flight-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость взлёта мороженки Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость падения мороженки</span><span class="value" id="big-ice-land-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-ice-land-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость падения мороженки Big Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Высота броска клубнички</span><span class="value" id="big-berry-height-value">30 px</span></span>
             <input class="letter-scale-slider" id="big-berry-height" type="range" min="0" max="60" step="1" value="30" aria-label="Высота броска клубнички Big Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость полёта клубнички</span><span class="value" id="big-berry-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="big-berry-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта клубнички Big Win">
+            <span class="label-row"><span>Скорость взлёта клубнички</span><span class="value" id="big-berry-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-berry-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость взлёта клубнички Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость падения клубнички</span><span class="value" id="big-berry-land-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-berry-land-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость падения клубнички Big Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет клубнички</span><span class="value" id="big-berry-offset-value">180 мс</span></span>
             <input class="letter-scale-slider" id="big-berry-offset" type="range" min="-320" max="680" step="10" value="180" aria-label="Офсет подлёта клубнички Big Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Реакция при посадке</span><span class="value" id="big-impact-value">4 px</span></span>
-            <input class="letter-scale-slider" id="big-impact" type="range" min="0" max="8" step="0.5" value="4" aria-label="Реакция при посадке Big Win">
+            <span class="label-row"><span>Импакт мороженки</span><span class="value" id="big-impact-value">4 px</span></span>
+            <input class="letter-scale-slider" id="big-impact" type="range" min="0" max="8" step="0.5" value="4" aria-label="Импакт мороженки Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Импакт клубнички</span><span class="value" id="big-berry-impact-value">3 px</span></span>
+            <input class="letter-scale-slider" id="big-berry-impact" type="range" min="0" max="6" step="0.5" value="3" aria-label="Импакт клубнички Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Пауза после броска</span><span class="value" id="big-repeat-delay-value">950 мс</span></span>
+            <input class="letter-scale-slider" id="big-repeat-delay" type="range" min="450" max="1450" step="50" value="950" aria-label="Пауза после броска Big Win">
           </label>
         </div>
         <p class="letter-hint">Положительный офсет запускает клубничку позже мороженки, отрицательный — раньше.</p>
@@ -494,36 +514,36 @@
             <input class="letter-scale-slider" id="mega-hand-dip" type="range" min="0" max="104" step="1" value="52" aria-label="Заскок рук вниз Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость заскока рук</span><span class="value" id="mega-dip-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="mega-dip-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость заскока рук Mega Win">
+            <span class="label-row"><span>Скорость заскока рук</span><span class="value" id="mega-dip-speed-value">0.65×</span></span>
+            <input class="letter-scale-slider" id="mega-dip-speed" type="range" min="0.30" max="1.00" step="0.05" value="0.65" aria-label="Скорость заскока рук Mega Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Высота броска мороженок</span><span class="value" id="mega-dessert-height-value">43 px</span></span>
             <input class="letter-scale-slider" id="mega-dessert-height" type="range" min="0" max="86" step="1" value="43" aria-label="Высота броска мороженок Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота крема и вишен</span><span class="value" id="mega-topping-height-value">25 px</span></span>
-            <input class="letter-scale-slider" id="mega-topping-height" type="range" min="0" max="50" step="1" value="25" aria-label="Высота броска крема и вишен Mega Win">
+            <span class="label-row"><span>Высота крема и вишен</span><span class="value" id="mega-topping-height-value">20 px</span></span>
+            <input class="letter-scale-slider" id="mega-topping-height" type="range" min="0" max="40" step="1" value="20" aria-label="Высота броска крема и вишен Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость полёта мороженок</span><span class="value" id="mega-flight-speed-value">0.65×</span></span>
-            <input class="letter-scale-slider" id="mega-flight-speed" type="range" min="0.30" max="1.00" step="0.05" value="0.65" aria-label="Скорость полёта мороженок Mega Win">
+            <span class="label-row"><span>Скорость полёта мороженок</span><span class="value" id="mega-flight-speed-value">0.80×</span></span>
+            <input class="letter-scale-slider" id="mega-flight-speed" type="range" min="0.30" max="1.30" step="0.05" value="0.80" aria-label="Скорость полёта мороженок Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет крема и вишен</span><span class="value" id="mega-topping-delay-value">75 мс</span></span>
-            <input class="letter-scale-slider" id="mega-topping-delay" type="range" min="0" max="150" step="5" value="75" aria-label="Офсет крема и вишен Mega Win">
+            <span class="label-row"><span>Офсет крема и вишен</span><span class="value" id="mega-topping-delay-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="mega-topping-delay" type="range" min="-300" max="300" step="5" value="0" aria-label="Офсет крема и вишен Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Задержка правой руки</span><span class="value" id="mega-side-delay-value">110 мс</span></span>
-            <input class="letter-scale-slider" id="mega-side-delay" type="range" min="0" max="220" step="5" value="110" aria-label="Задержка правой руки Mega Win">
+            <span class="label-row"><span>Задержка правой руки</span><span class="value" id="mega-side-delay-value">135 мс</span></span>
+            <input class="letter-scale-slider" id="mega-side-delay" type="range" min="-265" max="535" step="5" value="135" aria-label="Задержка правой руки Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Баунс при посадке</span><span class="value" id="mega-impact-value">30%</span></span>
-            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="60" step="5" value="30" aria-label="Баунс при посадке Mega Win">
+            <span class="label-row"><span>Баунс при посадке</span><span class="value" id="mega-impact-value">50%</span></span>
+            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="100" step="5" value="50" aria-label="Баунс при посадке Mega Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Реакция рук при посадке</span><span class="value" id="mega-catch-value">6 px</span></span>
-            <input class="letter-scale-slider" id="mega-catch" type="range" min="0" max="12" step="1" value="6" aria-label="Реакция рук при посадке Mega Win">
+            <span class="label-row"><span>Реакция рук при посадке</span><span class="value" id="mega-catch-value">12 px</span></span>
+            <input class="letter-scale-slider" id="mega-catch" type="range" min="0" max="24" step="1" value="12" aria-label="Реакция рук при посадке Mega Win">
           </label>
         </div>
         <p class="letter-hint">Изменение параметров сразу показывается в следующем повторном броске.</p>
@@ -537,48 +557,48 @@
             <input class="letter-scale-slider" id="epic-idle-interval" type="range" min="1" max="5" step="0.1" value="3" aria-label="Пауза между бросками Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Заскок руки вниз</span><span class="value" id="epic-hand-dip-value">53 px</span></span>
-            <input class="letter-scale-slider" id="epic-hand-dip" type="range" min="0" max="106" step="1" value="53" aria-label="Заскок руки вниз Epic Win">
+            <span class="label-row"><span>Заскок руки вниз</span><span class="value" id="epic-hand-dip-value">86 px</span></span>
+            <input class="letter-scale-slider" id="epic-hand-dip" type="range" min="0" max="172" step="1" value="86" aria-label="Заскок руки вниз Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость заскока руки</span><span class="value" id="epic-dip-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="epic-dip-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость заскока руки Epic Win">
+            <span class="label-row"><span>Скорость заскока руки</span><span class="value" id="epic-dip-speed-value">0.65×</span></span>
+            <input class="letter-scale-slider" id="epic-dip-speed" type="range" min="0.30" max="1.00" step="0.05" value="0.65" aria-label="Скорость заскока руки Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота броска мороженки</span><span class="value" id="epic-dessert-height-value">44 px</span></span>
-            <input class="letter-scale-slider" id="epic-dessert-height" type="range" min="0" max="88" step="1" value="44" aria-label="Высота броска мороженки Epic Win">
+            <span class="label-row"><span>Высота броска мороженки</span><span class="value" id="epic-dessert-height-value">36 px</span></span>
+            <input class="letter-scale-slider" id="epic-dessert-height" type="range" min="0" max="72" step="1" value="36" aria-label="Высота броска мороженки Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота броска крема</span><span class="value" id="epic-cream-height-value">26 px</span></span>
-            <input class="letter-scale-slider" id="epic-cream-height" type="range" min="0" max="52" step="1" value="26" aria-label="Высота броска крема Epic Win">
+            <span class="label-row"><span>Высота броска крема</span><span class="value" id="epic-cream-height-value">20 px</span></span>
+            <input class="letter-scale-slider" id="epic-cream-height" type="range" min="0" max="40" step="1" value="20" aria-label="Высота броска крема Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота броска персика</span><span class="value" id="epic-peach-height-value">18 px</span></span>
-            <input class="letter-scale-slider" id="epic-peach-height" type="range" min="0" max="36" step="1" value="18" aria-label="Высота броска персика Epic Win">
+            <span class="label-row"><span>Высота броска персика</span><span class="value" id="epic-peach-height-value">25 px</span></span>
+            <input class="letter-scale-slider" id="epic-peach-height" type="range" min="0" max="50" step="1" value="25" aria-label="Высота броска персика Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость полёта десерта</span><span class="value" id="epic-flight-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="epic-flight-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта десерта Epic Win">
+            <span class="label-row"><span>Скорость полёта десерта</span><span class="value" id="epic-flight-speed-value">1.40×</span></span>
+            <input class="letter-scale-slider" id="epic-flight-speed" type="range" min="0.80" max="2.00" step="0.05" value="1.40" aria-label="Скорость полёта десерта Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет крема</span><span class="value" id="epic-cream-delay-value">95 мс</span></span>
-            <input class="letter-scale-slider" id="epic-cream-delay" type="range" min="0" max="190" step="5" value="95" aria-label="Офсет крема Epic Win">
+            <span class="label-row"><span>Офсет крема</span><span class="value" id="epic-cream-delay-value">110 мс</span></span>
+            <input class="letter-scale-slider" id="epic-cream-delay" type="range" min="-190" max="410" step="5" value="110" aria-label="Офсет крема Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет персика</span><span class="value" id="epic-peach-delay-value">190 мс</span></span>
-            <input class="letter-scale-slider" id="epic-peach-delay" type="range" min="0" max="380" step="10" value="190" aria-label="Офсет персика Epic Win">
+            <span class="label-row"><span>Офсет персика</span><span class="value" id="epic-peach-delay-value">170 мс</span></span>
+            <input class="letter-scale-slider" id="epic-peach-delay" type="range" min="-130" max="470" step="10" value="170" aria-label="Офсет персика Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Баунс при посадке</span><span class="value" id="epic-landing-bounce-value">10 px</span></span>
-            <input class="letter-scale-slider" id="epic-landing-bounce" type="range" min="0" max="20" step="1" value="10" aria-label="Баунс при посадке Epic Win">
+            <span class="label-row"><span>Баунс при посадке</span><span class="value" id="epic-landing-bounce-value">8 px</span></span>
+            <input class="letter-scale-slider" id="epic-landing-bounce" type="range" min="0" max="16" step="1" value="8" aria-label="Баунс при посадке Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Реакция руки при посадке</span><span class="value" id="epic-catch-value">7 px</span></span>
-            <input class="letter-scale-slider" id="epic-catch" type="range" min="0" max="14" step="1" value="7" aria-label="Реакция руки при посадке Epic Win">
+            <span class="label-row"><span>Реакция руки при посадке</span><span class="value" id="epic-catch-value">14 px</span></span>
+            <input class="letter-scale-slider" id="epic-catch" type="range" min="0" max="28" step="1" value="14" aria-label="Реакция руки при посадке Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот руки при въезде</span><span class="value" id="epic-entry-rotation-value">-60°</span></span>
-            <input class="letter-scale-slider" id="epic-entry-rotation" type="range" min="-120" max="0" step="1" value="-60" aria-label="Поворот руки при въезде Epic Win">
+            <span class="label-row"><span>Поворот руки при въезде</span><span class="value" id="epic-entry-rotation-value">-86°</span></span>
+            <input class="letter-scale-slider" id="epic-entry-rotation" type="range" min="-172" max="0" step="1" value="-86" aria-label="Поворот руки при въезде Epic Win">
           </label>
         </div>
         <p class="letter-hint">Ползунки сразу перезапускают EPIC-анимацию, если этот экран открыт.</p>
@@ -589,23 +609,23 @@
         <div class="settings-stack">
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет MAX WIN</span><span class="value" id="max-title-offset-value">260 мс</span></span>
-            <input class="letter-scale-slider" id="max-title-offset" type="range" min="0" max="1200" step="10" value="260" aria-label="Офсет появления надписи MAX WIN">
+            <input class="letter-scale-slider" id="max-title-offset" type="range" min="-340" max="860" step="10" value="260" aria-label="Офсет появления надписи MAX WIN">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет 15000</span><span class="value" id="max-amount-offset-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="max-amount-offset" type="range" min="0" max="1200" step="10" value="0" aria-label="Офсет появления надписи 15000">
+            <input class="letter-scale-slider" id="max-amount-offset" type="range" min="-600" max="600" step="10" value="0" aria-label="Офсет появления надписи 15000">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет бассейна</span><span class="value" id="max-pool-offset-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="max-pool-offset" type="range" min="0" max="1600" step="10" value="0" aria-label="Офсет появления бассейна">
+            <input class="letter-scale-slider" id="max-pool-offset" type="range" min="-800" max="800" step="10" value="0" aria-label="Офсет появления бассейна">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Прыжок мороженого</span><span class="value" id="max-ice-bounce-value">18 px</span></span>
-            <input class="letter-scale-slider" id="max-ice-bounce" type="range" min="0" max="36" step="1" value="18" aria-label="Высота прыжка мороженого Max Win">
+            <span class="label-row"><span>Прыжок мороженого</span><span class="value" id="max-ice-bounce-value">9 px</span></span>
+            <input class="letter-scale-slider" id="max-ice-bounce" type="range" min="0" max="18" step="1" value="9" aria-label="Высота прыжка мороженого Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Прыжок девчонки</span><span class="value" id="max-girl-bounce-value">24 px</span></span>
-            <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="48" step="1" value="24" aria-label="Высота прыжка девчонки Max Win">
+            <span class="label-row"><span>Прыжок девчонки</span><span class="value" id="max-girl-bounce-value">28 px</span></span>
+            <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="56" step="1" value="28" aria-label="Высота прыжка девчонки Max Win">
           </label>
           <p class="settings-subtitle">Айдл-прыжок бассейна</p>
           <label class="letter-scale-control">
@@ -613,37 +633,37 @@
             <input class="letter-scale-slider" id="max-idle-interval" type="range" min="1" max="5" step="0.1" value="3" aria-label="Пауза между прыжками Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота прыжка бассейна</span><span class="value" id="max-pool-height-value">12 px</span></span>
-            <input class="letter-scale-slider" id="max-pool-height" type="range" min="0" max="24" step="1" value="12" aria-label="Высота прыжка бассейна Max Win">
+            <span class="label-row"><span>Высота прыжка бассейна</span><span class="value" id="max-pool-height-value">19 px</span></span>
+            <input class="letter-scale-slider" id="max-pool-height" type="range" min="0" max="38" step="1" value="19" aria-label="Высота прыжка бассейна Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость прыжка</span><span class="value" id="max-jump-speed-value">1.00×</span></span>
-            <input class="letter-scale-slider" id="max-jump-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость прыжка Max Win">
+            <span class="label-row"><span>Скорость прыжка</span><span class="value" id="max-jump-speed-value">0.65×</span></span>
+            <input class="letter-scale-slider" id="max-jump-speed" type="range" min="0.30" max="1.00" step="0.05" value="0.65" aria-label="Скорость прыжка Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет мороженого</span><span class="value" id="max-ice-delay-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="max-ice-delay" type="range" min="-300" max="300" step="10" value="0" aria-label="Офсет прыжка мороженого Max Win">
+            <span class="label-row"><span>Офсет мороженого</span><span class="value" id="max-ice-delay-value">80 мс</span></span>
+            <input class="letter-scale-slider" id="max-ice-delay" type="range" min="-220" max="380" step="10" value="80" aria-label="Офсет прыжка мороженого Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет девчонки</span><span class="value" id="max-girl-delay-value">0 мс</span></span>
-            <input class="letter-scale-slider" id="max-girl-delay" type="range" min="-300" max="300" step="10" value="0" aria-label="Офсет прыжка девчонки Max Win">
+            <span class="label-row"><span>Офсет девчонки</span><span class="value" id="max-girl-delay-value">50 мс</span></span>
+            <input class="letter-scale-slider" id="max-girl-delay" type="range" min="-250" max="350" step="10" value="50" aria-label="Офсет прыжка девчонки Max Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Баунс после посадки</span><span class="value" id="max-landing-bounce-value">15%</span></span>
-            <input class="letter-scale-slider" id="max-landing-bounce" type="range" min="0" max="30" step="1" value="15" aria-label="Баунс после посадки Max Win">
+            <span class="label-row"><span>Баунс после посадки</span><span class="value" id="max-landing-bounce-value">11%</span></span>
+            <input class="letter-scale-slider" id="max-landing-bounce" type="range" min="0" max="22" step="1" value="11" aria-label="Баунс после посадки Max Win">
           </label>
           <p class="settings-subtitle">Появление пальм</p>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Скорость появления</span><span class="value" id="max-palm-speed-value">1.20×</span></span>
-            <input class="letter-scale-slider" id="max-palm-speed" type="range" min="0.40" max="2.50" step="0.05" value="1.20" aria-label="Скорость появления пальм">
+            <span class="label-row"><span>Скорость появления</span><span class="value" id="max-palm-speed-value">1.65×</span></span>
+            <input class="letter-scale-slider" id="max-palm-speed" type="range" min="0.80" max="2.50" step="0.05" value="1.65" aria-label="Скорость появления пальм">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Поворот при появлении</span><span class="value" id="max-palm-rotation-value">18°</span></span>
-            <input class="letter-scale-slider" id="max-palm-rotation" type="range" min="0" max="45" step="1" value="18" aria-label="Поворот пальм при появлении">
+            <span class="label-row"><span>Поворот при появлении</span><span class="value" id="max-palm-rotation-value">45°</span></span>
+            <input class="letter-scale-slider" id="max-palm-rotation" type="range" min="0" max="90" step="1" value="45" aria-label="Поворот пальм при появлении">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Баунс в конце</span><span class="value" id="max-palm-bounce-value">3°</span></span>
-            <input class="letter-scale-slider" id="max-palm-bounce" type="range" min="0" max="12" step="0.5" value="3" aria-label="Баунс пальм в конце">
+            <span class="label-row"><span>Баунс в конце</span><span class="value" id="max-palm-bounce-value">1.5°</span></span>
+            <input class="letter-scale-slider" id="max-palm-bounce" type="range" min="0" max="3" step="0.5" value="1.5" aria-label="Баунс пальм в конце">
           </label>
         </div>
         <p class="letter-hint">Изменение офсета автоматически перезапускает MAX-анимацию, если экран уже открыт.</p>
@@ -751,7 +771,7 @@
       const MEGA_SCREEN_DELAY = 160;
       const MEGA_TITLE_ENTRANCE = { delay: 370 };
       const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 0, bounce: 25 };
-      const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.3 };
+      const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.5 };
       const BIG_SPARK_ANIMATION = { appearDuration: 120, disappearDuration: 160, rotation: 14 };
       const BIG_IDLE_TOSS = {
         interval: 4000,
@@ -761,10 +781,14 @@
         handLift: 5,
         height: 30,
         flightSpeed: 1,
+        iceLandSpeed: 1,
         berryHeight: 30,
         berryFlightSpeed: 1,
+        berryLandSpeed: 1,
         berryOffset: 180,
-        impact: 4
+        impact: 4,
+        berryImpact: 3,
+        repeatDelay: 950
       };
       const HEARTS = {
         frameRate: 30,
@@ -775,29 +799,29 @@
       const MEGA_TOSS = {
         interval: 3000,
         ballHeight: 43,
-        toppingHeight: 25,
+        toppingHeight: 20,
         handDip: 52,
-        dipSpeed: 1,
+        dipSpeed: 0.65,
         handLift: 5,
-        handCatch: 6,
-        flightSpeed: 0.65,
-        sideDelay: 110,
-        toppingDelay: 75
+        handCatch: 12,
+        flightSpeed: 0.8,
+        sideDelay: 135,
+        toppingDelay: 0
       };
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
       const EPIC_IDLE = {
         interval: 3000,
-        handDip: 53,
-        dipSpeed: 1,
-        iceHeight: 44,
-        creamHeight: 26,
-        peachHeight: 18,
-        flightSpeed: 1,
-        creamDelay: 95,
-        peachDelay: 190,
-        landingBounce: 10,
-        handCatch: 7
+        handDip: 86,
+        dipSpeed: 0.65,
+        iceHeight: 36,
+        creamHeight: 20,
+        peachHeight: 25,
+        flightSpeed: 1.4,
+        creamDelay: 110,
+        peachDelay: 170,
+        landingBounce: 8,
+        handCatch: 14
       };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
@@ -805,22 +829,22 @@
         handDelay: 220,
         handDuration: 620,
         handSpeed: 1.5,
-        startRotation: -60
+        startRotation: -86
       };
       const EPIC_SEQUENCE = { frameRate: 30, offset: 200 };
       const MAX_SCREEN_DELAY = 160;
       const MAX_WAVE_INTERVAL = 3000;
       const MAX_ENTRANCE = { titleDelay: 260, amountDelay: 0 };
       const MAX_POOL_DROP = { delay: 0, duration: 720, bounce: 22, topMargin: 24 };
-      const MAX_LANDING = { iceHeight: 18, girlHeight: 24 };
-      const MAX_PALMS = { duration: 480, speed: 1.2, rotation: 18, bounce: 3, stagger: 80 };
+      const MAX_LANDING = { iceHeight: 9, girlHeight: 28 };
+      const MAX_PALMS = { duration: 480, speed: 1.65, rotation: 45, bounce: 1.5, stagger: 80 };
       const MAX_TOSS = {
         interval: 3000,
-        poolHeight: 12,
-        flightSpeed: 1,
-        iceDelay: 0,
-        girlDelay: 0,
-        landingBounce: 0.15
+        poolHeight: 19,
+        flightSpeed: 0.65,
+        iceDelay: 80,
+        girlDelay: 50,
+        landingBounce: 0.11
       };
       const MAX_SEQUENCE = { frameRate: 30 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
@@ -1041,18 +1065,28 @@
       const bigHandDipValue = document.querySelector('#big-hand-dip-value');
       const bigDipSpeedSlider = document.querySelector('#big-dip-speed');
       const bigDipSpeedValue = document.querySelector('#big-dip-speed-value');
+      const bigHandLiftSlider = document.querySelector('#big-hand-lift');
+      const bigHandLiftValue = document.querySelector('#big-hand-lift-value');
       const bigIceHeightSlider = document.querySelector('#big-ice-height');
       const bigIceHeightValue = document.querySelector('#big-ice-height-value');
       const bigFlightSpeedSlider = document.querySelector('#big-flight-speed');
       const bigFlightSpeedValue = document.querySelector('#big-flight-speed-value');
+      const bigIceLandSpeedSlider = document.querySelector('#big-ice-land-speed');
+      const bigIceLandSpeedValue = document.querySelector('#big-ice-land-speed-value');
       const bigBerryHeightSlider = document.querySelector('#big-berry-height');
       const bigBerryHeightValue = document.querySelector('#big-berry-height-value');
       const bigBerrySpeedSlider = document.querySelector('#big-berry-speed');
       const bigBerrySpeedValue = document.querySelector('#big-berry-speed-value');
+      const bigBerryLandSpeedSlider = document.querySelector('#big-berry-land-speed');
+      const bigBerryLandSpeedValue = document.querySelector('#big-berry-land-speed-value');
       const bigBerryOffsetSlider = document.querySelector('#big-berry-offset');
       const bigBerryOffsetValue = document.querySelector('#big-berry-offset-value');
       const bigImpactSlider = document.querySelector('#big-impact');
       const bigImpactValue = document.querySelector('#big-impact-value');
+      const bigBerryImpactSlider = document.querySelector('#big-berry-impact');
+      const bigBerryImpactValue = document.querySelector('#big-berry-impact-value');
+      const bigRepeatDelaySlider = document.querySelector('#big-repeat-delay');
+      const bigRepeatDelayValue = document.querySelector('#big-repeat-delay-value');
       const megaIdleIntervalSlider = document.querySelector('#mega-idle-interval');
       const megaIdleIntervalValue = document.querySelector('#mega-idle-interval-value');
       const megaHandDipSlider = document.querySelector('#mega-hand-dip');
@@ -1336,6 +1370,10 @@
         BIG_IDLE_TOSS.dipSpeed = Number(bigDipSpeedSlider.value);
         bigDipSpeedValue.textContent = `${BIG_IDLE_TOSS.dipSpeed.toFixed(2)}×`;
       });
+      bigHandLiftSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.handLift = Number(bigHandLiftSlider.value);
+        bigHandLiftValue.textContent = `${BIG_IDLE_TOSS.handLift} px`;
+      });
       bigIceHeightSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.height = Number(bigIceHeightSlider.value);
         bigIceHeightValue.textContent = `${BIG_IDLE_TOSS.height} px`;
@@ -1343,6 +1381,10 @@
       bigFlightSpeedSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.flightSpeed = Number(bigFlightSpeedSlider.value);
         bigFlightSpeedValue.textContent = `${BIG_IDLE_TOSS.flightSpeed.toFixed(2)}×`;
+      });
+      bigIceLandSpeedSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.iceLandSpeed = Number(bigIceLandSpeedSlider.value);
+        bigIceLandSpeedValue.textContent = `${BIG_IDLE_TOSS.iceLandSpeed.toFixed(2)}×`;
       });
       bigBerryHeightSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.berryHeight = Number(bigBerryHeightSlider.value);
@@ -1352,6 +1394,10 @@
         BIG_IDLE_TOSS.berryFlightSpeed = Number(bigBerrySpeedSlider.value);
         bigBerrySpeedValue.textContent = `${BIG_IDLE_TOSS.berryFlightSpeed.toFixed(2)}×`;
       });
+      bigBerryLandSpeedSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.berryLandSpeed = Number(bigBerryLandSpeedSlider.value);
+        bigBerryLandSpeedValue.textContent = `${BIG_IDLE_TOSS.berryLandSpeed.toFixed(2)}×`;
+      });
       bigBerryOffsetSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.berryOffset = Number(bigBerryOffsetSlider.value);
         bigBerryOffsetValue.textContent = `${BIG_IDLE_TOSS.berryOffset} мс`;
@@ -1359,6 +1405,14 @@
       bigImpactSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.impact = Number(bigImpactSlider.value);
         bigImpactValue.textContent = `${BIG_IDLE_TOSS.impact} px`;
+      });
+      bigBerryImpactSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.berryImpact = Number(bigBerryImpactSlider.value);
+        bigBerryImpactValue.textContent = `${BIG_IDLE_TOSS.berryImpact} px`;
+      });
+      bigRepeatDelaySlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.repeatDelay = Number(bigRepeatDelaySlider.value);
+        bigRepeatDelayValue.textContent = `${BIG_IDLE_TOSS.repeatDelay} мс`;
       });
 
       const previewMegaIdle = () => {
@@ -2828,8 +2882,10 @@
           this.playMegaLetterWave();
           const flightSpeed = Math.max(0.1, MEGA_TOSS.flightSpeed);
           const dipSpeed = Math.max(0.1, MEGA_TOSS.dipSpeed);
+          const minimumSideDelay = Math.min(0, MEGA_TOSS.sideDelay);
           ['left', 'right'].forEach((side, index) => {
-            const sideTimer = this.time.delayedCall(index * MEGA_TOSS.sideDelay, () => {
+            const sideDelay = (index * MEGA_TOSS.sideDelay) - minimumSideDelay;
+            const sideTimer = this.time.delayedCall(sideDelay, () => {
               const rootProperty = `${side}Y`;
               const ballProperty = `${side}BallY`;
               const toppingProperty = `${side}ToppingY`;
@@ -2864,18 +2920,21 @@
                       });
                     }
                   });
-                  this.megaJumpNode(
-                    ballProperty,
-                    MEGA_TOSS.ballHeight,
-                    180 / flightSpeed,
-                    0,
-                    210 / flightSpeed,
-                    () => {
-                      this.playMegaHandCatch(side);
-                      this.playMegaLandingImpact(impactProperty, 3, [ballKey]);
-                    }
-                  );
-                  const toppingTimer = this.time.delayedCall(MEGA_TOSS.toppingDelay, () => {
+                  const minimumLayerDelay = Math.min(0, MEGA_TOSS.toppingDelay);
+                  const ballDelay = -minimumLayerDelay;
+                  const toppingDelay = MEGA_TOSS.toppingDelay - minimumLayerDelay;
+                  const launchBall = () => this.megaJumpNode(
+                      ballProperty,
+                      MEGA_TOSS.ballHeight,
+                      180 / flightSpeed,
+                      0,
+                      210 / flightSpeed,
+                      () => {
+                        this.playMegaHandCatch(side);
+                        this.playMegaLandingImpact(impactProperty, 3, [ballKey]);
+                      }
+                    );
+                  const launchTopping = () => {
                     this.megaJumpNode(
                       toppingProperty,
                       MEGA_TOSS.toppingHeight,
@@ -2884,8 +2943,11 @@
                       190 / flightSpeed,
                       () => this.playMegaLandingImpact(toppingImpactProperty, 2, toppingKeys)
                     );
-                  });
-                  this.sequenceTimers.push(toppingTimer);
+                  };
+                  if (ballDelay === 0) launchBall();
+                  else this.sequenceTimers.push(this.time.delayedCall(ballDelay, launchBall));
+                  if (toppingDelay === 0) launchTopping();
+                  else this.sequenceTimers.push(this.time.delayedCall(toppingDelay, launchTopping));
                 }
               });
             });
@@ -3114,7 +3176,10 @@
             duration: travelDuration,
             ease: ENTRY_APPROACH_EASE,
             onUpdate: () => this.syncEpicHierarchy(),
-            onComplete: () => this.startEpicFloating()
+            onComplete: () => {
+              this.startEpicFloating();
+              this.playEpicDessertToss(true);
+            }
           });
         }
 
@@ -3218,10 +3283,14 @@
           this.startEpicIdleLoop();
         }
 
-        playEpicDessertToss() {
-          if (!this.epicActive || this.transitioning) return;
+        playEpicDessertToss(duringEntrance = false) {
+          if ((!this.epicActive || this.transitioning) && !duringEntrance) return;
           const dipSpeed = Math.max(0.1, EPIC_IDLE.dipSpeed);
           const flightSpeed = Math.max(0.1, EPIC_IDLE.flightSpeed);
+          const minimumLayerDelay = Math.min(0, EPIC_IDLE.creamDelay, EPIC_IDLE.peachDelay);
+          const iceDelay = -minimumLayerDelay;
+          const creamDelay = EPIC_IDLE.creamDelay - minimumLayerDelay;
+          const peachDelay = EPIC_IDLE.peachDelay - minimumLayerDelay;
           this.epicHandMotion.tossY = 0;
           this.epicHandMotion.iceY = 0;
           this.epicHandMotion.creamY = 0;
@@ -3254,7 +3323,7 @@
               this.playEpicLayerJump(
                 'iceY',
                 EPIC_IDLE.iceHeight,
-                0,
+                iceDelay,
                 1,
                 () => this.playEpicHandCatch(),
                 flightSpeed
@@ -3262,7 +3331,7 @@
               this.playEpicLayerJump(
                 'creamY',
                 EPIC_IDLE.creamHeight,
-                EPIC_IDLE.creamDelay,
+                creamDelay,
                 0.72,
                 () => {},
                 flightSpeed
@@ -3270,7 +3339,7 @@
               this.playEpicLayerJump(
                 'peachY',
                 EPIC_IDLE.peachHeight,
-                EPIC_IDLE.peachDelay,
+                peachDelay,
                 0.52,
                 () => {},
                 flightSpeed
@@ -4097,6 +4166,7 @@
           const berryOffset = rootOffset
             + motion.iceY
             + motion.iceImpactY
+            + (motion.idleIceY ?? 0)
             + motion.berryY
             + (motion.idleBerryY ?? 0);
 
@@ -4220,7 +4290,7 @@
             this.launchSplashSequence(() => {
               const tossDelay = this.time.delayedCall(260, () => {
                 this.playBigIdleToss(() => {
-                  const nextCycleDelay = this.time.delayedCall(950, playCycle);
+                  const nextCycleDelay = this.time.delayedCall(BIG_IDLE_TOSS.repeatDelay, playCycle);
                   this.sequenceTimers.push(nextCycleDelay);
                 });
               });
@@ -4243,7 +4313,9 @@
           this.syncHierarchy();
           const dipSpeed = Math.max(0.1, BIG_IDLE_TOSS.dipSpeed);
           const flightSpeed = Math.max(0.1, BIG_IDLE_TOSS.flightSpeed);
+          const iceLandSpeed = Math.max(0.1, BIG_IDLE_TOSS.iceLandSpeed);
           const berryFlightSpeed = Math.max(0.1, BIG_IDLE_TOSS.berryFlightSpeed);
+          const berryLandSpeed = Math.max(0.1, BIG_IDLE_TOSS.berryLandSpeed);
           this.tweens.add({
             targets: this.motion,
             idleHandY: BIG_IDLE_TOSS.handDip,
@@ -4277,7 +4349,7 @@
                 BIG_IDLE_TOSS.height,
                 190 / flightSpeed,
                 0,
-                230 / flightSpeed,
+                230 / iceLandSpeed,
                 () => this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, markComplete)
               );
               const launchBerry = () => this.jumpNode(
@@ -4285,8 +4357,8 @@
                 BIG_IDLE_TOSS.berryHeight,
                 175 / berryFlightSpeed,
                 0,
-                215 / berryFlightSpeed,
-                () => this.playLandingImpact('iceImpactY', 'strawberry', BIG_IDLE_TOSS.impact * 0.75, markComplete)
+                215 / berryLandSpeed,
+                () => this.playLandingImpact('iceImpactY', 'strawberry', BIG_IDLE_TOSS.berryImpact, markComplete)
               );
               const iceDelay = Math.max(0, -BIG_IDLE_TOSS.berryOffset);
               const berryDelay = Math.max(0, BIG_IDLE_TOSS.berryOffset);
