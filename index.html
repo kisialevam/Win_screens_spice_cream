@@ -395,6 +395,7 @@
           <button class="letter-button" type="button" data-max-key="max_pool_cream_pink" aria-pressed="false">Pink</button>
           <button class="letter-button" type="button" data-max-key="max_pool_cream_choko" aria-pressed="false">Choko</button>
           <button class="letter-button" type="button" data-max-key="max_pool_icecream" aria-pressed="false">Icecream</button>
+          <button class="letter-button" type="button" data-max-key="max_pool_part" aria-pressed="false">Pool Part</button>
           <button class="letter-button" type="button" data-max-key="max_pool" aria-pressed="false">Pool</button>
           <button class="letter-button" type="button" data-max-key="max_palm_1" aria-pressed="false">Palm 1</button>
           <button class="letter-button" type="button" data-max-key="max_palm_2" aria-pressed="false">Palm 2</button>
@@ -430,16 +431,35 @@
           <button class="letter-button" type="button" data-effect-key="max_spark_2" aria-pressed="false">MAX ★ 2</button>
           <button class="letter-button" type="button" data-effect-key="max_pool_icecream" aria-pressed="false">MAX Icecream</button>
         </div>
-        <p class="letter-position" id="effect-position">X 91 · Y 356</p>
+        <p class="letter-position" id="effect-position">X 91 · Y 209</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
-            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="effect-scale-value">0.27×</span></span>
-            <input class="letter-scale-slider" id="effect-scale" type="range" min="0.05" max="3.00" step="0.01" value="0.27" aria-label="Масштаб активного эффекта">
+            <span class="label-row"><span>Масштаб слоя</span><span class="value" id="effect-scale-value">1.03×</span></span>
+            <input class="letter-scale-slider" id="effect-scale" type="range" min="0.05" max="3.00" step="0.01" value="1.03" aria-label="Масштаб активного эффекта">
           </label>
         </div>
         <p class="letter-hint" id="effect-hint">Стрелки — сдвиг на 1 px. Shift + стрелки — на 5 px.</p>
         <button class="secondary-button start-over-button" id="copy-all-effects" type="button">Скопировать все новые координаты</button>
         <textarea class="coordinates-output" id="effects-coordinates-output" aria-label="Координаты новых эффектов" readonly hidden></textarea>
+      </section>
+
+      <section class="control-group" id="mega-animation-editor">
+        <p class="settings-title">Айдл-анимация MEGA WIN</p>
+        <div class="settings-stack">
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Пауза между бросками</span><span class="value" id="mega-idle-interval-value">3.0 с</span></span>
+            <input class="letter-scale-slider" id="mega-idle-interval" type="range" min="1.5" max="6" step="0.1" value="3" aria-label="Пауза между бросками Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Заскок рук вниз</span><span class="value" id="mega-hand-dip-value">22 px</span></span>
+            <input class="letter-scale-slider" id="mega-hand-dip" type="range" min="0" max="50" step="1" value="22" aria-label="Заскок рук вниз Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Высота броска мороженок</span><span class="value" id="mega-dessert-height-value">24 px</span></span>
+            <input class="letter-scale-slider" id="mega-dessert-height" type="range" min="0" max="55" step="1" value="24" aria-label="Высота броска мороженок Mega Win">
+          </label>
+        </div>
+        <p class="letter-hint">Изменение параметров сразу показывается в следующем повторном броске.</p>
       </section>
 
       <section class="control-group" id="epic-animation-editor">
@@ -450,8 +470,8 @@
             <input class="letter-scale-slider" id="epic-idle-interval" type="range" min="1.5" max="6" step="0.1" value="3" aria-label="Пауза между бросками Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Заскок руки вниз</span><span class="value" id="epic-hand-dip-value">6 px</span></span>
-            <input class="letter-scale-slider" id="epic-hand-dip" type="range" min="0" max="18" step="1" value="6" aria-label="Заскок руки вниз Epic Win">
+            <span class="label-row"><span>Заскок руки вниз</span><span class="value" id="epic-hand-dip-value">22 px</span></span>
+            <input class="letter-scale-slider" id="epic-hand-dip" type="range" min="0" max="50" step="1" value="22" aria-label="Заскок руки вниз Epic Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Высота броска десерта</span><span class="value" id="epic-dessert-height-value">24 px</span></span>
@@ -548,13 +568,17 @@
         <div class="stage-controls">
           <div class="stage-next-actions" aria-label="Переход на следующий экран">
             <p class="settings-title">Переход дальше</p>
-            <button class="replay-button" id="epic-next-screen" type="button" hidden>Далее</button>
-            <button class="replay-button" id="max-next-screen" type="button" hidden>Далее</button>
+            <button class="replay-button" id="advance-screen" type="button">Следующий экран</button>
           </div>
           <div class="stage-actions" aria-label="Управление анимацией">
             <p class="settings-title">Управление экраном</p>
-            <button class="replay-button" id="next-screen" type="button">Следующий</button>
+            <button class="replay-button" id="replay-screen" type="button">Повторить анимацию</button>
             <button class="secondary-button start-over-button" id="start-over" type="button">Начать сначала</button>
+          </div>
+          <div hidden aria-hidden="true">
+            <button id="next-screen" type="button" hidden>Legacy Big/Mega</button>
+            <button id="epic-next-screen" type="button" hidden>Legacy Epic</button>
+            <button id="max-next-screen" type="button" hidden>Legacy Max</button>
           </div>
         </div>
       </div>
@@ -609,18 +633,17 @@
       const MEGA_AMOUNT_REVEAL = { speed: 1, delay: 0, bounce: 25 };
       const MEGA_JUMPS = { iceLead: 860, toppingLead: 830, impact: 0.3 };
       const BIG_SPARK_ANIMATION = { appearDuration: 120, disappearDuration: 160, rotation: 14 };
-      const BIG_IDLE_TOSS = { interval: 4000, firstDelay: 2200, handDip: 5, height: 24, impact: 4 };
+      const BIG_IDLE_TOSS = { interval: 4000, firstDelay: 2200, handDip: 14, handLift: 5, height: 30, impact: 4 };
       const HEARTS = {
         frameRate: 30,
         lead: 310,
         left: { x: 40, y: 175, scale: 0.9, flipX: false },
         right: { x: 145, y: 195, scale: 0.9, flipX: true }
       };
-      const MEGA_TOSS_INTERVAL = 3000;
-      const MEGA_TOSS = { ballHeight: 18, toppingHeight: 11, handDip: 7, handLift: 3, sideDelay: 110, toppingDelay: 75 };
+      const MEGA_TOSS = { interval: 3000, ballHeight: 24, toppingHeight: 14, handDip: 22, handLift: 5, sideDelay: 110, toppingDelay: 75 };
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
-      const EPIC_IDLE = { interval: 3000, handDip: 6, dessertHeight: 24, landingBounce: 5 };
+      const EPIC_IDLE = { interval: 3000, handDip: 22, dessertHeight: 24, landingBounce: 5 };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
         amountDelay: 0,
@@ -747,6 +770,7 @@
         { key: 'max_pool_cream_pink', label: 'Pink', file: 'max_win/pool_cream_pink.png', x: 86, y: 333, scale: 0.92, depth: 411, parent: 'max_pool' },
         { key: 'max_pool_cream_choko', label: 'Choko', file: 'max_win/pool_cream_choko.png', x: 199, y: 261, scale: 0.92, depth: 410, parent: 'max_pool' },
         { key: 'max_pool_icecream', label: 'Icecream', file: 'max_win/pool_icecream.png?v=14f03c6', x: 89, y: 234, scale: 0.93, depth: 409, parent: 'max_pool' },
+        { key: 'max_pool_part', label: 'Pool Part', file: 'max_win/pool_part.png', x: 91, y: 325, scale: 0.19, depth: 413.5, parent: 'max_pool' },
         { key: 'max_pool', label: 'Pool', file: 'max_win/pool.png', x: 91, y: 256, scale: 0.92, depth: 408 },
         { key: 'max_palm_1', label: 'Palm 1', file: 'max_win/palm_1.png', x: 25, y: 146, scale: 0.92, depth: 407, parent: 'max_pool', bottomAnchor: true },
         { key: 'max_palm_2', label: 'Palm 2', file: 'max_win/palm_2.png', x: 153, y: 147, scale: 0.92, depth: 406, parent: 'max_pool', bottomAnchor: true }
@@ -756,17 +780,17 @@
         { key: 'max_sequence_right', label: 'Firework R', x: 163, y: 180, scale: 1.5, depth: 407.5, flipX: true, isSequence: true }
       ];
       const SCREEN_EFFECT_ASSETS = [
-        { key: 'ellipse_big', label: 'Ellipse BIG', file: 'ellipse_big.png', screen: 'big', x: 91, y: 356, scale: 0.27, depth: -10, isEllipse: true },
-        { key: 'ellipse_mega', label: 'Ellipse MEGA', file: 'ellipse_mega.png', screen: 'mega', x: 91, y: 356, scale: 0.27, depth: 202, isEllipse: true },
-        { key: 'ellipse_epic', label: 'Ellipse EPIC', file: 'ellipse_epic.png', screen: 'epic', x: 91, y: 356, scale: 0.27, depth: 305, isEllipse: true },
-        { key: 'ellipse_max', label: 'Ellipse MAX', file: 'ellipse_max.png', screen: 'max', x: 91, y: 356, scale: 0.27, depth: 405, isEllipse: true },
-        { key: 'mega_spark_1', label: 'MEGA Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'mega', x: 38, y: 146, scale: 0.27, rotation: 35, depth: 230, isSpark: true, initialDelay: 450, interval: 1900 },
-        { key: 'mega_spark_2', label: 'MEGA Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'mega', x: 146, y: 188, scale: 0.25, rotation: -28, depth: 230, isSpark: true, initialDelay: 980, interval: 2200 },
-        { key: 'mega_spark_3', label: 'MEGA Spark 3', file: 'spark2.png?v=f411e5c2', screen: 'mega', x: 91, y: 276, scale: 0.22, rotation: 58, depth: 230, isSpark: true, initialDelay: 1500, interval: 2500 },
-        { key: 'epic_spark_1', label: 'EPIC Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'epic', x: 34, y: 152, scale: 0.27, rotation: 42, depth: 330, isSpark: true, initialDelay: 520, interval: 2000 },
-        { key: 'epic_spark_2', label: 'EPIC Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'epic', x: 149, y: 248, scale: 0.25, rotation: -38, depth: 330, isSpark: true, initialDelay: 1160, interval: 2350 },
-        { key: 'max_spark_1', label: 'MAX Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'max', x: 33, y: 168, scale: 0.27, rotation: 38, depth: 430, isSpark: true, initialDelay: 480, interval: 1950 },
-        { key: 'max_spark_2', label: 'MAX Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'max', x: 150, y: 254, scale: 0.25, rotation: -44, depth: 430, isSpark: true, initialDelay: 1120, interval: 2300 }
+        { key: 'ellipse_big', label: 'Ellipse BIG', file: 'ellipse_big.png', screen: 'big', x: 91, y: 209, scale: 1.03, depth: -10, isEllipse: true },
+        { key: 'ellipse_mega', label: 'Ellipse MEGA', file: 'ellipse_mega.png', screen: 'mega', x: 91, y: 209, scale: 1.03, depth: 202, isEllipse: true },
+        { key: 'ellipse_epic', label: 'Ellipse EPIC', file: 'ellipse_epic.png', screen: 'epic', x: 91, y: 209, scale: 1.03, depth: 305, isEllipse: true },
+        { key: 'ellipse_max', label: 'Ellipse MAX', file: 'ellipse_max.png', screen: 'max', x: 91, y: 209, scale: 1.17, depth: 405, isEllipse: true },
+        { key: 'mega_spark_1', label: 'MEGA Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'mega', x: 53, y: 148, scale: 0.27, rotation: 35, depth: 230, isSpark: true, initialDelay: 450, interval: 1900 },
+        { key: 'mega_spark_2', label: 'MEGA Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'mega', x: 130, y: 191, scale: 0.25, rotation: -28, depth: 230, isSpark: true, initialDelay: 980, interval: 2200 },
+        { key: 'mega_spark_3', label: 'MEGA Spark 3', file: 'spark2.png?v=f411e5c2', screen: 'mega', x: 28, y: 208, scale: 0.22, rotation: 58, depth: 230, isSpark: true, initialDelay: 1500, interval: 2500 },
+        { key: 'epic_spark_1', label: 'EPIC Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'epic', x: 79, y: 171, scale: 0.27, rotation: 42, depth: 330, isSpark: true, initialDelay: 520, interval: 2000 },
+        { key: 'epic_spark_2', label: 'EPIC Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'epic', x: 117, y: 238, scale: 0.25, rotation: -38, depth: 330, isSpark: true, initialDelay: 1160, interval: 2350 },
+        { key: 'max_spark_1', label: 'MAX Spark 1', file: 'spark2.png?v=f411e5c2', screen: 'max', x: 48, y: 231, scale: 0.27, rotation: 38, depth: 430, isSpark: true, initialDelay: 480, interval: 1950 },
+        { key: 'max_spark_2', label: 'MAX Spark 2', file: 'spark3.png?v=7fe1028b', screen: 'max', x: 90, y: 313, scale: 0.25, rotation: -44, depth: 430, isSpark: true, initialDelay: 1120, interval: 2300 }
       ];
       const MAX_EDITABLE_ASSETS = [...MAX_ASSETS, ...MAX_SEQUENCE_ASSETS];
       const MAX_PALM_KEYS = new Set(['max_palm_1', 'max_palm_2']);
@@ -798,6 +822,8 @@
       const nextButton = document.querySelector('#next-screen');
       const epicNextButton = document.querySelector('#epic-next-screen');
       const maxNextButton = document.querySelector('#max-next-screen');
+      const advanceScreenButton = document.querySelector('#advance-screen');
+      const replayScreenButton = document.querySelector('#replay-screen');
       const startOverButton = document.querySelector('#start-over');
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
@@ -840,6 +866,12 @@
       const effectHint = document.querySelector('#effect-hint');
       const copyAllEffectsButton = document.querySelector('#copy-all-effects');
       const effectsCoordinatesOutput = document.querySelector('#effects-coordinates-output');
+      const megaIdleIntervalSlider = document.querySelector('#mega-idle-interval');
+      const megaIdleIntervalValue = document.querySelector('#mega-idle-interval-value');
+      const megaHandDipSlider = document.querySelector('#mega-hand-dip');
+      const megaHandDipValue = document.querySelector('#mega-hand-dip-value');
+      const megaDessertHeightSlider = document.querySelector('#mega-dessert-height');
+      const megaDessertHeightValue = document.querySelector('#mega-dessert-height-value');
       const epicIdleIntervalSlider = document.querySelector('#epic-idle-interval');
       const epicIdleIntervalValue = document.querySelector('#epic-idle-interval-value');
       const epicHandDipSlider = document.querySelector('#epic-hand-dip');
@@ -862,10 +894,21 @@
       let activeMaxSequenceKey = 'max_sequence_left';
       let activeEffectKey = 'ellipse_big';
       let effectEditorActive = false;
+      let currentScreen = 'big';
       let underlayVisible = false;
       let underlayAbove = false;
       let maxReplayTimeout = 0;
       let epicReplayTimeout = 0;
+      let megaPreviewTimeout = 0;
+
+      const updateStageControls = (screen, busy = false) => {
+        currentScreen = screen;
+        replayScreenButton.disabled = busy;
+        replayScreenButton.textContent = busy ? 'Переходим…' : 'Повторить анимацию';
+        advanceScreenButton.disabled = busy || screen === 'max';
+        advanceScreenButton.hidden = screen === 'max';
+        advanceScreenButton.textContent = busy ? 'Переходим…' : 'Следующий экран';
+      };
 
       const updateMaxEditor = () => {
         const asset = maxAssetByKey.get(activeMaxKey);
@@ -1017,6 +1060,29 @@
         scheduleMaxReplay();
       });
 
+      const previewMegaIdle = () => {
+        window.clearTimeout(megaPreviewTimeout);
+        if (!activeScene?.megaActive || activeScene.transitioning) return;
+        megaPreviewTimeout = window.setTimeout(() => activeScene?.playMegaDessertToss(), 100);
+      };
+
+      megaIdleIntervalSlider.addEventListener('input', () => {
+        MEGA_TOSS.interval = Number(megaIdleIntervalSlider.value) * 1000;
+        megaIdleIntervalValue.textContent = `${(MEGA_TOSS.interval / 1000).toFixed(1)} с`;
+        activeScene?.restartMegaIdleLoop();
+      });
+      megaHandDipSlider.addEventListener('input', () => {
+        MEGA_TOSS.handDip = Number(megaHandDipSlider.value);
+        megaHandDipValue.textContent = `${MEGA_TOSS.handDip} px`;
+        previewMegaIdle();
+      });
+      megaDessertHeightSlider.addEventListener('input', () => {
+        MEGA_TOSS.ballHeight = Number(megaDessertHeightSlider.value);
+        MEGA_TOSS.toppingHeight = Math.round(MEGA_TOSS.ballHeight * 0.58);
+        megaDessertHeightValue.textContent = `${MEGA_TOSS.ballHeight} px`;
+        previewMegaIdle();
+      });
+
       const scheduleEpicReplay = () => {
         window.clearTimeout(epicReplayTimeout);
         if (!activeScene?.epicActive || activeScene.transitioning) return;
@@ -1118,6 +1184,19 @@
       nextButton.addEventListener('click', () => activeScene?.playNextTransition());
       epicNextButton.addEventListener('click', () => activeScene?.playEpicTransition(activeScene?.epicActive));
       maxNextButton.addEventListener('click', () => activeScene?.playMaxTransition(activeScene?.maxActive));
+      advanceScreenButton.addEventListener('click', () => {
+        if (!activeScene || activeScene.transitioning) return;
+        if (currentScreen === 'big') activeScene.playNextTransition();
+        else if (currentScreen === 'mega') activeScene.playEpicTransition(false);
+        else if (currentScreen === 'epic') activeScene.playMaxTransition(false);
+      });
+      replayScreenButton.addEventListener('click', () => {
+        if (!activeScene || activeScene.transitioning) return;
+        if (currentScreen === 'big') activeScene.playIntroAnimation();
+        else if (currentScreen === 'mega') activeScene.playNextTransition(true);
+        else if (currentScreen === 'epic') activeScene.playEpicTransition(true);
+        else if (currentScreen === 'max') activeScene.playMaxTransition(true);
+      });
       startOverButton.addEventListener('click', () => activeScene?.playIntroAnimation());
       copyCoordinatesButton.addEventListener('click', async () => {
         const text = JSON.stringify(activeScene?.exportMaxLayout() ?? {}, null, 2);
@@ -1414,13 +1493,15 @@
               rotation: Math.round(asset.rotation)
             };
           });
-          const icecream = maxAssetByKey.get('max_pool_icecream');
-          layout.max_pool_icecream = {
-            x: Math.round(icecream.x),
-            y: Math.round(icecream.y),
-            scale: Number(icecream.scale.toFixed(2)),
-            parent: icecream.parent
-          };
+          ['max_pool_icecream', 'max_pool_part'].forEach((key) => {
+            const asset = maxAssetByKey.get(key);
+            layout[key] = {
+              x: Math.round(asset.x),
+              y: Math.round(asset.y),
+              scale: Number(asset.scale.toFixed(2)),
+              parent: asset.parent
+            };
+          });
           return layout;
         }
 
@@ -1447,7 +1528,7 @@
             const sprite = this.screenEffectSprites.get(ellipse.key);
             sprite
               .setPosition(ellipse.x, ellipse.y)
-              .setScale(ellipse.scale, 0.001)
+              .setScale(ellipse.scale, ellipse.scale * 0.04)
               .setAlpha(1)
               .setVisible(true);
             this.tweens.add({
@@ -1826,6 +1907,7 @@
         playNextTransition(forceRestart = false) {
           if (this.transitioning && !forceRestart) return;
           this.transitioning = true;
+          updateStageControls('mega', true);
           this.megaActive = false;
           this.epicActive = false;
           this.maxActive = false;
@@ -2269,6 +2351,7 @@
           if (!Object.values(this.megaSequenceState).every(Boolean)) return;
           this.transitioning = false;
           this.megaActive = true;
+          updateStageControls('mega');
           nextButton.disabled = false;
           nextButton.textContent = 'Повторить переход';
           epicNextButton.hidden = false;
@@ -2287,10 +2370,15 @@
         startMegaAmbientLoops() {
           this.megaTossTimer?.remove(false);
           this.megaTossTimer = this.time.addEvent({
-            delay: MEGA_TOSS_INTERVAL,
+            delay: MEGA_TOSS.interval,
             loop: true,
             callback: () => this.playMegaDessertToss()
           });
+        }
+
+        restartMegaIdleLoop() {
+          if (!this.megaActive || this.transitioning) return;
+          this.startMegaAmbientLoops();
         }
 
         playMegaLetterWave() {
@@ -2388,6 +2476,7 @@
         playEpicTransition(replayOnly = false) {
           if (this.transitioning) return;
           this.transitioning = true;
+          updateStageControls('epic', true);
           this.megaActive = false;
           this.epicActive = false;
           nextButton.hidden = true;
@@ -2653,6 +2742,7 @@
         completeEpicTransition() {
           this.transitioning = false;
           this.epicActive = true;
+          updateStageControls('epic');
           epicNextButton.hidden = true;
           maxNextButton.hidden = false;
           maxNextButton.disabled = false;
@@ -2778,6 +2868,7 @@
         playMaxTransition(replayOnly = false) {
           if (this.transitioning) return;
           this.transitioning = true;
+          updateStageControls('max', true);
           this.epicActive = false;
           this.maxActive = false;
           nextButton.hidden = true;
@@ -3177,6 +3268,7 @@
         completeMaxTransition() {
           this.transitioning = false;
           this.maxActive = true;
+          updateStageControls('max');
           maxNextButton.disabled = false;
           maxNextButton.textContent = 'Повторить Max';
           this.startMaxWaveLoop();
@@ -3231,6 +3323,7 @@
           this.sequenceTimers?.forEach((timer) => timer.remove(false));
           this.sequenceTimers = [];
           this.transitioning = false;
+          updateStageControls('big');
           this.megaActive = false;
           this.epicActive = false;
           this.maxActive = false;
@@ -3570,7 +3663,6 @@
               this.sequenceTimers.push(this.time.delayedCall(SPLASH.hangDuration, () => {
                 this.tweens.killTweensOf(splash);
                 splash.setScale(baseScale).setAlpha(1);
-                this.playExplodeSequence();
 
                 const currentBerryPosition = this.getBerryWorldPosition();
                 const contactY = currentBerryPosition.y
@@ -3640,7 +3732,7 @@
             onComplete: () => {
               this.tweens.add({
                 targets: this.motion,
-                idleHandY: -2,
+                idleHandY: -BIG_IDLE_TOSS.handLift,
                 duration: 115,
                 ease: 'Cubic.Out',
                 onUpdate: () => this.syncHierarchy(),
@@ -3660,8 +3752,7 @@
                 190,
                 0,
                 230,
-                () => this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, () => {}),
-                () => this.playExplodeSequence()
+                () => this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, () => {})
               );
             }
           });
