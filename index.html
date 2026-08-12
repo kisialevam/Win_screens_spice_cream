@@ -363,12 +363,12 @@
   <main class="app">
     <aside class="panel">
       <p class="eyebrow">Phaser 3 scene</p>
-      <h1>Max Win<br>editor</h1>
-      <p class="lead">Big Win, Mega Win и Epic Win зафиксированы. Теперь собираем финальный экран из новых слоёв Max Win.</p>
+      <h1>Win screens<br>animation</h1>
+      <p class="lead">Все четыре экрана собраны и зафиксированы. Ниже настраиваются только параметры анимации.</p>
 
       <section class="control-group">
-        <div class="label-row"><span>Режим сцены</span><span class="value">Max Win</span></div>
-        <p class="lead">Экран 183 × 396 · редактируются только новые слои Max Win · Phaser 3</p>
+        <div class="label-row"><span>Режим сцены</span><span class="value">Анимация</span></div>
+        <p class="lead">Экран 183 × 396 · четыре зафиксированных экрана · Phaser 3</p>
       </section>
 
       <section class="control-group" id="underlay-editor">
@@ -379,7 +379,7 @@
         </div>
       </section>
 
-      <section class="control-group" id="max-editor">
+      <section class="control-group" id="max-editor" hidden aria-hidden="true">
         <div class="label-row"><span>Активный слой</span><span class="value" id="active-max-name">15000</span></div>
         <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор слоя Max Win">
           <button class="letter-button is-active" type="button" data-max-key="max_amount" aria-pressed="true">15000</button>
@@ -414,7 +414,7 @@
         <textarea class="coordinates-output" id="coordinates-output" aria-label="Координаты Max Win" readonly hidden></textarea>
       </section>
 
-      <section class="control-group" id="screen-effects-editor">
+      <section class="control-group" id="screen-effects-editor" hidden aria-hidden="true">
         <p class="settings-title">Новые эффекты экранов</p>
         <div class="label-row"><span>Активный слой</span><span class="value" id="active-effect-name">Ellipse BIG</span></div>
         <div class="letter-picker mega-asset-picker" role="group" aria-label="Выбор звёздочки или эллипса">
@@ -463,8 +463,20 @@
             <input class="letter-scale-slider" id="big-flight-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта мороженки Big Win">
           </label>
           <label class="letter-scale-control">
+            <span class="label-row"><span>Высота броска клубнички</span><span class="value" id="big-berry-height-value">30 px</span></span>
+            <input class="letter-scale-slider" id="big-berry-height" type="range" min="0" max="60" step="1" value="30" aria-label="Высота броска клубнички Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость полёта клубнички</span><span class="value" id="big-berry-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="big-berry-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта клубнички Big Win">
+          </label>
+          <label class="letter-scale-control">
             <span class="label-row"><span>Офсет клубнички</span><span class="value" id="big-berry-offset-value">180 мс</span></span>
             <input class="letter-scale-slider" id="big-berry-offset" type="range" min="-320" max="680" step="10" value="180" aria-label="Офсет подлёта клубнички Big Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Реакция при посадке</span><span class="value" id="big-impact-value">4 px</span></span>
+            <input class="letter-scale-slider" id="big-impact" type="range" min="0" max="8" step="0.5" value="4" aria-label="Реакция при посадке Big Win">
           </label>
         </div>
         <p class="letter-hint">Положительный офсет запускает клубничку позже мороженки, отрицательный — раньше.</p>
@@ -482,12 +494,36 @@
             <input class="letter-scale-slider" id="mega-hand-dip" type="range" min="0" max="104" step="1" value="52" aria-label="Заскок рук вниз Mega Win">
           </label>
           <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость заскока рук</span><span class="value" id="mega-dip-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="mega-dip-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость заскока рук Mega Win">
+          </label>
+          <label class="letter-scale-control">
             <span class="label-row"><span>Высота броска мороженок</span><span class="value" id="mega-dessert-height-value">43 px</span></span>
             <input class="letter-scale-slider" id="mega-dessert-height" type="range" min="0" max="86" step="1" value="43" aria-label="Высота броска мороженок Mega Win">
           </label>
           <label class="letter-scale-control">
+            <span class="label-row"><span>Высота крема и вишен</span><span class="value" id="mega-topping-height-value">25 px</span></span>
+            <input class="letter-scale-slider" id="mega-topping-height" type="range" min="0" max="50" step="1" value="25" aria-label="Высота броска крема и вишен Mega Win">
+          </label>
+          <label class="letter-scale-control">
             <span class="label-row"><span>Скорость полёта мороженок</span><span class="value" id="mega-flight-speed-value">0.65×</span></span>
             <input class="letter-scale-slider" id="mega-flight-speed" type="range" min="0.30" max="1.00" step="0.05" value="0.65" aria-label="Скорость полёта мороженок Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет крема и вишен</span><span class="value" id="mega-topping-delay-value">75 мс</span></span>
+            <input class="letter-scale-slider" id="mega-topping-delay" type="range" min="0" max="150" step="5" value="75" aria-label="Офсет крема и вишен Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Задержка правой руки</span><span class="value" id="mega-side-delay-value">110 мс</span></span>
+            <input class="letter-scale-slider" id="mega-side-delay" type="range" min="0" max="220" step="5" value="110" aria-label="Задержка правой руки Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Баунс при посадке</span><span class="value" id="mega-impact-value">30%</span></span>
+            <input class="letter-scale-slider" id="mega-impact" type="range" min="0" max="60" step="5" value="30" aria-label="Баунс при посадке Mega Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Реакция рук при посадке</span><span class="value" id="mega-catch-value">6 px</span></span>
+            <input class="letter-scale-slider" id="mega-catch" type="range" min="0" max="12" step="1" value="6" aria-label="Реакция рук при посадке Mega Win">
           </label>
         </div>
         <p class="letter-hint">Изменение параметров сразу показывается в следующем повторном броске.</p>
@@ -505,12 +541,40 @@
             <input class="letter-scale-slider" id="epic-hand-dip" type="range" min="0" max="106" step="1" value="53" aria-label="Заскок руки вниз Epic Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Высота броска десерта</span><span class="value" id="epic-dessert-height-value">44 px</span></span>
-            <input class="letter-scale-slider" id="epic-dessert-height" type="range" min="0" max="88" step="1" value="44" aria-label="Высота броска десерта Epic Win">
+            <span class="label-row"><span>Скорость заскока руки</span><span class="value" id="epic-dip-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="epic-dip-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость заскока руки Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Высота броска мороженки</span><span class="value" id="epic-dessert-height-value">44 px</span></span>
+            <input class="letter-scale-slider" id="epic-dessert-height" type="range" min="0" max="88" step="1" value="44" aria-label="Высота броска мороженки Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Высота броска крема</span><span class="value" id="epic-cream-height-value">26 px</span></span>
+            <input class="letter-scale-slider" id="epic-cream-height" type="range" min="0" max="52" step="1" value="26" aria-label="Высота броска крема Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Высота броска персика</span><span class="value" id="epic-peach-height-value">18 px</span></span>
+            <input class="letter-scale-slider" id="epic-peach-height" type="range" min="0" max="36" step="1" value="18" aria-label="Высота броска персика Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость полёта десерта</span><span class="value" id="epic-flight-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="epic-flight-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость полёта десерта Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет крема</span><span class="value" id="epic-cream-delay-value">95 мс</span></span>
+            <input class="letter-scale-slider" id="epic-cream-delay" type="range" min="0" max="190" step="5" value="95" aria-label="Офсет крема Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет персика</span><span class="value" id="epic-peach-delay-value">190 мс</span></span>
+            <input class="letter-scale-slider" id="epic-peach-delay" type="range" min="0" max="380" step="10" value="190" aria-label="Офсет персика Epic Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Баунс при посадке</span><span class="value" id="epic-landing-bounce-value">10 px</span></span>
             <input class="letter-scale-slider" id="epic-landing-bounce" type="range" min="0" max="20" step="1" value="10" aria-label="Баунс при посадке Epic Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Реакция руки при посадке</span><span class="value" id="epic-catch-value">7 px</span></span>
+            <input class="letter-scale-slider" id="epic-catch" type="range" min="0" max="14" step="1" value="7" aria-label="Реакция руки при посадке Epic Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Поворот руки при въезде</span><span class="value" id="epic-entry-rotation-value">-60°</span></span>
@@ -521,7 +585,7 @@
       </section>
 
       <section class="control-group" id="max-timing-editor">
-        <p class="settings-title">Появление надписей MAX WIN</p>
+        <p class="settings-title">Настройки MAX WIN</p>
         <div class="settings-stack">
           <label class="letter-scale-control">
             <span class="label-row"><span>Офсет MAX WIN</span><span class="value" id="max-title-offset-value">260 мс</span></span>
@@ -537,11 +601,36 @@
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Прыжок мороженого</span><span class="value" id="max-ice-bounce-value">18 px</span></span>
-            <input class="letter-scale-slider" id="max-ice-bounce" type="range" min="0" max="50" step="1" value="18" aria-label="Высота прыжка мороженого Max Win">
+            <input class="letter-scale-slider" id="max-ice-bounce" type="range" min="0" max="36" step="1" value="18" aria-label="Высота прыжка мороженого Max Win">
           </label>
           <label class="letter-scale-control">
             <span class="label-row"><span>Прыжок девчонки</span><span class="value" id="max-girl-bounce-value">24 px</span></span>
-            <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="60" step="1" value="24" aria-label="Высота прыжка девчонки Max Win">
+            <input class="letter-scale-slider" id="max-girl-bounce" type="range" min="0" max="48" step="1" value="24" aria-label="Высота прыжка девчонки Max Win">
+          </label>
+          <p class="settings-subtitle">Айдл-прыжок бассейна</p>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Пауза между прыжками</span><span class="value" id="max-idle-interval-value">3.0 с</span></span>
+            <input class="letter-scale-slider" id="max-idle-interval" type="range" min="1" max="5" step="0.1" value="3" aria-label="Пауза между прыжками Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Высота прыжка бассейна</span><span class="value" id="max-pool-height-value">12 px</span></span>
+            <input class="letter-scale-slider" id="max-pool-height" type="range" min="0" max="24" step="1" value="12" aria-label="Высота прыжка бассейна Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Скорость прыжка</span><span class="value" id="max-jump-speed-value">1.00×</span></span>
+            <input class="letter-scale-slider" id="max-jump-speed" type="range" min="0.50" max="1.50" step="0.05" value="1.00" aria-label="Скорость прыжка Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет мороженого</span><span class="value" id="max-ice-delay-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="max-ice-delay" type="range" min="-300" max="300" step="10" value="0" aria-label="Офсет прыжка мороженого Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Офсет девчонки</span><span class="value" id="max-girl-delay-value">0 мс</span></span>
+            <input class="letter-scale-slider" id="max-girl-delay" type="range" min="-300" max="300" step="10" value="0" aria-label="Офсет прыжка девчонки Max Win">
+          </label>
+          <label class="letter-scale-control">
+            <span class="label-row"><span>Баунс после посадки</span><span class="value" id="max-landing-bounce-value">15%</span></span>
+            <input class="letter-scale-slider" id="max-landing-bounce" type="range" min="0" max="30" step="1" value="15" aria-label="Баунс после посадки Max Win">
           </label>
           <p class="settings-subtitle">Появление пальм</p>
           <label class="letter-scale-control">
@@ -560,7 +649,7 @@
         <p class="letter-hint">Изменение офсета автоматически перезапускает MAX-анимацию, если экран уже открыт.</p>
       </section>
 
-      <section class="control-group" id="max-sequence-editor">
+      <section class="control-group" id="max-sequence-editor" hidden aria-hidden="true">
         <p class="settings-title">Фейерверки Max</p>
         <div class="letter-picker" role="group" aria-label="Выбор секвенции Max">
           <button class="letter-button is-active" id="max-sequence-left-button" type="button" aria-pressed="true">Левая</button>
@@ -588,7 +677,7 @@
       <div class="stage-toolbar">
         <div>
           <h2>Экран игры · 183 × 396</h2>
-          <p>Big Win → Mega Win → Epic Win → редактируемый Max Win.</p>
+          <p>Big Win → Mega Win → Epic Win → Max Win.</p>
         </div>
       </div>
       <div class="stage-workspace">
@@ -672,6 +761,8 @@
         handLift: 5,
         height: 30,
         flightSpeed: 1,
+        berryHeight: 30,
+        berryFlightSpeed: 1,
         berryOffset: 180,
         impact: 4
       };
@@ -681,10 +772,33 @@
         left: { x: 40, y: 175, scale: 0.9, flipX: false },
         right: { x: 145, y: 195, scale: 0.9, flipX: true }
       };
-      const MEGA_TOSS = { interval: 3000, ballHeight: 43, toppingHeight: 25, handDip: 52, handLift: 5, flightSpeed: 0.65, sideDelay: 110, toppingDelay: 75 };
+      const MEGA_TOSS = {
+        interval: 3000,
+        ballHeight: 43,
+        toppingHeight: 25,
+        handDip: 52,
+        dipSpeed: 1,
+        handLift: 5,
+        handCatch: 6,
+        flightSpeed: 0.65,
+        sideDelay: 110,
+        toppingDelay: 75
+      };
       const EPIC_SCREEN_DELAY = 160;
       const EPIC_WAVE_INTERVAL = 3000;
-      const EPIC_IDLE = { interval: 3000, handDip: 53, dessertHeight: 44, landingBounce: 10, layerStagger: 95 };
+      const EPIC_IDLE = {
+        interval: 3000,
+        handDip: 53,
+        dipSpeed: 1,
+        iceHeight: 44,
+        creamHeight: 26,
+        peachHeight: 18,
+        flightSpeed: 1,
+        creamDelay: 95,
+        peachDelay: 190,
+        landingBounce: 10,
+        handCatch: 7
+      };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
         amountDelay: 0,
@@ -700,7 +814,14 @@
       const MAX_POOL_DROP = { delay: 0, duration: 720, bounce: 22, topMargin: 24 };
       const MAX_LANDING = { iceHeight: 18, girlHeight: 24 };
       const MAX_PALMS = { duration: 480, speed: 1.2, rotation: 18, bounce: 3, stagger: 80 };
-      const MAX_TOSS = { interval: 3000, poolHeight: 12 };
+      const MAX_TOSS = {
+        interval: 3000,
+        poolHeight: 12,
+        flightSpeed: 1,
+        iceDelay: 0,
+        girlDelay: 0,
+        landingBounce: 0.15
+      };
       const MAX_SEQUENCE = { frameRate: 30 };
       const MEGA_HAND_SETTLE_DURATION = (1000 / ENTRY_SPEED) + 270 + 234 + 120;
       const ENTRY_APPROACH_EASE = (time) => {
@@ -881,6 +1002,18 @@
       const maxIceBounceValue = document.querySelector('#max-ice-bounce-value');
       const maxGirlBounceSlider = document.querySelector('#max-girl-bounce');
       const maxGirlBounceValue = document.querySelector('#max-girl-bounce-value');
+      const maxIdleIntervalSlider = document.querySelector('#max-idle-interval');
+      const maxIdleIntervalValue = document.querySelector('#max-idle-interval-value');
+      const maxPoolHeightSlider = document.querySelector('#max-pool-height');
+      const maxPoolHeightValue = document.querySelector('#max-pool-height-value');
+      const maxJumpSpeedSlider = document.querySelector('#max-jump-speed');
+      const maxJumpSpeedValue = document.querySelector('#max-jump-speed-value');
+      const maxIceDelaySlider = document.querySelector('#max-ice-delay');
+      const maxIceDelayValue = document.querySelector('#max-ice-delay-value');
+      const maxGirlDelaySlider = document.querySelector('#max-girl-delay');
+      const maxGirlDelayValue = document.querySelector('#max-girl-delay-value');
+      const maxLandingBounceSlider = document.querySelector('#max-landing-bounce');
+      const maxLandingBounceValue = document.querySelector('#max-landing-bounce-value');
       const maxPalmSpeedSlider = document.querySelector('#max-palm-speed');
       const maxPalmSpeedValue = document.querySelector('#max-palm-speed-value');
       const maxPalmRotationSlider = document.querySelector('#max-palm-rotation');
@@ -912,24 +1045,56 @@
       const bigIceHeightValue = document.querySelector('#big-ice-height-value');
       const bigFlightSpeedSlider = document.querySelector('#big-flight-speed');
       const bigFlightSpeedValue = document.querySelector('#big-flight-speed-value');
+      const bigBerryHeightSlider = document.querySelector('#big-berry-height');
+      const bigBerryHeightValue = document.querySelector('#big-berry-height-value');
+      const bigBerrySpeedSlider = document.querySelector('#big-berry-speed');
+      const bigBerrySpeedValue = document.querySelector('#big-berry-speed-value');
       const bigBerryOffsetSlider = document.querySelector('#big-berry-offset');
       const bigBerryOffsetValue = document.querySelector('#big-berry-offset-value');
+      const bigImpactSlider = document.querySelector('#big-impact');
+      const bigImpactValue = document.querySelector('#big-impact-value');
       const megaIdleIntervalSlider = document.querySelector('#mega-idle-interval');
       const megaIdleIntervalValue = document.querySelector('#mega-idle-interval-value');
       const megaHandDipSlider = document.querySelector('#mega-hand-dip');
       const megaHandDipValue = document.querySelector('#mega-hand-dip-value');
+      const megaDipSpeedSlider = document.querySelector('#mega-dip-speed');
+      const megaDipSpeedValue = document.querySelector('#mega-dip-speed-value');
       const megaDessertHeightSlider = document.querySelector('#mega-dessert-height');
       const megaDessertHeightValue = document.querySelector('#mega-dessert-height-value');
+      const megaToppingHeightSlider = document.querySelector('#mega-topping-height');
+      const megaToppingHeightValue = document.querySelector('#mega-topping-height-value');
       const megaFlightSpeedSlider = document.querySelector('#mega-flight-speed');
       const megaFlightSpeedValue = document.querySelector('#mega-flight-speed-value');
+      const megaToppingDelaySlider = document.querySelector('#mega-topping-delay');
+      const megaToppingDelayValue = document.querySelector('#mega-topping-delay-value');
+      const megaSideDelaySlider = document.querySelector('#mega-side-delay');
+      const megaSideDelayValue = document.querySelector('#mega-side-delay-value');
+      const megaImpactSlider = document.querySelector('#mega-impact');
+      const megaImpactValue = document.querySelector('#mega-impact-value');
+      const megaCatchSlider = document.querySelector('#mega-catch');
+      const megaCatchValue = document.querySelector('#mega-catch-value');
       const epicIdleIntervalSlider = document.querySelector('#epic-idle-interval');
       const epicIdleIntervalValue = document.querySelector('#epic-idle-interval-value');
       const epicHandDipSlider = document.querySelector('#epic-hand-dip');
       const epicHandDipValue = document.querySelector('#epic-hand-dip-value');
+      const epicDipSpeedSlider = document.querySelector('#epic-dip-speed');
+      const epicDipSpeedValue = document.querySelector('#epic-dip-speed-value');
       const epicDessertHeightSlider = document.querySelector('#epic-dessert-height');
       const epicDessertHeightValue = document.querySelector('#epic-dessert-height-value');
+      const epicCreamHeightSlider = document.querySelector('#epic-cream-height');
+      const epicCreamHeightValue = document.querySelector('#epic-cream-height-value');
+      const epicPeachHeightSlider = document.querySelector('#epic-peach-height');
+      const epicPeachHeightValue = document.querySelector('#epic-peach-height-value');
+      const epicFlightSpeedSlider = document.querySelector('#epic-flight-speed');
+      const epicFlightSpeedValue = document.querySelector('#epic-flight-speed-value');
+      const epicCreamDelaySlider = document.querySelector('#epic-cream-delay');
+      const epicCreamDelayValue = document.querySelector('#epic-cream-delay-value');
+      const epicPeachDelaySlider = document.querySelector('#epic-peach-delay');
+      const epicPeachDelayValue = document.querySelector('#epic-peach-delay-value');
       const epicLandingBounceSlider = document.querySelector('#epic-landing-bounce');
       const epicLandingBounceValue = document.querySelector('#epic-landing-bounce-value');
+      const epicCatchSlider = document.querySelector('#epic-catch');
+      const epicCatchValue = document.querySelector('#epic-catch-value');
       const epicEntryRotationSlider = document.querySelector('#epic-entry-rotation');
       const epicEntryRotationValue = document.querySelector('#epic-entry-rotation-value');
       const assetByKey = new Map(ASSETS.map((asset) => [asset.key, asset]));
@@ -948,6 +1113,7 @@
       let underlayVisible = false;
       let underlayAbove = false;
       let maxReplayTimeout = 0;
+      let maxIdlePreviewTimeout = 0;
       let epicReplayTimeout = 0;
       let megaPreviewTimeout = 0;
 
@@ -1102,6 +1268,48 @@
         scheduleMaxReplay();
       });
 
+      const previewMaxIdle = () => {
+        window.clearTimeout(maxIdlePreviewTimeout);
+        if (!activeScene?.maxActive || activeScene.transitioning) return;
+        maxIdlePreviewTimeout = window.setTimeout(() => activeScene?.playMaxPoolBounce(), 100);
+      };
+
+      maxIdleIntervalSlider.addEventListener('input', () => {
+        MAX_TOSS.interval = Number(maxIdleIntervalSlider.value) * 1000;
+        maxIdleIntervalValue.textContent = `${(MAX_TOSS.interval / 1000).toFixed(1)} с`;
+        activeScene?.startMaxPoolBounceLoop();
+      });
+
+      maxPoolHeightSlider.addEventListener('input', () => {
+        MAX_TOSS.poolHeight = Number(maxPoolHeightSlider.value);
+        maxPoolHeightValue.textContent = `${MAX_TOSS.poolHeight} px`;
+        previewMaxIdle();
+      });
+
+      maxJumpSpeedSlider.addEventListener('input', () => {
+        MAX_TOSS.flightSpeed = Number(maxJumpSpeedSlider.value);
+        maxJumpSpeedValue.textContent = `${MAX_TOSS.flightSpeed.toFixed(2)}×`;
+        previewMaxIdle();
+      });
+
+      maxIceDelaySlider.addEventListener('input', () => {
+        MAX_TOSS.iceDelay = Number(maxIceDelaySlider.value);
+        maxIceDelayValue.textContent = `${MAX_TOSS.iceDelay} мс`;
+        previewMaxIdle();
+      });
+
+      maxGirlDelaySlider.addEventListener('input', () => {
+        MAX_TOSS.girlDelay = Number(maxGirlDelaySlider.value);
+        maxGirlDelayValue.textContent = `${MAX_TOSS.girlDelay} мс`;
+        previewMaxIdle();
+      });
+
+      maxLandingBounceSlider.addEventListener('input', () => {
+        MAX_TOSS.landingBounce = Number(maxLandingBounceSlider.value) / 100;
+        maxLandingBounceValue.textContent = `${maxLandingBounceSlider.value}%`;
+        previewMaxIdle();
+      });
+
       maxPalmSpeedSlider.addEventListener('input', () => {
         MAX_PALMS.speed = Number(maxPalmSpeedSlider.value);
         maxPalmSpeedValue.textContent = `${MAX_PALMS.speed.toFixed(2)}×`;
@@ -1136,9 +1344,21 @@
         BIG_IDLE_TOSS.flightSpeed = Number(bigFlightSpeedSlider.value);
         bigFlightSpeedValue.textContent = `${BIG_IDLE_TOSS.flightSpeed.toFixed(2)}×`;
       });
+      bigBerryHeightSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.berryHeight = Number(bigBerryHeightSlider.value);
+        bigBerryHeightValue.textContent = `${BIG_IDLE_TOSS.berryHeight} px`;
+      });
+      bigBerrySpeedSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.berryFlightSpeed = Number(bigBerrySpeedSlider.value);
+        bigBerrySpeedValue.textContent = `${BIG_IDLE_TOSS.berryFlightSpeed.toFixed(2)}×`;
+      });
       bigBerryOffsetSlider.addEventListener('input', () => {
         BIG_IDLE_TOSS.berryOffset = Number(bigBerryOffsetSlider.value);
         bigBerryOffsetValue.textContent = `${BIG_IDLE_TOSS.berryOffset} мс`;
+      });
+      bigImpactSlider.addEventListener('input', () => {
+        BIG_IDLE_TOSS.impact = Number(bigImpactSlider.value);
+        bigImpactValue.textContent = `${BIG_IDLE_TOSS.impact} px`;
       });
 
       const previewMegaIdle = () => {
@@ -1157,15 +1377,44 @@
         megaHandDipValue.textContent = `${MEGA_TOSS.handDip} px`;
         previewMegaIdle();
       });
+      megaDipSpeedSlider.addEventListener('input', () => {
+        MEGA_TOSS.dipSpeed = Number(megaDipSpeedSlider.value);
+        megaDipSpeedValue.textContent = `${MEGA_TOSS.dipSpeed.toFixed(2)}×`;
+        previewMegaIdle();
+      });
       megaDessertHeightSlider.addEventListener('input', () => {
         MEGA_TOSS.ballHeight = Number(megaDessertHeightSlider.value);
-        MEGA_TOSS.toppingHeight = Math.round(MEGA_TOSS.ballHeight * 0.58);
         megaDessertHeightValue.textContent = `${MEGA_TOSS.ballHeight} px`;
+        previewMegaIdle();
+      });
+      megaToppingHeightSlider.addEventListener('input', () => {
+        MEGA_TOSS.toppingHeight = Number(megaToppingHeightSlider.value);
+        megaToppingHeightValue.textContent = `${MEGA_TOSS.toppingHeight} px`;
         previewMegaIdle();
       });
       megaFlightSpeedSlider.addEventListener('input', () => {
         MEGA_TOSS.flightSpeed = Number(megaFlightSpeedSlider.value);
         megaFlightSpeedValue.textContent = `${MEGA_TOSS.flightSpeed.toFixed(2)}×`;
+        previewMegaIdle();
+      });
+      megaToppingDelaySlider.addEventListener('input', () => {
+        MEGA_TOSS.toppingDelay = Number(megaToppingDelaySlider.value);
+        megaToppingDelayValue.textContent = `${MEGA_TOSS.toppingDelay} мс`;
+        previewMegaIdle();
+      });
+      megaSideDelaySlider.addEventListener('input', () => {
+        MEGA_TOSS.sideDelay = Number(megaSideDelaySlider.value);
+        megaSideDelayValue.textContent = `${MEGA_TOSS.sideDelay} мс`;
+        previewMegaIdle();
+      });
+      megaImpactSlider.addEventListener('input', () => {
+        MEGA_JUMPS.impact = Number(megaImpactSlider.value) / 100;
+        megaImpactValue.textContent = `${megaImpactSlider.value}%`;
+        previewMegaIdle();
+      });
+      megaCatchSlider.addEventListener('input', () => {
+        MEGA_TOSS.handCatch = Number(megaCatchSlider.value);
+        megaCatchValue.textContent = `${MEGA_TOSS.handCatch} px`;
         previewMegaIdle();
       });
 
@@ -1185,14 +1434,49 @@
         epicHandDipValue.textContent = `${EPIC_IDLE.handDip} px`;
         scheduleEpicReplay();
       });
+      epicDipSpeedSlider.addEventListener('input', () => {
+        EPIC_IDLE.dipSpeed = Number(epicDipSpeedSlider.value);
+        epicDipSpeedValue.textContent = `${EPIC_IDLE.dipSpeed.toFixed(2)}×`;
+        scheduleEpicReplay();
+      });
       epicDessertHeightSlider.addEventListener('input', () => {
-        EPIC_IDLE.dessertHeight = Number(epicDessertHeightSlider.value);
-        epicDessertHeightValue.textContent = `${EPIC_IDLE.dessertHeight} px`;
+        EPIC_IDLE.iceHeight = Number(epicDessertHeightSlider.value);
+        epicDessertHeightValue.textContent = `${EPIC_IDLE.iceHeight} px`;
+        scheduleEpicReplay();
+      });
+      epicCreamHeightSlider.addEventListener('input', () => {
+        EPIC_IDLE.creamHeight = Number(epicCreamHeightSlider.value);
+        epicCreamHeightValue.textContent = `${EPIC_IDLE.creamHeight} px`;
+        scheduleEpicReplay();
+      });
+      epicPeachHeightSlider.addEventListener('input', () => {
+        EPIC_IDLE.peachHeight = Number(epicPeachHeightSlider.value);
+        epicPeachHeightValue.textContent = `${EPIC_IDLE.peachHeight} px`;
+        scheduleEpicReplay();
+      });
+      epicFlightSpeedSlider.addEventListener('input', () => {
+        EPIC_IDLE.flightSpeed = Number(epicFlightSpeedSlider.value);
+        epicFlightSpeedValue.textContent = `${EPIC_IDLE.flightSpeed.toFixed(2)}×`;
+        scheduleEpicReplay();
+      });
+      epicCreamDelaySlider.addEventListener('input', () => {
+        EPIC_IDLE.creamDelay = Number(epicCreamDelaySlider.value);
+        epicCreamDelayValue.textContent = `${EPIC_IDLE.creamDelay} мс`;
+        scheduleEpicReplay();
+      });
+      epicPeachDelaySlider.addEventListener('input', () => {
+        EPIC_IDLE.peachDelay = Number(epicPeachDelaySlider.value);
+        epicPeachDelayValue.textContent = `${EPIC_IDLE.peachDelay} мс`;
         scheduleEpicReplay();
       });
       epicLandingBounceSlider.addEventListener('input', () => {
         EPIC_IDLE.landingBounce = Number(epicLandingBounceSlider.value);
         epicLandingBounceValue.textContent = `${EPIC_IDLE.landingBounce} px`;
+        scheduleEpicReplay();
+      });
+      epicCatchSlider.addEventListener('input', () => {
+        EPIC_IDLE.handCatch = Number(epicCatchSlider.value);
+        epicCatchValue.textContent = `${EPIC_IDLE.handCatch} px`;
         scheduleEpicReplay();
       });
       epicEntryRotationSlider.addEventListener('input', () => {
@@ -1240,33 +1524,6 @@
         underlayDepthButton.setAttribute('aria-pressed', String(underlayAbove));
         underlayDepthButton.textContent = `Слой: ${underlayAbove ? 'сверху' : 'снизу'}`;
         activeScene?.setUnderlayAbove(underlayAbove);
-      });
-
-      document.addEventListener('keydown', (event) => {
-        if (event.target instanceof HTMLInputElement) return;
-        const directions = {
-          ArrowLeft: [-1, 0],
-          ArrowRight: [1, 0],
-          ArrowUp: [0, -1],
-          ArrowDown: [0, 1]
-        };
-        const direction = directions[event.key];
-        if (!direction || !activeScene) return;
-        event.preventDefault();
-        const step = event.shiftKey ? 5 : 1;
-        if (effectEditorActive) {
-          if (activeEffectKey === 'max_pool_icecream') {
-            activeScene.moveMaxAsset(activeEffectKey, direction[0] * step, direction[1] * step);
-          } else if (effectAssetByKey.get(activeEffectKey)?.isEllipse) {
-            return;
-          } else {
-            activeScene.moveScreenEffect(activeEffectKey, direction[0] * step, direction[1] * step);
-          }
-          updateEffectEditor();
-        } else {
-          activeScene.moveMaxAsset(activeMaxKey, direction[0] * step, direction[1] * step);
-          updateMaxEditor();
-        }
       });
 
       nextButton.addEventListener('click', () => activeScene?.playNextTransition());
@@ -1491,9 +1748,7 @@
               .setScale(asset.scale)
               .setDepth(asset.depth)
               .setAlpha(0)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectMaxLayer(asset.key));
+              .setVisible(false);
             if (asset.bottomAnchor) sprite.setOrigin(0.5, 1);
             this.maxSprites.set(asset.key, sprite);
           });
@@ -1504,9 +1759,7 @@
               .setFlipX(asset.flipX)
               .setDepth(asset.depth)
               .setAlpha(0)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectMaxLayer(asset.key));
+              .setVisible(false);
             sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'max-firework', () => {
               sprite.setVisible(false);
             });
@@ -1528,9 +1781,7 @@
               .setAngle(asset.rotation ?? 0)
               .setDepth(asset.depth)
               .setAlpha(0)
-              .setVisible(false)
-              .setInteractive({ useHandCursor: true })
-              .on('pointerdown', () => selectEffectLayer(asset.key));
+              .setVisible(false);
             this.screenEffectSprites.set(asset.key, sprite);
           });
 
@@ -2245,7 +2496,7 @@
           this.megaHandMotion[property] = 0;
           this.tweens.add({
             targets: this.megaHandMotion,
-            [property]: 6,
+            [property]: MEGA_TOSS.handCatch,
             duration: 80,
             ease: 'Quad.Out',
             onUpdate: () => this.syncMegaHandHierarchy(),
@@ -2576,6 +2827,7 @@
           if (!this.megaActive || this.transitioning) return;
           this.playMegaLetterWave();
           const flightSpeed = Math.max(0.1, MEGA_TOSS.flightSpeed);
+          const dipSpeed = Math.max(0.1, MEGA_TOSS.dipSpeed);
           ['left', 'right'].forEach((side, index) => {
             const sideTimer = this.time.delayedCall(index * MEGA_TOSS.sideDelay, () => {
               const rootProperty = `${side}Y`;
@@ -2591,7 +2843,7 @@
               this.tweens.add({
                 targets: this.megaHandMotion,
                 [rootProperty]: MEGA_TOSS.handDip,
-                duration: 110,
+                duration: 110 / dipSpeed,
                 ease: 'Quad.In',
                 onUpdate: () => this.syncMegaHandHierarchy(),
                 onComplete: () => {
@@ -2599,14 +2851,14 @@
                   this.tweens.add({
                     targets: this.megaHandMotion,
                     [rootProperty]: -MEGA_TOSS.handLift,
-                    duration: 120,
+                    duration: 120 / dipSpeed,
                     ease: 'Cubic.Out',
                     onUpdate: () => this.syncMegaHandHierarchy(),
                     onComplete: () => {
                       this.tweens.add({
                         targets: this.megaHandMotion,
                         [rootProperty]: 0,
-                        duration: 170,
+                        duration: 170 / dipSpeed,
                         ease: 'Back.Out',
                         onUpdate: () => this.syncMegaHandHierarchy()
                       });
@@ -2968,6 +3220,8 @@
 
         playEpicDessertToss() {
           if (!this.epicActive || this.transitioning) return;
+          const dipSpeed = Math.max(0.1, EPIC_IDLE.dipSpeed);
+          const flightSpeed = Math.max(0.1, EPIC_IDLE.flightSpeed);
           this.epicHandMotion.tossY = 0;
           this.epicHandMotion.iceY = 0;
           this.epicHandMotion.creamY = 0;
@@ -2975,7 +3229,7 @@
           this.tweens.add({
             targets: this.epicHandMotion,
             tossY: EPIC_IDLE.handDip,
-            duration: 115,
+            duration: 115 / dipSpeed,
             ease: 'Quad.In',
             onUpdate: () => this.syncEpicHierarchy(),
             onComplete: () => {
@@ -2984,14 +3238,14 @@
               this.tweens.add({
                 targets: this.epicHandMotion,
                 tossY: -2,
-                duration: 120,
+                duration: 120 / dipSpeed,
                 ease: 'Cubic.Out',
                 onUpdate: () => this.syncEpicHierarchy(),
                 onComplete: () => {
                   this.tweens.add({
                     targets: this.epicHandMotion,
                     tossY: 0,
-                    duration: 170,
+                    duration: 170 / dipSpeed,
                     ease: 'Back.Out',
                     onUpdate: () => this.syncEpicHierarchy()
                   });
@@ -2999,31 +3253,46 @@
               });
               this.playEpicLayerJump(
                 'iceY',
-                EPIC_IDLE.dessertHeight,
+                EPIC_IDLE.iceHeight,
                 0,
                 1,
-                () => this.playEpicHandCatch()
+                () => this.playEpicHandCatch(),
+                flightSpeed
               );
-              this.playEpicLayerJump('creamY', EPIC_IDLE.dessertHeight * 0.58, EPIC_IDLE.layerStagger, 0.72);
-              this.playEpicLayerJump('peachY', EPIC_IDLE.dessertHeight * 0.4, EPIC_IDLE.layerStagger * 2, 0.52);
+              this.playEpicLayerJump(
+                'creamY',
+                EPIC_IDLE.creamHeight,
+                EPIC_IDLE.creamDelay,
+                0.72,
+                () => {},
+                flightSpeed
+              );
+              this.playEpicLayerJump(
+                'peachY',
+                EPIC_IDLE.peachHeight,
+                EPIC_IDLE.peachDelay,
+                0.52,
+                () => {},
+                flightSpeed
+              );
             }
           });
         }
 
-        playEpicLayerJump(property, height, delay, bounceFactor, onLand = () => {}) {
+        playEpicLayerJump(property, height, delay, bounceFactor, onLand = () => {}, flightSpeed = 1) {
           const startJump = () => {
             this.tweens.add({
               targets: this.epicHandMotion,
               [property]: -height,
-              duration: 220,
-              ease: 'Sine.Out',
+              duration: 220 / flightSpeed,
+              ease: 'Quart.Out',
               onUpdate: () => this.syncEpicHierarchy(),
               onComplete: () => {
                 this.tweens.add({
                   targets: this.epicHandMotion,
                   [property]: 0,
-                  duration: 280,
-                  ease: 'Sine.In',
+                  duration: 280 / flightSpeed,
+                  ease: 'Quart.In',
                   onUpdate: () => this.syncEpicHierarchy(),
                   onComplete: () => {
                     onLand();
@@ -3031,16 +3300,16 @@
                     if (bounce <= 0) return;
                     this.tweens.add({
                       targets: this.epicHandMotion,
-                      [property]: -bounce,
-                      duration: 90,
-                      ease: 'Quad.Out',
+                      [property]: bounce,
+                      duration: 70 / flightSpeed,
+                      ease: 'Cubic.In',
                       onUpdate: () => this.syncEpicHierarchy(),
                       onComplete: () => {
                         this.tweens.add({
                           targets: this.epicHandMotion,
                           [property]: 0,
-                          duration: 160,
-                          ease: 'Sine.In',
+                          duration: 190 / flightSpeed,
+                          ease: 'Back.Out',
                           onUpdate: () => this.syncEpicHierarchy()
                         });
                       }
@@ -3058,7 +3327,7 @@
           this.epicHandMotion.catchY = 0;
           this.tweens.add({
             targets: this.epicHandMotion,
-            catchY: 7,
+            catchY: EPIC_IDLE.handCatch,
             duration: 85,
             ease: 'Quad.Out',
             onUpdate: () => this.syncEpicHierarchy(),
@@ -3347,36 +3616,39 @@
         }
 
         playMaxDessertBounce(multiplier = 1) {
+          const speed = Math.max(0.1, MAX_TOSS.flightSpeed);
           const iceHeight = MAX_LANDING.iceHeight * multiplier;
           const girlRelativeHeight = (MAX_LANDING.girlHeight - MAX_LANDING.iceHeight) * multiplier;
-          const animateProperty = (property, height) => {
+          const minimumDelay = Math.min(0, MAX_TOSS.iceDelay, MAX_TOSS.girlDelay);
+          const animateProperty = (property, height, delay) => {
+            const startJump = () => {
             this.maxPoolMotion[property] = 0;
             this.tweens.add({
               targets: this.maxPoolMotion,
               [property]: -height,
-              duration: 180,
-              ease: 'Quad.Out',
+              duration: 180 / speed,
+              ease: 'Quart.Out',
               onUpdate: () => this.syncMaxPoolHierarchy(),
               onComplete: () => {
                 this.tweens.add({
                   targets: this.maxPoolMotion,
                   [property]: 0,
-                  duration: 220,
-                  ease: 'Quad.In',
+                  duration: 220 / speed,
+                  ease: 'Quart.In',
                   onUpdate: () => this.syncMaxPoolHierarchy(),
                   onComplete: () => {
                     this.tweens.add({
                       targets: this.maxPoolMotion,
-                      [property]: -height * 0.14,
-                      duration: 85,
-                      ease: 'Quad.Out',
+                      [property]: -height * MAX_TOSS.landingBounce,
+                      duration: 85 / speed,
+                      ease: 'Sine.Out',
                       onUpdate: () => this.syncMaxPoolHierarchy(),
                       onComplete: () => {
                         this.tweens.add({
                           targets: this.maxPoolMotion,
                           [property]: 0,
-                          duration: 105,
-                          ease: 'Sine.In',
+                          duration: 105 / speed,
+                          ease: 'Back.Out',
                           onUpdate: () => this.syncMaxPoolHierarchy()
                         });
                       }
@@ -3385,9 +3657,13 @@
                 });
               }
             });
+            };
+            const normalizedDelay = Math.max(0, delay - minimumDelay);
+            if (normalizedDelay === 0) startJump();
+            else this.sequenceTimers.push(this.time.delayedCall(normalizedDelay, startJump));
           };
-          animateProperty('iceY', iceHeight);
-          animateProperty('girlY', girlRelativeHeight);
+          animateProperty('iceY', iceHeight, MAX_TOSS.iceDelay);
+          animateProperty('girlY', girlRelativeHeight, MAX_TOSS.girlDelay);
         }
 
         playMaxSequences() {
@@ -3424,6 +3700,7 @@
 
         startMaxPoolBounceLoop() {
           this.maxPoolBounceTimer?.remove(false);
+          if (!this.maxActive || this.transitioning) return;
           this.maxPoolBounceTimer = this.time.addEvent({
             delay: MAX_TOSS.interval,
             loop: true,
@@ -3433,35 +3710,36 @@
 
         playMaxPoolBounce() {
           if (!this.maxActive || this.transitioning) return;
+          const speed = Math.max(0.1, MAX_TOSS.flightSpeed);
           this.playMaxSequences();
           this.maxPoolMotion.poolY = 0;
-          this.playMaxDessertBounce(0.72);
+          this.playMaxDessertBounce();
           this.tweens.add({
             targets: this.maxPoolMotion,
             poolY: -MAX_TOSS.poolHeight,
-            duration: 190,
-            ease: 'Quad.Out',
+            duration: 190 / speed,
+            ease: 'Quart.Out',
             onUpdate: () => this.syncMaxPoolHierarchy(),
             onComplete: () => {
               this.tweens.add({
                 targets: this.maxPoolMotion,
                 poolY: 0,
-                duration: 220,
-                ease: 'Quad.In',
+                duration: 220 / speed,
+                ease: 'Quart.In',
                 onUpdate: () => this.syncMaxPoolHierarchy(),
                 onComplete: () => {
                   this.tweens.add({
                     targets: this.maxPoolMotion,
-                    poolY: -MAX_TOSS.poolHeight * 0.18,
-                    duration: 90,
-                    ease: 'Quad.Out',
+                    poolY: -MAX_TOSS.poolHeight * MAX_TOSS.landingBounce,
+                    duration: 90 / speed,
+                    ease: 'Sine.Out',
                     onUpdate: () => this.syncMaxPoolHierarchy(),
                     onComplete: () => {
                       this.tweens.add({
                         targets: this.maxPoolMotion,
                         poolY: 0,
-                        duration: 110,
-                        ease: 'Sine.In',
+                        duration: 110 / speed,
+                        ease: 'Back.Out',
                         onUpdate: () => this.syncMaxPoolHierarchy()
                       });
                     }
@@ -3965,6 +4243,7 @@
           this.syncHierarchy();
           const dipSpeed = Math.max(0.1, BIG_IDLE_TOSS.dipSpeed);
           const flightSpeed = Math.max(0.1, BIG_IDLE_TOSS.flightSpeed);
+          const berryFlightSpeed = Math.max(0.1, BIG_IDLE_TOSS.berryFlightSpeed);
           this.tweens.add({
             targets: this.motion,
             idleHandY: BIG_IDLE_TOSS.handDip,
@@ -4003,10 +4282,10 @@
               );
               const launchBerry = () => this.jumpNode(
                 'idleBerryY',
-                BIG_IDLE_TOSS.height * 0.78,
-                175 / flightSpeed,
+                BIG_IDLE_TOSS.berryHeight,
+                175 / berryFlightSpeed,
                 0,
-                215 / flightSpeed,
+                215 / berryFlightSpeed,
                 () => this.playLandingImpact('iceImpactY', 'strawberry', BIG_IDLE_TOSS.impact * 0.75, markComplete)
               );
               const iceDelay = Math.max(0, -BIG_IDLE_TOSS.berryOffset);
