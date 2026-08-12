@@ -749,7 +749,7 @@
       const BERRY_JUMP_HEIGHT = 23;
       const BERRY_HOLD = -160;
       const BERRY_LEAD = 290;
-      const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30 };
+      const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30, contactFrame: 12 };
       const LETTER_WAVE = {
         height: 8,
         speed: 0.85,
@@ -4356,17 +4356,19 @@
                 completedJumps += 1;
                 if (completedJumps === 2) onComplete();
               };
-              const launchIce = () => this.jumpNode(
-                'idleIceY',
-                BIG_IDLE_TOSS.height,
-                190 / flightSpeed,
-                0,
-                230 / iceLandSpeed,
-                () => {
-                  this.playExplodeSequence();
-                  this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, markComplete);
-                }
-              );
+              const launchIce = () => {
+                const riseDuration = 190 / flightSpeed;
+                const landDuration = 230 / iceLandSpeed;
+                this.scheduleExplodeForContact(riseDuration + landDuration);
+                this.jumpNode(
+                  'idleIceY',
+                  BIG_IDLE_TOSS.height,
+                  riseDuration,
+                  0,
+                  landDuration,
+                  () => this.playLandingImpact('rootImpactY', 'ice_cream', BIG_IDLE_TOSS.impact, markComplete)
+                );
+              };
               const launchBerry = () => this.jumpNode(
                 'idleBerryY',
                 BIG_IDLE_TOSS.berryHeight,
@@ -4438,6 +4440,7 @@
             this.launchBerrySequence();
           }));
 
+          this.scheduleExplodeForContact(iceFlightDuration);
           this.jumpNode(
             'iceY',
             iceJumpHeight,
@@ -4445,12 +4448,18 @@
             iceTiming.holdDuration,
             iceTiming.landDuration,
             () => {
-              this.playExplodeSequence();
               this.playLandingImpact('rootImpactY', 'ice_cream', 6, () => {
                 this.completeSequencePart('iceComplete');
               });
             }
           );
+        }
+
+        scheduleExplodeForContact(flightDuration) {
+          const visibleLead = (EXPLODE.contactFrame / EXPLODE.frameRate) * 1000;
+          const delay = Math.max(0, flightDuration - visibleLead);
+          const timer = this.time.delayedCall(delay, () => this.playExplodeSequence());
+          this.sequenceTimers.push(timer);
         }
 
         playExplodeSequence() {
