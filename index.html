@@ -499,8 +499,8 @@
             <input class="letter-scale-slider" id="big-repeat-delay" type="range" min="450" max="1450" step="50" value="950" aria-label="Пауза после броска Big Win">
           </label>
           <label class="letter-scale-control">
-            <span class="label-row"><span>Офсет секвенции от приземления</span><span class="value" id="big-sequence-offset-value">600 мс</span></span>
-            <input class="letter-scale-slider" id="big-sequence-offset" type="range" min="-400" max="1600" step="10" value="600" aria-label="Офсет секвенции от приземления мороженки Big Win">
+            <span class="label-row"><span>Офсет секвенции от приземления</span><span class="value" id="big-sequence-offset-value">-600 мс</span></span>
+            <input class="letter-scale-slider" id="big-sequence-offset" type="range" min="-1600" max="400" step="10" value="-600" aria-label="Офсет секвенции от приземления мороженки Big Win">
           </label>
         </div>
         <p class="letter-hint">Положительный офсет запускает секвенцию после приземления мороженки, отрицательный — до него.</p>
@@ -793,7 +793,7 @@
         impact: 5.5,
         berryImpact: 4,
         repeatDelay: 950,
-        sequenceOffset: 600
+        sequenceOffset: -600
       };
       const HEARTS = {
         frameRate: 30,
