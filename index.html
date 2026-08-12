@@ -749,7 +749,7 @@
       const BERRY_JUMP_HEIGHT = 23;
       const BERRY_HOLD = -160;
       const BERRY_LEAD = 290;
-      const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30, contactFrame: 12 };
+      const EXPLODE = { offsetX: -3, offsetY: -14, scale: 1.45, depth: 0, frameRate: 30, landingLead: 1500 };
       const LETTER_WAVE = {
         height: 8,
         speed: 0.85,
@@ -4010,6 +4010,7 @@
           this.activateScreenEffects('big', TITLE_DROP.delay);
           this.startRewardEntrances();
           this.startBigSparkAnimations();
+          this.playExplodeSequence();
 
           const speed = ENTRY_SPEED;
           const entryDuration = 1000 / speed;
@@ -4299,6 +4300,25 @@
         startSplashLoop() {
           const playCycle = () => {
             if (this.transitioning || this.megaActive || this.epicActive || this.maxActive) return;
+            const splashImpactDuration = SPLASH.reactionStrength === 0 ? 0 : 365;
+            const dipDuration = 110 / Math.max(0.1, BIG_IDLE_TOSS.dipSpeed);
+            const iceDelay = Math.max(0, -BIG_IDLE_TOSS.berryOffset);
+            const iceFlightDuration = (
+              190 / Math.max(0.1, BIG_IDLE_TOSS.flightSpeed)
+              + 230 / Math.max(0.1, BIG_IDLE_TOSS.iceLandSpeed)
+            );
+            const landingDelay = (
+              SPLASH.emergeDuration
+              + SPLASH.hangDuration
+              + SPLASH.fallDuration
+              + splashImpactDuration
+              + 260
+              + dipDuration
+              + iceDelay
+              + iceFlightDuration
+            );
+            const explodeDelay = Math.max(0, landingDelay - EXPLODE.landingLead);
+            this.sequenceTimers.push(this.time.delayedCall(explodeDelay, () => this.playExplodeSequence()));
             this.launchSplashSequence(() => {
               const tossDelay = this.time.delayedCall(260, () => {
                 this.playBigIdleToss(() => {
@@ -4359,7 +4379,6 @@
               const launchIce = () => {
                 const riseDuration = 190 / flightSpeed;
                 const landDuration = 230 / iceLandSpeed;
-                this.scheduleExplodeForContact(riseDuration + landDuration);
                 this.jumpNode(
                   'idleIceY',
                   BIG_IDLE_TOSS.height,
@@ -4440,7 +4459,6 @@
             this.launchBerrySequence();
           }));
 
-          this.scheduleExplodeForContact(iceFlightDuration);
           this.jumpNode(
             'iceY',
             iceJumpHeight,
@@ -4453,13 +4471,6 @@
               });
             }
           );
-        }
-
-        scheduleExplodeForContact(flightDuration) {
-          const visibleLead = (EXPLODE.contactFrame / EXPLODE.frameRate) * 1000;
-          const delay = Math.max(0, flightDuration - visibleLead);
-          const timer = this.time.delayedCall(delay, () => this.playExplodeSequence());
-          this.sequenceTimers.push(timer);
         }
 
         playExplodeSequence() {
