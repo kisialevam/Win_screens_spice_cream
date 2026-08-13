@@ -1793,6 +1793,11 @@
             this.epicSprites.set(asset.key, sprite);
           });
 
+          const epicPeach = this.epicSprites.get('epic_peach');
+          const epicPeachCream = this.epicSprites.get('epic_peach_cream');
+          this.epicPeachContainer = this.add.container(0, 0, [epicPeach, epicPeachCream])
+            .setDepth(310.5);
+
           this.epicTitleContainer = this.add.container(0, 0).setDepth(320).setVisible(false);
           EPIC_ASSETS.filter((asset) => asset.isLetter).forEach((asset) => {
             this.epicTitleContainer.add(this.epicSprites.get(asset.key));
@@ -3136,7 +3141,7 @@
           const sine = Math.sin(radians);
 
           EPIC_HAND_KEYS.forEach((key) => {
-            if (key === 'epic_peach_cream') return;
+            if (key === 'epic_peach' || key === 'epic_peach_cream') return;
             const asset = epicAssetByKey.get(key);
             const deltaX = (asset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
             const deltaY = (asset.y - pivotBaseY) * compositionScale;
@@ -3153,19 +3158,32 @@
               .setAngle(motion.rotation);
           });
 
-          // Peach cream is rigidly attached to the peach. It inherits the peach's
-          // final transform instead of calculating its animation offsets separately.
+          // Peach and its cream are one real Phaser container, so their relative
+          // position cannot diverge during any animation.
           const peachAsset = epicAssetByKey.get('epic_peach');
           const peachCreamAsset = epicAssetByKey.get('epic_peach_cream');
           const peachSprite = this.epicSprites.get('epic_peach');
-          const peachCreamOffsetX = (peachCreamAsset.x - peachAsset.x) * compositionScale;
-          const peachCreamOffsetY = (peachCreamAsset.y - peachAsset.y) * compositionScale;
-          this.epicSprites.get('epic_peach_cream')
-            .setPosition(
-              peachSprite.x + peachCreamOffsetX * cosine - peachCreamOffsetY * sine,
-              peachSprite.y + peachCreamOffsetX * sine + peachCreamOffsetY * cosine
-            )
-            .setScale(peachCreamAsset.scale * compositionScale)
+          const peachCreamSprite = this.epicSprites.get('epic_peach_cream');
+          const peachDeltaX = (peachAsset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
+          const peachDeltaY = (peachAsset.y - pivotBaseY) * compositionScale;
+          const peachGroupX = pivotX + peachDeltaX * cosine - peachDeltaY * sine;
+          const peachGroupY = pivotY
+            + peachDeltaX * sine
+            + peachDeltaY * cosine
+            + motion.iceY
+            + motion.creamY
+            + motion.peachY;
+          peachSprite
+            .setPosition(0, 0)
+            .setScale(peachAsset.scale)
+            .setAngle(0);
+          peachCreamSprite
+            .setPosition(peachCreamAsset.x - peachAsset.x, peachCreamAsset.y - peachAsset.y)
+            .setScale(peachCreamAsset.scale)
+            .setAngle(0);
+          this.epicPeachContainer
+            .setPosition(peachGroupX, peachGroupY)
+            .setScale(compositionScale)
             .setAngle(motion.rotation);
 
           EPIC_SEQUENCE_ASSETS.forEach((asset) => {
