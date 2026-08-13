@@ -288,8 +288,7 @@
     }
 
     .stage-actions,
-    .stage-next-actions,
-    .stage-epic-controls {
+    .stage-next-actions {
       display: grid;
       gap: 10px;
       padding: 16px;
@@ -306,12 +305,10 @@
       box-shadow: 0 18px 50px rgba(255, 46, 150, 0.12);
     }
 
-    .stage-epic-controls[hidden] { display: none; }
     .stage-next-actions:not(:has(button:not([hidden]))) { display: none; }
 
     .stage-actions .settings-title,
-    .stage-next-actions .settings-title,
-    .stage-epic-controls .settings-title { margin-bottom: 2px; }
+    .stage-next-actions .settings-title { margin-bottom: 2px; }
     .stage-actions .replay-button,
     .stage-actions .start-over-button,
     .stage-next-actions .replay-button { margin-top: 0; }
@@ -714,21 +711,6 @@
           <div id="game-container"></div>
         </div>
         <div class="stage-controls">
-          <div class="stage-epic-controls" id="epic-composition-controls" hidden aria-label="Настройка композиции Epic Win">
-            <p class="settings-title">Композиция EPIC WIN</p>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Масштаб руки</span><span class="value" id="epic-composition-scale-value">1.00×</span></span>
-              <input class="letter-scale-slider" id="epic-composition-scale" type="range" min="0.50" max="1.50" step="0.01" value="1.00" aria-label="Масштаб всей руки с мороженым Epic Win">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Положение вверх-вниз</span><span class="value" id="epic-composition-y-value">0 px</span></span>
-              <input class="letter-scale-slider" id="epic-composition-y" type="range" min="-100" max="100" step="1" value="0" aria-label="Положение всей руки с мороженым Epic Win по вертикали">
-            </label>
-            <label class="letter-scale-control">
-              <span class="label-row"><span>Положение влево-вправо</span><span class="value" id="epic-composition-x-value">0 px</span></span>
-              <input class="letter-scale-slider" id="epic-composition-x" type="range" min="-100" max="100" step="1" value="0" aria-label="Положение всей руки с мороженым Epic Win по горизонтали">
-            </label>
-          </div>
           <div class="stage-next-actions" aria-label="Переход на следующий экран">
             <p class="settings-title">Переход дальше</p>
             <button class="replay-button" id="advance-screen" type="button">Следующий экран</button>
@@ -847,7 +829,7 @@
         landingBounce: 5,
         handCatch: 21
       };
-      const EPIC_COMPOSITION = { scale: 1, offsetX: 0, offsetY: 0 };
+      const EPIC_COMPOSITION = { scale: 1.14, offsetX: 17, offsetY: 17 };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
         amountDelay: 0,
@@ -1033,13 +1015,6 @@
       const advanceScreenButton = document.querySelector('#advance-screen');
       const replayScreenButton = document.querySelector('#replay-screen');
       const startOverButton = document.querySelector('#start-over');
-      const epicCompositionControls = document.querySelector('#epic-composition-controls');
-      const epicCompositionScaleSlider = document.querySelector('#epic-composition-scale');
-      const epicCompositionScaleValue = document.querySelector('#epic-composition-scale-value');
-      const epicCompositionYSlider = document.querySelector('#epic-composition-y');
-      const epicCompositionYValue = document.querySelector('#epic-composition-y-value');
-      const epicCompositionXSlider = document.querySelector('#epic-composition-x');
-      const epicCompositionXValue = document.querySelector('#epic-composition-x-value');
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
@@ -1192,7 +1167,6 @@
         advanceScreenButton.disabled = busy || screen === 'max';
         advanceScreenButton.hidden = screen === 'max';
         advanceScreenButton.textContent = busy ? 'Переходим…' : 'Следующий экран';
-        epicCompositionControls.hidden = screen !== 'epic';
       };
 
       const updateMaxEditor = () => {
@@ -1395,24 +1369,6 @@
         MAX_PALMS.bounce = Number(maxPalmBounceSlider.value);
         maxPalmBounceValue.textContent = `${MAX_PALMS.bounce}°`;
         scheduleMaxReplay();
-      });
-
-      epicCompositionScaleSlider.addEventListener('input', () => {
-        EPIC_COMPOSITION.scale = Number(epicCompositionScaleSlider.value);
-        epicCompositionScaleValue.textContent = `${EPIC_COMPOSITION.scale.toFixed(2)}×`;
-        activeScene?.syncEpicHierarchy();
-      });
-
-      epicCompositionYSlider.addEventListener('input', () => {
-        EPIC_COMPOSITION.offsetY = Number(epicCompositionYSlider.value);
-        epicCompositionYValue.textContent = `${EPIC_COMPOSITION.offsetY} px`;
-        activeScene?.syncEpicHierarchy();
-      });
-
-      epicCompositionXSlider.addEventListener('input', () => {
-        EPIC_COMPOSITION.offsetX = Number(epicCompositionXSlider.value);
-        epicCompositionXValue.textContent = `${EPIC_COMPOSITION.offsetX} px`;
-        activeScene?.syncEpicHierarchy();
       });
 
       bigHandDipSlider.addEventListener('input', () => {
@@ -3180,6 +3136,7 @@
           const sine = Math.sin(radians);
 
           EPIC_HAND_KEYS.forEach((key) => {
+            if (key === 'epic_peach_cream') return;
             const asset = epicAssetByKey.get(key);
             const deltaX = (asset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
             const deltaY = (asset.y - pivotBaseY) * compositionScale;
@@ -3195,6 +3152,22 @@
               .setScale(asset.scale * compositionScale)
               .setAngle(motion.rotation);
           });
+
+          // Peach cream is rigidly attached to the peach. It inherits the peach's
+          // final transform instead of calculating its animation offsets separately.
+          const peachAsset = epicAssetByKey.get('epic_peach');
+          const peachCreamAsset = epicAssetByKey.get('epic_peach_cream');
+          const peachSprite = this.epicSprites.get('epic_peach');
+          const peachCreamOffsetX = (peachCreamAsset.x - peachAsset.x) * compositionScale;
+          const peachCreamOffsetY = (peachCreamAsset.y - peachAsset.y) * compositionScale;
+          this.epicSprites.get('epic_peach_cream')
+            .setPosition(
+              peachSprite.x + peachCreamOffsetX * cosine - peachCreamOffsetY * sine,
+              peachSprite.y + peachCreamOffsetX * sine + peachCreamOffsetY * cosine
+            )
+            .setScale(peachCreamAsset.scale * compositionScale)
+            .setAngle(motion.rotation);
+
           EPIC_SEQUENCE_ASSETS.forEach((asset) => {
             const deltaX = (asset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
             const deltaY = (asset.y - pivotBaseY) * compositionScale;
