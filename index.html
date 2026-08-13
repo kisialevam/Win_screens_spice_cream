@@ -724,6 +724,10 @@
               <span class="label-row"><span>Положение вверх-вниз</span><span class="value" id="epic-composition-y-value">0 px</span></span>
               <input class="letter-scale-slider" id="epic-composition-y" type="range" min="-100" max="100" step="1" value="0" aria-label="Положение всей руки с мороженым Epic Win по вертикали">
             </label>
+            <label class="letter-scale-control">
+              <span class="label-row"><span>Положение влево-вправо</span><span class="value" id="epic-composition-x-value">0 px</span></span>
+              <input class="letter-scale-slider" id="epic-composition-x" type="range" min="-100" max="100" step="1" value="0" aria-label="Положение всей руки с мороженым Epic Win по горизонтали">
+            </label>
           </div>
           <div class="stage-next-actions" aria-label="Переход на следующий экран">
             <p class="settings-title">Переход дальше</p>
@@ -843,7 +847,7 @@
         landingBounce: 5,
         handCatch: 21
       };
-      const EPIC_COMPOSITION = { scale: 1, offsetY: 0 };
+      const EPIC_COMPOSITION = { scale: 1, offsetX: 0, offsetY: 0 };
       const EPIC_ENTRANCE = {
         titleDelay: 260,
         amountDelay: 0,
@@ -1034,6 +1038,8 @@
       const epicCompositionScaleValue = document.querySelector('#epic-composition-scale-value');
       const epicCompositionYSlider = document.querySelector('#epic-composition-y');
       const epicCompositionYValue = document.querySelector('#epic-composition-y-value');
+      const epicCompositionXSlider = document.querySelector('#epic-composition-x');
+      const epicCompositionXValue = document.querySelector('#epic-composition-x-value');
       const copyCoordinatesButton = document.querySelector('#copy-coordinates');
       const coordinatesOutput = document.querySelector('#coordinates-output');
       const underlayButton = document.querySelector('#toggle-underlay');
@@ -1400,6 +1406,12 @@
       epicCompositionYSlider.addEventListener('input', () => {
         EPIC_COMPOSITION.offsetY = Number(epicCompositionYSlider.value);
         epicCompositionYValue.textContent = `${EPIC_COMPOSITION.offsetY} px`;
+        activeScene?.syncEpicHierarchy();
+      });
+
+      epicCompositionXSlider.addEventListener('input', () => {
+        EPIC_COMPOSITION.offsetX = Number(epicCompositionXSlider.value);
+        epicCompositionXValue.textContent = `${EPIC_COMPOSITION.offsetX} px`;
         activeScene?.syncEpicHierarchy();
       });
 
@@ -3152,7 +3164,9 @@
           if (!motion) return;
           const handAsset = epicAssetByKey.get('epic_hand');
           const handSprite = this.epicSprites.get('epic_hand');
-          const pivotX = handAsset.x + handSprite.width * handAsset.scale / 2;
+          const pivotX = handAsset.x
+            + handSprite.width * handAsset.scale / 2
+            + EPIC_COMPOSITION.offsetX;
           const pivotBaseY = handAsset.y;
           const compositionScale = EPIC_COMPOSITION.scale;
           const pivotY = pivotBaseY
@@ -3167,7 +3181,7 @@
 
           EPIC_HAND_KEYS.forEach((key) => {
             const asset = epicAssetByKey.get(key);
-            const deltaX = (asset.x - pivotX) * compositionScale;
+            const deltaX = (asset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
             const deltaY = (asset.y - pivotBaseY) * compositionScale;
             const rotatedX = pivotX + deltaX * cosine - deltaY * sine;
             const dessertOffset = (
@@ -3182,7 +3196,7 @@
               .setAngle(motion.rotation);
           });
           EPIC_SEQUENCE_ASSETS.forEach((asset) => {
-            const deltaX = (asset.x - pivotX) * compositionScale;
+            const deltaX = (asset.x - (pivotX - EPIC_COMPOSITION.offsetX)) * compositionScale;
             const deltaY = (asset.y - pivotBaseY) * compositionScale;
             const rotatedX = pivotX + deltaX * cosine - deltaY * sine;
             const rotatedY = pivotY + deltaX * sine + deltaY * cosine + motion.iceY;
